@@ -32,7 +32,8 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(title),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.bar_chart_rounded))
+            IconButton(
+                onPressed: () {}, icon: const Icon(Icons.bar_chart_rounded))
           ],
         ),
         body: const ShowTodayOverview());
@@ -52,7 +53,15 @@ class ShowTodayOverview extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(14)),
-            child: const QuickStatsText()),
+            child: Column(
+              children: [
+                const QuickStatsText(),
+                const SizedBox(
+                  height: 20,
+                ),
+                DistributionBar()
+              ],
+            )),
       ],
     );
   }
@@ -102,6 +111,35 @@ class QuickStatsText extends StatelessWidget {
             ],
             onChanged: null)
       ],
+    );
+  }
+}
+
+class DistributionBar extends StatelessWidget {
+  DistributionBar({super.key});
+
+  final List<Color> gradient = [
+    Colors.green,
+    Colors.green,
+    Colors.yellow,
+    Colors.yellow,
+    Colors.brown,
+    Colors.brown,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 15,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: gradient,
+            stops: const [0, 0.5, 0.5, 0.7, 0.7, 1],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight),
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(20),
+      ),
     );
   }
 }
