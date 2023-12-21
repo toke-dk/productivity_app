@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/models/activity.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,15 +37,55 @@ class MyHomePage extends StatelessWidget {
                 onPressed: () {}, icon: const Icon(Icons.bar_chart_rounded))
           ],
         ),
-        body: const ShowTodayOverview());
+        body: ShowTodayOverview(
+          activities: [
+            Activity(
+                amount: 10,
+                activityType: activityTypes[0],
+                chosenUnit: Units.kilometer,
+                image: Placeholder()),
+            Activity(
+                amount: 5,
+                activityType: activityTypes[0],
+                chosenUnit: Units.kilometer,
+                image: Placeholder()),
+            Activity(
+                amount: 20,
+                activityType: activityTypes[1],
+                chosenUnit: Units.unitLess,
+                image: Placeholder()),
+          ],
+        ));
   }
 }
 
 class ShowTodayOverview extends StatelessWidget {
-  const ShowTodayOverview({super.key});
+  ShowTodayOverview({super.key, required this.activities});
+
+  final List<Activity> activities;
+
+  final List<Color> barColors = [
+    Colors.green,
+    Colors.orange,
+    Colors.blue,
+    Colors.purple,
+  ];
 
   @override
   Widget build(BuildContext context) {
+    Map<Activity, int> activityCounter = {};
+
+    for (var x in activities) {
+      activityCounter[x] =
+          !activityCounter.containsKey(x) ? (1) : (activityCounter[x]! + 1);
+    }
+
+    Map<Color, double> colorDistributionMap = {};
+    for (var i = 0; i < activityCounter.length; i++) {
+      colorDistributionMap[barColors[i]] =
+          activityCounter.values.toList()[i] / activities.length ?? 0;
+    }
+
     return Column(
       children: [
         Container(
@@ -59,7 +100,9 @@ class ShowTodayOverview extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                DistributionBar()
+                DistributionBar(
+                  colorDistribution: colorDistributionMap,
+                )
               ],
             )),
       ],
@@ -116,25 +159,21 @@ class QuickStatsText extends StatelessWidget {
 }
 
 class DistributionBar extends StatelessWidget {
-  DistributionBar({super.key});
+  DistributionBar({super.key, required this.colorDistribution});
 
-  final List<Color> gradient = [
-    Colors.green,
-    Colors.green,
-    Colors.yellow,
-    Colors.yellow,
-    Colors.brown,
-    Colors.brown,
-  ];
+  final Map<Color, double> colorDistribution;
 
   @override
   Widget build(BuildContext context) {
+    final List<Color> colorsGradient = colorDistribution.keys.toList();
+    final List<double> percentageDistributions = [];
+
     return Container(
       height: 15,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: gradient,
-            stops: const [0, 0.5, 0.5, 0.7, 0.7, 1],
+            colors: colorsGradient,
+            stops: const [0, 0.5, 1],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight),
         color: Colors.green,
