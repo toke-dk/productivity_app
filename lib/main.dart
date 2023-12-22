@@ -96,7 +96,6 @@ class ShowTodayOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // counts occurrence of each type of activity
     Map<ActivityType, int> activityTypeCounter = {};
     for (var activity in activities) {
@@ -196,15 +195,9 @@ class DistributionBar extends StatelessWidget {
 
   final Map<ActivityType, double> activityTypeDistribution;
 
-  @override
-  Widget build(BuildContext context) {
-    final List<Color> colorsGradient = activityTypeDistribution.keys
-        .map((e) => [e.color!, e.color!])
-        .expand((element) => element)
-        .toList();
-
+  // makes the percentage list for the gradient
+  List<double> makeStops(Map<ActivityType, double> activityTypeDistribution) {
     List<double> percentageDuplicateList = [];
-
     for (var i = 0; i < activityTypeDistribution.length; i++) {
       double currentPercent = activityTypeDistribution.values.toList()[i];
       if (i == 0) {
@@ -217,18 +210,29 @@ class DistributionBar extends StatelessWidget {
         ]);
       }
     }
-
     percentageDuplicateList = [
       0,
       ...percentageDuplicateList.sublist(0, percentageDuplicateList.length - 1),
     ];
+    return percentageDuplicateList;
+  }
 
+  // makes the color list for gradients
+  List<Color> makeGradientColors(
+          Map<ActivityType, double> activityTypeDistribution) =>
+      activityTypeDistribution.keys
+          .map((e) => [e.color!, e.color!])
+          .expand((element) => element)
+          .toList();
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       height: 15,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: colorsGradient,
-            stops: percentageDuplicateList,
+            colors: makeGradientColors(activityTypeDistribution),
+            stops: makeStops(activityTypeDistribution),
             begin: Alignment.centerLeft,
             end: Alignment.centerRight),
         color: Colors.green,
