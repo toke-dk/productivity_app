@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 final List<ActivityType> activityTypes = [
   ActivityType(
@@ -25,10 +26,13 @@ class Activity {
 class ActivityType {
   String name;
   List<Units> possibleUnits;
+  Color? color;
+
 
   ActivityType({
     required this.name,
     required this.possibleUnits,
+    this.color,
   });
 }
 

@@ -96,9 +96,9 @@ class ShowTodayOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<ActivityType, int> activityTypeCounter = {};
 
-    //// TODO fix this
+    // counts occurrence of each type of activity
+    Map<ActivityType, int> activityTypeCounter = {};
     for (var activity in activities) {
       activityTypeCounter[activity.activityType] =
           !activityTypeCounter.containsKey(activity.activityType)
@@ -106,13 +106,18 @@ class ShowTodayOverview extends StatelessWidget {
               : (activityTypeCounter[activity.activityType]! + 1);
     }
 
-    ////TODO fix this thing
-    Map<Color, double> colorDistributionMap = {};
+    // gives percentage to each type of activity
+    Map<ActivityType, double> activityTypeDistribution = {};
     for (var i = 0; i < activityTypeCounter.length; i++) {
-      colorDistributionMap[barColors[i]] =
+      ActivityType currentActivityType = activityTypeCounter.keys.toList()[i];
+
+      // set the color for the type
+      currentActivityType.color = barColors[i];
+
+      // give the activity type a distribution value
+      activityTypeDistribution[currentActivityType] =
           activityTypeCounter.values.toList()[i] / activities.length;
     }
-    print(activityTypeCounter);
 
     return Column(
       children: [
@@ -129,7 +134,7 @@ class ShowTodayOverview extends StatelessWidget {
                   height: 20,
                 ),
                 DistributionBar(
-                  colorDistribution: colorDistributionMap,
+                  activityTypeDistribution: activityTypeDistribution,
                 )
               ],
             )),
@@ -187,26 +192,25 @@ class QuickStatsText extends StatelessWidget {
 }
 
 class DistributionBar extends StatelessWidget {
-  DistributionBar({super.key, required this.colorDistribution});
+  DistributionBar({super.key, required this.activityTypeDistribution});
 
-  final Map<Color, double> colorDistribution;
+  final Map<ActivityType, double> activityTypeDistribution;
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> colorsGradient = colorDistribution.keys
-        .map((e) => [e, e])
+    final List<Color> colorsGradient = activityTypeDistribution.keys
+        .map((e) => [e.color!, e.color!])
         .expand((element) => element)
         .toList();
 
     List<double> percentageDuplicateList = [];
 
-    for (var i = 0; i < colorDistribution.length; i++) {
-      double currentPercent = colorDistribution.values.toList()[i];
+    for (var i = 0; i < activityTypeDistribution.length; i++) {
+      double currentPercent = activityTypeDistribution.values.toList()[i];
       if (i == 0) {
         percentageDuplicateList.addAll([currentPercent, currentPercent]);
       } else {
         double previousPercent = percentageDuplicateList[i - 1];
-        print(previousPercent);
         percentageDuplicateList.addAll([
           previousPercent + currentPercent,
           previousPercent + currentPercent
