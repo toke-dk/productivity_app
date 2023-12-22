@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 final List<ActivityType> activityTypes = [
-  ActivityType(name: "Cykling",
+  ActivityType(
+      name: "Cykling",
       possibleUnits: [Units.kilometer, Units.hours, Units.minutes]),
-  ActivityType(name: "Armhævning", possibleUnits: [Units.unitLess])
+  ActivityType(name: "Armhævning", possibleUnits: [Units.unitLess]),
+  ActivityType(name: "Læsning", possibleUnits: [Units.minutes, Units.hours])
 ];
 
 class Activity {
@@ -33,9 +35,8 @@ class ActivityType {
 extension Activities on List<Activity> {
   Map<Activity, double> get distributeActivities {
     Map<Activity, double> finalMap = {};
-    forEach((element) =>
-    finalMap[element] =
-    !finalMap.containsKey(element) ? (1) : (finalMap[element]! + 1));
+    forEach((element) => finalMap[element] =
+        !finalMap.containsKey(element) ? (1) : (finalMap[element]! + 1));
     return finalMap;
   }
 }

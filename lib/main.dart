@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
 
@@ -40,19 +42,39 @@ class MyHomePage extends StatelessWidget {
         body: ShowTodayOverview(
           activities: [
             Activity(
-                amount: 10,
-                activityType: activityTypes[0],
-                chosenUnit: Units.kilometer,
-                image: Placeholder()),
-            Activity(
                 amount: 5,
                 activityType: activityTypes[0],
                 chosenUnit: Units.kilometer,
                 image: Placeholder()),
             Activity(
-                amount: 20,
+                amount: 10,
+                activityType: activityTypes[0],
+                chosenUnit: Units.kilometer,
+                image: Placeholder()),
+            Activity(
+                amount: 15,
                 activityType: activityTypes[1],
                 chosenUnit: Units.unitLess,
+                image: Placeholder()),
+            Activity(
+                amount: 3,
+                activityType: activityTypes[1],
+                chosenUnit: Units.unitLess,
+                image: Placeholder()),
+            Activity(
+                amount: 3,
+                activityType: activityTypes[1],
+                chosenUnit: Units.unitLess,
+                image: Placeholder()),
+            Activity(
+                amount: 3,
+                activityType: activityTypes[1],
+                chosenUnit: Units.unitLess,
+                image: Placeholder()),
+            Activity(
+                amount: 20,
+                activityType: activityTypes[2],
+                chosenUnit: Units.minutes,
                 image: Placeholder()),
           ],
         ));
@@ -69,22 +91,28 @@ class ShowTodayOverview extends StatelessWidget {
     Colors.orange,
     Colors.blue,
     Colors.purple,
+    Colors.indigo
   ];
 
   @override
   Widget build(BuildContext context) {
-    Map<Activity, int> activityCounter = {};
+    Map<ActivityType, int> activityTypeCounter = {};
 
-    for (var x in activities) {
-      activityCounter[x] =
-          !activityCounter.containsKey(x) ? (1) : (activityCounter[x]! + 1);
+    //// TODO fix this
+    for (var activity in activities) {
+      activityTypeCounter[activity.activityType] =
+          !activityTypeCounter.containsKey(activity.activityType)
+              ? (1)
+              : (activityTypeCounter[activity.activityType]! + 1);
     }
 
+    ////TODO fix this thing
     Map<Color, double> colorDistributionMap = {};
-    for (var i = 0; i < activityCounter.length; i++) {
+    for (var i = 0; i < activityTypeCounter.length; i++) {
       colorDistributionMap[barColors[i]] =
-          activityCounter.values.toList()[i] / activities.length ?? 0;
+          activityTypeCounter.values.toList()[i] / activities.length;
     }
+    print(activityTypeCounter);
 
     return Column(
       children: [
@@ -165,15 +193,38 @@ class DistributionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> colorsGradient = colorDistribution.keys.toList();
-    final List<double> percentageDistributions = [];
+    final List<Color> colorsGradient = colorDistribution.keys
+        .map((e) => [e, e])
+        .expand((element) => element)
+        .toList();
+
+    List<double> percentageDuplicateList = [];
+
+    for (var i = 0; i < colorDistribution.length; i++) {
+      double currentPercent = colorDistribution.values.toList()[i];
+      if (i == 0) {
+        percentageDuplicateList.addAll([currentPercent, currentPercent]);
+      } else {
+        double previousPercent = percentageDuplicateList[i - 1];
+        print(previousPercent);
+        percentageDuplicateList.addAll([
+          previousPercent + currentPercent,
+          previousPercent + currentPercent
+        ]);
+      }
+    }
+
+    percentageDuplicateList = [
+      0,
+      ...percentageDuplicateList.sublist(0, percentageDuplicateList.length - 1),
+    ];
 
     return Container(
       height: 15,
       decoration: BoxDecoration(
         gradient: LinearGradient(
             colors: colorsGradient,
-            stops: const [0, 0.5, 1],
+            stops: percentageDuplicateList,
             begin: Alignment.centerLeft,
             end: Alignment.centerRight),
         color: Colors.green,
