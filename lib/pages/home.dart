@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/pages/new_activity.dart';
 
 import '../models/activity.dart';
 
@@ -49,7 +50,10 @@ class MyHomePage extends StatelessWidget {
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NewActivityPage()));
+          },
           child: Icon(Icons.add),
         ),
         appBar: AppBar(
