@@ -9,7 +9,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final activitiesPlaceHolder = [
       Activity(
         amount: 5,
@@ -49,6 +48,10 @@ class MyHomePage extends StatelessWidget {
     ];
 
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.add),
+        ),
         appBar: AppBar(
           title: Text(title),
           actions: [
