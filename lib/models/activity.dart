@@ -4,22 +4,27 @@ import 'package:flutter/material.dart';
 final List<ActivityType> activityTypes = [
   ActivityType(
       name: "Cykling",
-      possibleUnits: [Units.kilometer, Units.hours, Units.minutes]),
-  ActivityType(name: "Armhævning", possibleUnits: [Units.unitLess]),
-  ActivityType(name: "Læsning", possibleUnits: [Units.minutes, Units.hours])
+      possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
+      image: Placeholder()),
+  ActivityType(
+      name: "Armhævning",
+      possibleUnits: [Units.unitLess],
+      image: Placeholder()),
+  ActivityType(
+      name: "Læsning",
+      possibleUnits: [Units.minutes, Units.hours],
+      image: Placeholder())
 ];
 
 class Activity {
   int amount;
   ActivityType activityType;
   Units chosenUnit;
-  Widget image;
 
   Activity({
     required this.amount,
     required this.activityType,
     required this.chosenUnit,
-    required this.image,
   });
 }
 
@@ -27,11 +32,12 @@ class ActivityType {
   String name;
   List<Units> possibleUnits;
   Color? color;
-
+  Widget image;
 
   ActivityType({
     required this.name,
     required this.possibleUnits,
+    required this.image,
     this.color,
   });
 }

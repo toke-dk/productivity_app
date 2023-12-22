@@ -42,40 +42,40 @@ class MyHomePage extends StatelessWidget {
         body: ShowTodayOverview(
           activities: [
             Activity(
-                amount: 5,
-                activityType: activityTypes[0],
-                chosenUnit: Units.kilometer,
-                image: Placeholder()),
+              amount: 5,
+              activityType: activityTypes[0],
+              chosenUnit: Units.kilometer,
+            ),
             Activity(
-                amount: 10,
-                activityType: activityTypes[0],
-                chosenUnit: Units.kilometer,
-                image: Placeholder()),
+              amount: 10,
+              activityType: activityTypes[0],
+              chosenUnit: Units.kilometer,
+            ),
             Activity(
-                amount: 15,
-                activityType: activityTypes[1],
-                chosenUnit: Units.unitLess,
-                image: Placeholder()),
+              amount: 15,
+              activityType: activityTypes[1],
+              chosenUnit: Units.unitLess,
+            ),
             Activity(
-                amount: 3,
-                activityType: activityTypes[1],
-                chosenUnit: Units.unitLess,
-                image: Placeholder()),
+              amount: 3,
+              activityType: activityTypes[1],
+              chosenUnit: Units.unitLess,
+            ),
             Activity(
-                amount: 3,
-                activityType: activityTypes[1],
-                chosenUnit: Units.unitLess,
-                image: Placeholder()),
+              amount: 3,
+              activityType: activityTypes[1],
+              chosenUnit: Units.unitLess,
+            ),
             Activity(
-                amount: 3,
-                activityType: activityTypes[1],
-                chosenUnit: Units.unitLess,
-                image: Placeholder()),
+              amount: 3,
+              activityType: activityTypes[1],
+              chosenUnit: Units.unitLess,
+            ),
             Activity(
-                amount: 20,
-                activityType: activityTypes[2],
-                chosenUnit: Units.minutes,
-                image: Placeholder()),
+              amount: 20,
+              activityType: activityTypes[2],
+              chosenUnit: Units.minutes,
+            ),
           ],
         ));
   }
@@ -134,11 +134,42 @@ class ShowTodayOverview extends StatelessWidget {
                 ),
                 DistributionBar(
                   activityTypeDistribution: activityTypeDistribution,
-                )
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                ShowActivityTypeColors(typeCounts: activityTypeCounter)
               ],
             )),
       ],
     );
+  }
+}
+
+class ShowActivityTypeColors extends StatelessWidget {
+  const ShowActivityTypeColors({super.key, required this.typeCounts});
+
+  final Map<ActivityType, int> typeCounts;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: List.generate(typeCounts.length, (index) {
+      final ActivityType currentType = typeCounts.keys.toList()[index];
+      final int currentAmount = typeCounts.values.toList()[index];
+      return Row(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: 20, maxWidth: 20,),
+            child: currentType.image
+          ),
+          Text(currentType.name),
+          Text(currentAmount.toString()),
+          Container(width: 10, height: 10,color: currentType.color,)
+        ],
+      );
+    }));
   }
 }
 
