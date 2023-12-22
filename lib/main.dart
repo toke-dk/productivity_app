@@ -135,7 +135,7 @@ class ShowTodayOverview extends StatelessWidget {
                 DistributionBar(
                   activityTypeDistribution: activityTypeDistribution,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 ShowActivityTypeColors(typeCounts: activityTypeCounter)
@@ -157,16 +157,39 @@ class ShowActivityTypeColors extends StatelessWidget {
         children: List.generate(typeCounts.length, (index) {
       final ActivityType currentType = typeCounts.keys.toList()[index];
       final int currentAmount = typeCounts.values.toList()[index];
-      return Row(
+      return Column(
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-                maxHeight: 20, maxWidth: 20,),
-            child: currentType.image
+          Row(
+            children: [
+              Container(
+                  constraints: const BoxConstraints(
+                    maxHeight: 20,
+                    maxWidth: 20,
+                  ),
+                  child: currentType.image),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(currentType.name),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 15,
+                    height: 8,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: currentType.color),
+                  ),
+                  Text(currentAmount.toString()),
+                ],
+              )
+            ],
           ),
-          Text(currentType.name),
-          Text(currentAmount.toString()),
-          Container(width: 10, height: 10,color: currentType.color,)
+          const SizedBox(
+            height: 10,
+          )
         ],
       );
     }));
