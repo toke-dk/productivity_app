@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:productivity_app/pages/choose_activity.dart';
+import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 
 class AddActivitiesFAB extends StatelessWidget {
   const AddActivitiesFAB({super.key});
