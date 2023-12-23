@@ -29,7 +29,8 @@ class ChooseActivityScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: Text("Seneste"),
                   ),
                   GridView.count(
@@ -41,7 +42,8 @@ class ChooseActivityScreen extends StatelessWidget {
                     children: List.generate(3, (index) => ActivityCard()),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: Text("Alle"),
                   ),
                   GridView.count(
