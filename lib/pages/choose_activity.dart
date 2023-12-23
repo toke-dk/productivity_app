@@ -11,40 +11,52 @@ class ChooseActivityScreen extends StatelessWidget {
     double space = 10;
     int amount = 5;
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              height: 30,
-              child: Placeholder(),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Text("Seneste"),
-                ),
-                Container(
-                    color: Colors.red,
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      padding: EdgeInsets.all(10),
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: List.generate(3, (index) => ActivityCard()),
-                    ))
-              ],
-            )
-          ],
+      appBar: AppBar(
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          height: 30,
+          child: Placeholder(),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Text("Seneste"),
+                  ),
+                  GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    padding: EdgeInsets.all(10),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: List.generate(3, (index) => ActivityCard()),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Text("Alle"),
+                  ),
+                  GridView.count(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    padding: EdgeInsets.all(10),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: List.generate(15, (index) => ActivityCard()),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
