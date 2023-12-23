@@ -1,19 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-final List<ActivityType> activityTypes = [
+final List<ActivityType> kActivityTypes = [
   ActivityType(
       name: "Cykling",
       possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
-      image: Placeholder()),
+      image: Icon(Icons.directions_bike_outlined)),
   ActivityType(
       name: "Armhævning",
       possibleUnits: [Units.unitLess],
-      image: Placeholder()),
+      image: Icon(Icons.fitness_center)),
   ActivityType(
       name: "Læsning",
       possibleUnits: [Units.minutes, Units.hours],
-      image: Placeholder())
+      image: Icon(Icons.chrome_reader_mode_outlined)),
+  ActivityType(name: "Dummy", possibleUnits: [Units.unitLess], image: Placeholder())
 ];
 
 class Activity {

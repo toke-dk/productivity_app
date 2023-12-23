@@ -16,37 +16,37 @@ class MyHomePage extends StatelessWidget {
     final activitiesPlaceHolder = [
       Activity(
         amount: 5,
-        activityType: activityTypes[0],
+        activityType: kActivityTypes[0],
         chosenUnit: Units.kilometer,
       ),
       Activity(
         amount: 10,
-        activityType: activityTypes[0],
+        activityType: kActivityTypes[0],
         chosenUnit: Units.kilometer,
       ),
       Activity(
         amount: 15,
-        activityType: activityTypes[1],
+        activityType: kActivityTypes[1],
         chosenUnit: Units.unitLess,
       ),
       Activity(
         amount: 3,
-        activityType: activityTypes[1],
+        activityType: kActivityTypes[1],
         chosenUnit: Units.unitLess,
       ),
       Activity(
         amount: 3,
-        activityType: activityTypes[1],
+        activityType: kActivityTypes[1],
         chosenUnit: Units.unitLess,
       ),
       Activity(
         amount: 3,
-        activityType: activityTypes[1],
+        activityType: kActivityTypes[1],
         chosenUnit: Units.unitLess,
       ),
       Activity(
         amount: 20,
-        activityType: activityTypes[2],
+        activityType: kActivityTypes[2],
         chosenUnit: Units.minutes,
       ),
     ];
