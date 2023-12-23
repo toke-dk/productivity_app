@@ -12,10 +12,17 @@ class ChooseActivityScreen extends StatelessWidget {
     int amount = 5;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          height: 30,
-          child: Placeholder(),
+          child: TextField(
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 10),
+              prefixIcon: IconButton(icon: Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context),),
+              isDense: true,
+              border: OutlineInputBorder(),
+              hintText: "Søg efter aktivitet"
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
