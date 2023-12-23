@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
 
@@ -12,7 +13,7 @@ class ChooseActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ActivityType> allActivityTypes = kActivityTypes;
-    
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -43,7 +44,13 @@ class ChooseActivityScreen extends StatelessWidget {
                         2,
                         (index) => ActivityCard(
                               activityType: allActivityTypes[index],
-                              onTap: (ActivityType activityType) {},
+                              onTap: (ActivityType activityType) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddActivityAmount(
+                                            activityType: activityType)));
+                              },
                             )),
                   ),
                   const SizedBox(
@@ -65,7 +72,14 @@ class ChooseActivityScreen extends StatelessWidget {
                         allActivityTypes.length,
                         (index) => ActivityCard(
                               activityType: allActivityTypes[index],
-                              onTap: (ActivityType activityType) {},
+                              onTap: (ActivityType activityType) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddActivityAmount(
+                                            activityType: activityType)));
+
+                              },
                             )),
                   ),
                 ],

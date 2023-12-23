@@ -12,7 +12,7 @@ class ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap,
+      onTap: () => onTap(activityType),
       splashColor: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
