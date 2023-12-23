@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
-import 'package:productivity_app/pages/home.dart';
+import 'package:productivity_app/pages/home/home.dart';
 
 void main() {
   runApp(const MyApp());

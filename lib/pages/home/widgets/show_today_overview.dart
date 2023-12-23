@@ -1,96 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:productivity_app/pages/new_activity.dart';
-
-import '../models/activity.dart';
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final activitiesPlaceHolder = [
-      Activity(
-        amount: 5,
-        activityType: activityTypes[0],
-        chosenUnit: Units.kilometer,
-      ),
-      Activity(
-        amount: 10,
-        activityType: activityTypes[0],
-        chosenUnit: Units.kilometer,
-      ),
-      Activity(
-        amount: 15,
-        activityType: activityTypes[1],
-        chosenUnit: Units.unitLess,
-      ),
-      Activity(
-        amount: 3,
-        activityType: activityTypes[1],
-        chosenUnit: Units.unitLess,
-      ),
-      Activity(
-        amount: 3,
-        activityType: activityTypes[1],
-        chosenUnit: Units.unitLess,
-      ),
-      Activity(
-        amount: 3,
-        activityType: activityTypes[1],
-        chosenUnit: Units.unitLess,
-      ),
-      Activity(
-        amount: 20,
-        activityType: activityTypes[2],
-        chosenUnit: Units.minutes,
-      ),
-    ];
-
-    return Scaffold(
-        floatingActionButton: SpeedDial(
-          icon: Icons.add,
-          activeIcon: Icons.close,
-          spaceBetweenChildren: 10,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          children: [
-            SpeedDialChild(
-              shape: const CircleBorder(),
-              elevation: 0,
-              labelWidget: const Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Text("Opgave"),
-              ),
-              child: const Icon(Icons.task_alt),
-            ),
-            SpeedDialChild(
-              shape: const CircleBorder(),
-              elevation: 0,
-              labelWidget: const Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Text("Aktivitet"),
-              ),
-              child: const Icon(Icons.task),
-            ),
-          ],
-        ),
-        appBar: AppBar(
-          title: Text(title),
-          actions: [
-            IconButton(
-                onPressed: () {}, icon: const Icon(Icons.bar_chart_rounded))
-          ],
-        ),
-        body: ShowTodayOverview(
-          activities: activitiesPlaceHolder,
-        ));
-  }
-}
-
-
+import '../../../models/activity.dart';
 
 class ShowTodayOverview extends StatelessWidget {
   ShowTodayOverview({super.key, required this.activities});
@@ -139,17 +48,17 @@ class ShowTodayOverview extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14)),
             child: Column(
               children: [
-                const QuickStatsText(),
+                const _QuickStatsText(),
                 const SizedBox(
                   height: 20,
                 ),
-                DistributionBar(
+                _DistributionBar(
                   activityTypeDistribution: activityTypeDistribution,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                ShowActivityTypeColors(typeCounts: activityTypeCounter)
+                _ShowActivityTypeColors(typeCounts: activityTypeCounter)
               ],
             )),
       ],
@@ -157,8 +66,8 @@ class ShowTodayOverview extends StatelessWidget {
   }
 }
 
-class ShowActivityTypeColors extends StatelessWidget {
-  const ShowActivityTypeColors({super.key, required this.typeCounts});
+class _ShowActivityTypeColors extends StatelessWidget {
+  const _ShowActivityTypeColors({super.key, required this.typeCounts});
 
   final Map<ActivityType, int> typeCounts;
 
@@ -207,8 +116,8 @@ class ShowActivityTypeColors extends StatelessWidget {
   }
 }
 
-class QuickStatsText extends StatelessWidget {
-  const QuickStatsText({super.key});
+class _QuickStatsText extends StatelessWidget {
+  const _QuickStatsText({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -255,8 +164,8 @@ class QuickStatsText extends StatelessWidget {
   }
 }
 
-class DistributionBar extends StatelessWidget {
-  const DistributionBar({super.key, required this.activityTypeDistribution});
+class _DistributionBar extends StatelessWidget {
+  const _DistributionBar({super.key, required this.activityTypeDistribution});
 
   final Map<ActivityType, double> activityTypeDistribution;
 
