@@ -19,12 +19,14 @@ final List<ActivityType> activityTypes = [
 class Activity {
   int amount;
   ActivityType activityType;
-  Units chosenUnit;
+  bool? isTask;
+  Units? chosenUnit;
 
   Activity({
     required this.amount,
     required this.activityType,
     required this.chosenUnit,
+    this.isTask,
   });
 }
 
