@@ -12,9 +12,7 @@ class ChooseActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ActivityType> allActivityTypes = kActivityTypes;
-
-    const double space = 10;
-    const int amount = 5;
+    
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
