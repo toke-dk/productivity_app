@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
 
-class AddActivityAmount extends StatelessWidget {
+class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount({super.key, required this.activityType});
 
   final ActivityType activityType;
 
   @override
+  State<AddActivityAmount> createState() => _AddActivityAmountState();
+}
+
+class _AddActivityAmountState extends State<AddActivityAmount> {
+  String? typedString;
+
+  @override
   Widget build(BuildContext context) {
-    int? typedNumber;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,13 +33,13 @@ class AddActivityAmount extends StatelessWidget {
                 child: ClipOval(
                     child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: activityType.image,
+                  child: widget.activityType.image,
                 )),
               ),
               const SizedBox(
                 width: 8,
               ),
-              Text(activityType.name)
+              Text(widget.activityType.name)
             ],
           ),
           const Spacer(
@@ -43,15 +49,13 @@ class AddActivityAmount extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                activityType.possibleUnits[0].name,
+                widget.activityType.possibleUnits[0].name,
                 style: const TextStyle(color: Colors.transparent),
               ),
-              typedNumber != null
-                  ? Text(
-                      typedNumber.toString(),
-                      style: const TextStyle(fontSize: 40),
-                    )
-                  : const SizedBox(),
+              Text(
+                typedString.toString(),
+                style: const TextStyle(fontSize: 40),
+              ),
               Container(
                 height: 40,
                 width: 3,
@@ -60,7 +64,7 @@ class AddActivityAmount extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-              Text(activityType.possibleUnits[0].name)
+              Text(widget.activityType.possibleUnits[0].name)
             ],
           ),
           const Spacer(
@@ -72,7 +76,6 @@ class AddActivityAmount extends StatelessWidget {
             shrinkWrap: true,
             crossAxisCount: 3,
             children: List.generate(12, (index) {
-
               Widget currentChild;
               String currentString = index.toString();
 
@@ -82,18 +85,26 @@ class AddActivityAmount extends StatelessWidget {
                 currentString = "0";
               }
 
-              currentChild = index != 11 ? Text(currentString) : MaterialButton(
-                onPressed: () {},
-                color: Theme.of(context).primaryColor,
-                child: Text(
-                  "Næste",
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              );
+              currentChild = index != 11
+                  ? Text(currentString)
+                  : MaterialButton(
+                      onPressed: () {},
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        "Næste",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                    );
 
               return InkWell(
-                onTap: index != 11 ? () {} : null,
+                onTap: index != 11
+                    ? () {
+                        setState(() {
+                          typedString = "$typedString$currentString";
+                        });
+                      }
+                    : null,
                 child:
                     Container(alignment: Alignment.center, child: currentChild),
               );
