@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:productivity_app/pages/new_activity.dart';
 
 import '../models/activity.dart';
@@ -48,13 +50,36 @@ class MyHomePage extends StatelessWidget {
       ),
     ];
 
+    final _key = GlobalKey<ExpandableFabState>();
+
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => NewActivityPage()));
-          },
-          child: Icon(Icons.add),
+        floatingActionButton: SpeedDial(
+          icon: Icons.add,
+          activeIcon: Icons.close,
+          spaceBetweenChildren: 10,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          children: [
+            SpeedDialChild(
+              shape: CircleBorder(),
+              elevation: 0,
+              labelWidget: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Text("Opgave tilføj"),
+              ),
+              child: Icon(Icons.task_alt),
+
+            ),
+            SpeedDialChild(
+              shape: CircleBorder(),
+              elevation: 0,
+              labelWidget: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Text("Aktivitet tilføj"),
+              ),
+              child: Icon(Icons.task),
+
+            ),
+          ],
         ),
         appBar: AppBar(
           title: Text(title),
