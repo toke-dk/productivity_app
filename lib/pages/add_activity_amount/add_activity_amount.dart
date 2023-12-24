@@ -13,6 +13,26 @@ class AddActivityAmount extends StatefulWidget {
 class _AddActivityAmountState extends State<AddActivityAmount> {
   String typedString = "";
 
+  bool isStringAComma(String val) {
+    return val == ",";
+  }
+
+  bool doesStringContainComma(String val) {
+    return val.contains(",");
+  }
+
+  bool isStringAZero(String val) {
+    return val == "0";
+  }
+
+  bool isCommaInThisPosition(String val, int position) {
+    return val.split("").reversed.join("").indexOf(",") == position;
+  }
+
+  bool isStringThisLength(String val, int length) {
+    return val.length == length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,18 +144,14 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
               return InkWell(
                 onTap: index != 11
                     ? () {
-                        if (!((currentString == "," &&
-                                typedString.contains(",")) ||
-                            (currentString == "0" && typedString == "0") ||
-                            (typedString
-                                    .split("")
-                                    .reversed
-                                    .join("")
-                                    .indexOf(",") ==
-                                2) ||
-                            (currentString != "," &&
-                                !typedString.contains(",") &&
-                                typedString.length == 3))) {
+                        if (!((isStringAComma(currentString) &&
+                                doesStringContainComma(typedString)) ||
+                            (isStringAZero(currentString) &&
+                                isStringAZero(typedString)) ||
+                            (isCommaInThisPosition(typedString, 2)) ||
+                            (!isStringAComma(currentString) &&
+                                !doesStringContainComma(typedString) &&
+                                isStringThisLength(typedString, 3)))) {
                           setState(() {
                             if (currentString == "," && typedString == "") {
                               typedString = "0,";
