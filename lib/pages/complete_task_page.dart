@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
@@ -14,6 +17,24 @@ class CompleteTaskPage extends StatefulWidget {
 class _CompleteTaskPageState extends State<CompleteTaskPage> {
   bool _isToggled = false;
 
+  final controller = ConfettiController();
+
+  @override
+  void initState() {
+    controller.addListener(() {
+      setState(() {
+        _isToggled = controller.state == ConfettiControllerState.playing;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,11 +46,19 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Stack(
+              alignment: Alignment.center,
               children: [
                 IconButton(
-                  onPressed: () => setState(() {
-                    _isToggled = !_isToggled;
-                  }),
+                  onPressed: () async {
+                    setState(() {
+                      _isToggled = !_isToggled;
+                    });
+                    await Future.delayed(const Duration(milliseconds: 400));
+                    controller.play();
+                    await Future.delayed(const Duration(seconds: 3));
+                    controller.stop();
+                    setState(() {});
+                  },
                   icon: const Icon(
                     Icons.check_circle_outlined,
                     size: 200,
@@ -62,6 +91,13 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     )
                     .then(delay: 50.ms)
                     .scaleXY(end: 1 / 1.1, duration: 100.ms),
+                ConfettiWidget(
+                  confettiController: controller,
+                  shouldLoop: true,
+                  blastDirectionality: BlastDirectionality.explosive,
+                  emissionFrequency: 0,
+                  numberOfParticles: 10,
+                ),
               ],
             ),
             const SizedBox(
