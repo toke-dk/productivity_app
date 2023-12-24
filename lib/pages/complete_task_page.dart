@@ -56,10 +56,10 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     .then(delay: 400.ms)
                     .scaleXY(
                       begin: 0,
-                      end: 1,
+                      end: 1.1,
                       duration: 100.ms,
                       curve: Curves.easeInOutCubic,
-                    ).then(delay: 50.ms).scaleXY(end: 0.9,),
+                    ).then(delay: 50.ms).scaleXY(end: 1/1.1,duration: 100.ms),
               ],
             ),
             SizedBox(
