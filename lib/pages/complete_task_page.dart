@@ -18,7 +18,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tilføj aktivitet"),
+        title: const Text("Tilføj aktivitet"),
       ),
       body: Center(
         child: Column(
@@ -30,7 +30,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                   onPressed: () => setState(() {
                     _isToggled = !_isToggled;
                   }),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.check_circle_outlined,
                     size: 200,
                   ),
@@ -47,7 +47,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                   onPressed: () => setState(() {
                     _isToggled = !_isToggled;
                   }),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.thumb_up,
                     size: 200,
                   ),
@@ -59,17 +59,19 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                       end: 1.1,
                       duration: 100.ms,
                       curve: Curves.easeInOutCubic,
-                    ).then(delay: 50.ms).scaleXY(end: 1/1.1,duration: 100.ms),
+                    )
+                    .then(delay: 50.ms)
+                    .scaleXY(end: 1 / 1.1, duration: 100.ms),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Icon(Icons.arrow_downward)
+            const Icon(Icons.arrow_downward)
                 .animate(
                     onPlay: (controller) => controller.repeat(reverse: true))
-                .moveY(end: 2, delay: 1.seconds),
-            SizedBox(
+                .moveY(end: 10, delay: 1.seconds),
+            const SizedBox(
               height: 30,
             ),
             Row(
@@ -83,7 +85,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     child: widget.activityType.image,
                   )),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Text(widget.activityType.name)
