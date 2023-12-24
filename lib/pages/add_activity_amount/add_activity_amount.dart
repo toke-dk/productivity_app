@@ -144,8 +144,10 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                     );
 
               return InkWell(
+                // the "næste" button can not be pressed
                 onTap: index != 11
                     ? () {
+                        // critera for the board
                         if (!((isStringAComma(currentString) &&
                                 doesStringContainComma(typedString)) ||
                             (isStringAZero(currentString) &&
