@@ -113,10 +113,20 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
               return InkWell(
                 onTap: index != 11
                     ? () {
+                        print(typedString.split("").reversed.join(""));
                         setState(() {
                           if ((currentString == "," &&
                                   typedString.contains(",")) ||
                               (currentString == "0" && typedString == "0")) {
+                          } else if ((typedString
+                                      .split("")
+                                      .reversed
+                                      .join("")
+                                      .indexOf(",") ==
+                                  2) ||
+                              (currentString != "," &&
+                                  !typedString.contains(",") &&
+                                  typedString.length == 3)) {
                           } else if (currentString == "," &&
                               typedString == "") {
                             typedString = "0,";
