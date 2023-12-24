@@ -47,7 +47,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(),
+              const SizedBox(),
               Row(
                 children: [
                   Text(
@@ -84,7 +84,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                         }
                       },
                       icon: const Icon(Icons.arrow_back))
-                  : IconButton(
+                  : const IconButton(
                       disabledColor: Colors.transparent,
                       onPressed: null,
                       icon: Icon(Icons.arrow_back),
