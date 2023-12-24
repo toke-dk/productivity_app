@@ -114,10 +114,18 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                 onTap: index != 11
                     ? () {
                         setState(() {
-                          if (typedString == "" && currentString == ",") {
+                          if ((currentString == "," &&
+                                  typedString.contains(",")) ||
+                              (currentString == "0" && typedString == "0")) {
+                          } else if (currentString == "," &&
+                              typedString == "") {
                             typedString = "0,";
                           } else {
-                            typedString = "$typedString$currentString";
+                            if (typedString == "0" && currentString != ",") {
+                              typedString = currentString;
+                            } else {
+                              typedString = "$typedString$currentString";
+                            }
                           }
                         });
                       }
