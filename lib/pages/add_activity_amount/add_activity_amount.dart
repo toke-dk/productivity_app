@@ -45,39 +45,50 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
             flex: 1,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                widget.activityType.possibleUnits[0].name,
-                style: const TextStyle(color: Colors.transparent),
+              SizedBox(),
+              Row(
+                children: [
+                  Text(
+                    widget.activityType.possibleUnits[0].name,
+                    style: const TextStyle(color: Colors.transparent),
+                  ),
+                  typedString != ""
+                      ? Text(
+                          typedString.toString(),
+                          style: const TextStyle(fontSize: 40),
+                        )
+                      : const SizedBox(),
+                  Container(
+                    height: 40,
+                    width: 3,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  widget.activityType.possibleUnits[0] != Units.unitLess
+                      ? Text(widget.activityType.possibleUnits[0].name)
+                      : const SizedBox(),
+                ],
               ),
               typedString != ""
-                  ? Text(
-                      typedString.toString(),
-                      style: const TextStyle(fontSize: 40),
+                  ? IconButton(
+                      onPressed: () {
+                        if (typedString != "") {
+                          setState(() {
+                            typedString = typedString.substring(
+                                0, typedString.length - 1);
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.arrow_back))
+                  : IconButton(
+                      disabledColor: Colors.transparent,
+                      onPressed: null,
+                      icon: Icon(Icons.arrow_back),
                     )
-                  : const SizedBox(),
-              Container(
-                height: 40,
-                width: 3,
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              widget.activityType.possibleUnits[0] != Units.unitLess
-                  ? Text(widget.activityType.possibleUnits[0].name)
-                  : const SizedBox(),
-              IconButton(
-                  onPressed: () {
-                    if (typedString != "") {
-                      setState(() {
-                        typedString =
-                            typedString.substring(0, typedString.length - 1);
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.arrow_back))
             ],
           ),
           const Spacer(
