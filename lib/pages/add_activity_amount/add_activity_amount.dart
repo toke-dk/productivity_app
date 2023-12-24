@@ -33,6 +33,10 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
     return val.length == length;
   }
 
+  bool isStringEmpty(String val) {
+    return val == "";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,10 +157,11 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                                 !doesStringContainComma(typedString) &&
                                 isStringThisLength(typedString, 3)))) {
                           setState(() {
-                            if (currentString == "," && typedString == "") {
+                            if (isStringAComma(currentString) &&
+                                isStringEmpty(typedString)) {
                               typedString = "0,";
-                            } else if (typedString == "0" &&
-                                currentString != ",") {
+                            } else if (isStringAZero(typedString) &&
+                                !isStringAComma(currentString)) {
                               typedString = currentString;
                             } else {
                               typedString = "$typedString$currentString";
