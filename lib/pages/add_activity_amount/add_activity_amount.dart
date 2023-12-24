@@ -78,7 +78,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                     widget.activityType.possibleUnits[0].name,
                     style: const TextStyle(color: Colors.transparent),
                   ),
-                  typedString != ""
+                  !isStringEmpty(typedString)
                       ? Text(
                           typedString.toString(),
                           style: const TextStyle(fontSize: 40),
@@ -97,15 +97,13 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                       : const SizedBox(),
                 ],
               ),
-              typedString != ""
+              !isStringEmpty(typedString)
                   ? IconButton(
                       onPressed: () {
-                        if (typedString != "") {
-                          setState(() {
-                            typedString = typedString.substring(
-                                0, typedString.length - 1);
-                          });
-                        }
+                        setState(() {
+                          typedString =
+                              typedString.substring(0, typedString.length - 1);
+                        });
                       },
                       icon: const Icon(Icons.arrow_back))
                   : const IconButton(
