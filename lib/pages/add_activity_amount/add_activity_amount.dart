@@ -124,31 +124,30 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
               return InkWell(
                 onTap: index != 11
                     ? () {
-                        print(typedString.split("").reversed.join(""));
-                        setState(() {
-                          if ((currentString == "," &&
-                                  typedString.contains(",")) ||
-                              (currentString == "0" && typedString == "0")) {
-                          } else if ((typedString
-                                      .split("")
-                                      .reversed
-                                      .join("")
-                                      .indexOf(",") ==
-                                  2) ||
-                              (currentString != "," &&
-                                  !typedString.contains(",") &&
-                                  typedString.length == 3)) {
-                          } else if (currentString == "," &&
-                              typedString == "") {
-                            typedString = "0,";
-                          } else {
-                            if (typedString == "0" && currentString != ",") {
+                        if (!((currentString == "," &&
+                                typedString.contains(",")) ||
+                            (currentString == "0" && typedString == "0") ||
+                            (typedString
+                                    .split("")
+                                    .reversed
+                                    .join("")
+                                    .indexOf(",") ==
+                                2) ||
+                            (currentString != "," &&
+                                !typedString.contains(",") &&
+                                typedString.length == 3))) {
+                          setState(() {
+                            if (currentString == "," && typedString == "") {
+                              typedString = "0,";
+                            } else if (typedString == "0" &&
+                                currentString != ",") {
                               typedString = currentString;
                             } else {
                               typedString = "$typedString$currentString";
                             }
-                          }
-                        });
+                          });
+                        }
+                        ;
                       }
                     : null,
                 child:
