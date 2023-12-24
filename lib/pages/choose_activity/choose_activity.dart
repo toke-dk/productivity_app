@@ -3,6 +3,7 @@ import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
+import 'package:productivity_app/pages/complete_task_page.dart';
 
 class ChooseActivityScreen extends StatelessWidget {
   const ChooseActivityScreen({super.key, required this.isTask});
@@ -48,7 +49,7 @@ class ChooseActivityScreen extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => AddActivityAmount(
+                                        builder: (context) => isTask ? CompleteTaskPage(activityType: activityType,) : AddActivityAmount(
                                             activityType: activityType)));
                               },
                             )),
@@ -76,7 +77,7 @@ class ChooseActivityScreen extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => AddActivityAmount(
+                                        builder: (context) => isTask ? CompleteTaskPage(activityType: activityType,) :AddActivityAmount(
                                             activityType: activityType)));
 
                               },
