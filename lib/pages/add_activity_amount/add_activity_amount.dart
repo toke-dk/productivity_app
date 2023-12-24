@@ -11,11 +11,10 @@ class AddActivityAmount extends StatefulWidget {
 }
 
 class _AddActivityAmountState extends State<AddActivityAmount> {
-  String? typedString;
+  String typedString = "";
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tilføj aktivitet"),
@@ -52,10 +51,12 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                 widget.activityType.possibleUnits[0].name,
                 style: const TextStyle(color: Colors.transparent),
               ),
-              Text(
-                typedString.toString(),
-                style: const TextStyle(fontSize: 40),
-              ),
+              typedString != ""
+                  ? Text(
+                      typedString.toString(),
+                      style: const TextStyle(fontSize: 40),
+                    )
+                  : const SizedBox(),
               Container(
                 height: 40,
                 width: 3,
@@ -64,7 +65,19 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
               const SizedBox(
                 width: 5,
               ),
-              Text(widget.activityType.possibleUnits[0].name)
+              widget.activityType.possibleUnits[0] != Units.unitLess
+                  ? Text(widget.activityType.possibleUnits[0].name)
+                  : const SizedBox(),
+              IconButton(
+                  onPressed: () {
+                    if (typedString != "") {
+                      setState(() {
+                        typedString =
+                            typedString.substring(0, typedString.length - 1);
+                      });
+                    }
+                  },
+                  icon: const Icon(Icons.arrow_back))
             ],
           ),
           const Spacer(
