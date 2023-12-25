@@ -11,94 +11,89 @@ class ActivityReceipt extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            SafeArea(
-              child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back)),
-            ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 40),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                width: 200,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          offset: const Offset(5, 5),
-                          blurRadius: 11),
-                    ],
-                    color: Colors.grey[100],
-                    borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(20))),
-                child: SafeArea(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 10),
+                    width: 200,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: const Offset(5, 5),
+                              blurRadius: 11),
+                        ],
+                        color: Colors.grey[100],
+                        borderRadius: const BorderRadius.vertical(
+                            bottom: Radius.circular(20))),
+                    child: SafeArea(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircleAvatar(
-                            radius: 20,
-                            child: ClipOval(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: activityType.image,
-                            )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                child: ClipOval(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: activityType.image,
+                                )),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(activityType.name)
+                            ],
                           ),
                           const SizedBox(
-                            width: 10,
+                            height: 20,
                           ),
-                          Text(activityType.name)
+                          Text(
+                            "Fuldført",
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Icon(
+                            Icons.check_circle_outline_rounded,
+                            size: 100,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Af",
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Navn",
+                          )
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Fuldført",
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Icon(
-                        Icons.check_circle_outline_rounded,
-                        size: 100,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Af",
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Navn",
-                      )
-                    ],
-                  ),
+                    ),
+                  )
+                      .animate(target: 1)
+                      .moveY(
+                          begin: -400,
+                          duration: 1.5.seconds,
+                          curve: Curves.easeOutExpo)
+                      .then(),
                 ),
-              )
-                  .animate(target: 1)
-                  .moveY(
-                      begin: -400,
-                      duration: 1.5.seconds,
-                      curve: Curves.easeOutExpo)
-                  .then(),
+              ],
             ),
-            const IconButton(
-                onPressed: null,
-                disabledColor: Colors.transparent,
-                icon: Icon(Icons.arrow_back))
           ],
         ),
       ),
