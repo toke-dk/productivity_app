@@ -46,7 +46,7 @@ class ChooseActivityScreen extends StatelessWidget {
                         (index) => ActivityCard(
                               activityType: allActivityTypes[index],
                               onTap: (ActivityType activityType) {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => isTask ? CompleteTaskPage(activityType: activityType,) : AddActivityAmount(
@@ -74,7 +74,7 @@ class ChooseActivityScreen extends StatelessWidget {
                         (index) => ActivityCard(
                               activityType: allActivityTypes[index],
                               onTap: (ActivityType activityType) {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => isTask ? CompleteTaskPage(activityType: activityType,) :AddActivityAmount(

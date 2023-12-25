@@ -60,9 +60,9 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     controller.play();
                     await Future.delayed(const Duration(milliseconds: 50));
                     controller.stop();
-                    await Future.delayed(const Duration(seconds: 2));
+                    await Future.delayed(const Duration(seconds: 1));
                     if (context.mounted) {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => ActivityReceipt(

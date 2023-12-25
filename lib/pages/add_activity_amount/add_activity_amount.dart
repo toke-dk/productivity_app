@@ -43,7 +43,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              
+
               /// Invisible icon so the space is even
               const IconButton(
                 disabledColor: Colors.transparent,
