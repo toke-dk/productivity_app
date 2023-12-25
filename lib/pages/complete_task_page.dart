@@ -66,7 +66,10 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ActivityReceipt(
-                                    activityType: widget.activityType,
+                                    activity: Activity(
+                                        activityType: widget.activityType,
+                                        chosenUnit: Units.unitLess,
+                                        isTask: true),
                                   )));
                     }
 

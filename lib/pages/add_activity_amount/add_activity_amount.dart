@@ -89,7 +89,15 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ActivityReceipt(
-                              activityType: widget.activityType)))
+                                activity: Activity(
+                                    amount: double.parse(
+                                        typedString.replaceAll(",", ".")),
+                                    activityType: widget.activityType,
+
+                                    //// TODO: Make this right
+                                    chosenUnit:
+                                        widget.activityType.possibleUnits[0]),
+                              )))
                   : null,
               changeTypedString: (String newString) {
                 setState(() {

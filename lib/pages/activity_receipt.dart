@@ -1,16 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class ActivityReceipt extends StatelessWidget {
-  const ActivityReceipt({super.key, required this.activityType});
+  const ActivityReceipt({super.key, required this.activity});
 
-  final ActivityType activityType;
+  final Activity activity;
 
   @override
   Widget build(BuildContext context) {
+    final finalTask = Column(
+      children: [
+        Text(
+          activity.isTask == true ? "Fuldført" : "Tid/Antal/Distance",
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        activity.isTask == true
+            ? const Icon(
+                Icons.check_circle_outline_rounded,
+                size: 100,
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    activity.activityType.possibleUnits[0].name,
+                    style: const TextStyle(color: Colors.transparent),
+                  ),
+                  Text(
+                    activity.amount.toString(),
+                    style: const TextStyle(fontSize: 40),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  activity.activityType.possibleUnits[0] != Units.unitLess
+                      ? Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child:
+                              Text(activity.activityType.possibleUnits[0].name))
+                      : const SizedBox(),
+                ],
+              ),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
+    );
+
     return Scaffold(
       body: Container(
         child: Column(
@@ -39,24 +83,12 @@ class ActivityReceipt extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          DisplayActivityType(activityType: activityType),
+                          DisplayActivityType(
+                              activityType: activity.activityType),
                           const SizedBox(
                             height: 20,
                           ),
-                          Text(
-                            "Fuldført",
-                            style: Theme.of(context).textTheme.headlineLarge,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Icon(
-                            Icons.check_circle_outline_rounded,
-                            size: 100,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          finalTask,
                           Text(
                             "Af",
                             style: Theme.of(context).textTheme.headlineLarge,
@@ -66,6 +98,18 @@ class ActivityReceipt extends StatelessWidget {
                           ),
                           const Text(
                             "Navn",
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Divider(
+                              height: 20,
+                            ),
+                          ),
+                          Text(DateFormat("dd-MM-yyyy")
+                              .format(DateTime.now())
+                              .toString()),
+                          SizedBox(
+                            height: 10,
                           )
                         ],
                       ),

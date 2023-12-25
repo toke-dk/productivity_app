@@ -18,13 +18,13 @@ final List<ActivityType> kActivityTypes = [
 ];
 
 class Activity {
-  int amount;
+  double? amount;
   ActivityType activityType;
   bool? isTask;
-  Units? chosenUnit;
+  Units chosenUnit;
 
   Activity({
-    required this.amount,
+    this.amount,
     required this.activityType,
     required this.chosenUnit,
     this.isTask,
