@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class ActivityReceipt extends StatelessWidget {
@@ -79,6 +80,17 @@ class ActivityReceipt extends StatelessWidget {
                 ),
               ],
             ),
+            Spacer(),
+            MyThemeButton(
+              onTap: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              trailingIcon: Icons.arrow_forward,
+              labelText: "Færdiggør",
+            ),
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),

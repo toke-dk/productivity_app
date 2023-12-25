@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/widgets/MyThemeButton.dart';
 
 class MyNumberBoard extends StatelessWidget {
   const MyNumberBoard(
@@ -56,15 +57,7 @@ class MyNumberBoard extends StatelessWidget {
 
           currentChild = index != 11
               ? Text(currentString, style: TextStyle(color: Colors.white),)
-              : MaterialButton(
-            onPressed: () {},
-            color: Theme.of(context).primaryColor,
-            child: Text(
-              "Næste",
-              style:
-              TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-          );
+              : MyThemeButton(onTap: (){},labelText: "Næste",);
 
           return InkWell(
             // the "næste" button can not be pressed
