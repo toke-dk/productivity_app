@@ -70,4 +70,17 @@ extension UnitsExtension on Units {
         return "Antal";
     }
   }
+
+  String get stringName {
+    switch (this) {
+      case Units.unitLess:
+        return "";
+      case Units.kilometer:
+        return "kilometer";
+      case Units.hours:
+        return "timer";
+      case Units.minutes:
+        return "minutter";
+    }
+  }
 }

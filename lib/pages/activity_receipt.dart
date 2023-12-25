@@ -15,7 +15,9 @@ class ActivityReceipt extends StatelessWidget {
     final finalTask = Column(
       children: [
         Text(
-          activity.isTask == true ? "Fuldført" : activity.chosenUnit.textForUnitMeasure,
+          activity.isTask == true
+              ? "Fuldført"
+              : activity.chosenUnit.textForUnitMeasure,
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(
@@ -31,7 +33,7 @@ class ActivityReceipt extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    activity.activityType.possibleUnits[0].name,
+                    activity.activityType.possibleUnits[0].stringName,
                     style: const TextStyle(color: Colors.transparent),
                   ),
                   Text(
@@ -44,8 +46,8 @@ class ActivityReceipt extends StatelessWidget {
                   activity.activityType.possibleUnits[0] != Units.unitLess
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
-                          child:
-                              Text(activity.activityType.possibleUnits[0].name))
+                          child: Text(activity
+                              .activityType.possibleUnits[0].stringName))
                       : const SizedBox(),
                 ],
               ),

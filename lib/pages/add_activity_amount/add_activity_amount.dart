@@ -43,11 +43,17 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(),
+              
+              /// Invisible icon so the space is even
+              const IconButton(
+                disabledColor: Colors.transparent,
+                onPressed: null,
+                icon: Icon(Icons.arrow_back),
+              ),
               Row(
                 children: [
                   Text(
-                    widget.activityType.possibleUnits[0].name,
+                    widget.activityType.possibleUnits[0].stringName,
                     style: const TextStyle(color: Colors.transparent),
                   ),
                   !isStringEmpty(typedString)
@@ -65,7 +71,10 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                     width: 5,
                   ),
                   widget.activityType.possibleUnits[0] != Units.unitLess
-                      ? Text(widget.activityType.possibleUnits[0].name)
+                      ? Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: Text(widget.activityType.possibleUnits[0].stringName),
+                      )
                       : const SizedBox(),
                 ],
               ),
