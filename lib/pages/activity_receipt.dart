@@ -15,7 +15,7 @@ class ActivityReceipt extends StatelessWidget {
     final finalTask = Column(
       children: [
         Text(
-          activity.isTask == true ? "Fuldført" : "Tid/Antal/Distance",
+          activity.isTask == true ? "Fuldført" : activity.chosenUnit.textForUnitMeasure,
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(

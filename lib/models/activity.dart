@@ -58,29 +58,16 @@ extension Activities on List<Activity> {
 enum Units { unitLess, kilometer, hours, minutes }
 
 extension UnitsExtension on Units {
-  bool get isDistance {
+  String get textForUnitMeasure {
     switch (this) {
       case Units.kilometer:
-        return true;
+        return "Distance";
       case Units.hours:
-        return false;
+        return "Tid";
       case Units.minutes:
-        return false;
+        return "Tid";
       case Units.unitLess:
-        return false;
-    }
-  }
-
-  bool get isDuration {
-    switch (this) {
-      case Units.kilometer:
-        return false;
-      case Units.hours:
-        return true;
-      case Units.minutes:
-        return true;
-      case Units.unitLess:
-        return false;
+        return "Antal";
     }
   }
 }

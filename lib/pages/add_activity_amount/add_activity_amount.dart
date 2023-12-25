@@ -35,6 +35,11 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           const Spacer(
             flex: 1,
           ),
+          Text(
+            widget.activityType.possibleUnits[0].textForUnitMeasure,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          SizedBox(height: 8,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -81,7 +86,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
             ],
           ),
           const Spacer(
-            flex: 1,
+            flex: 2,
           ),
           MyNumberBoard(
               onNextButtonPressed: !isStringEmpty(typedString)
