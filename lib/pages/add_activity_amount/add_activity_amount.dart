@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
@@ -83,6 +84,13 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
             flex: 1,
           ),
           MyNumberBoard(
+              onNextButtonPressed: !isStringEmpty(typedString)
+                  ? () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ActivityReceipt(
+                              activityType: widget.activityType)))
+                  : null,
               changeTypedString: (String newString) {
                 setState(() {
                   typedString = newString;

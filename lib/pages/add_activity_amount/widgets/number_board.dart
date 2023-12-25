@@ -3,10 +3,15 @@ import 'package:productivity_app/widgets/MyThemeButton.dart';
 
 class MyNumberBoard extends StatelessWidget {
   const MyNumberBoard(
-      {super.key, required this.changeTypedString, required this.typedString});
+      {super.key,
+      required this.changeTypedString,
+      required this.typedString,
+      this.onNextButtonPressed});
 
   final Function(String newString) changeTypedString;
   final String typedString;
+
+  final GestureTapCallback? onNextButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +42,8 @@ class MyNumberBoard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.black
-      ),
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.grey[100]),
       child: GridView.count(
         childAspectRatio: (2 / 1),
         padding: const EdgeInsets.all(8),
@@ -56,34 +60,40 @@ class MyNumberBoard extends StatelessWidget {
           }
 
           currentChild = index != 11
-              ? Text(currentString, style: TextStyle(color: Colors.white),)
-              : MyThemeButton(onTap: (){},labelText: "Næste",);
+              ? Text(
+                  currentString,
+                  style: TextStyle(color: Colors.black),
+                )
+              : MyThemeButton(
+                  onTap: onNextButtonPressed,
+                  labelText: "Næste",
+                );
 
           return InkWell(
             // the "næste" button can not be pressed
             onTap: index != 11
                 ? () {
-              // critera for the board
-              if (!((isStringAComma(currentString) &&
-                  doesStringContainComma(typedString)) ||
-                  (isStringAZero(currentString) &&
-                      isStringAZero(typedString)) ||
-                  (isCommaInThisPosition(typedString, 2)) ||
-                  (!isStringAComma(currentString) &&
-                      !doesStringContainComma(typedString) &&
-                      isStringThisLength(typedString, 3)))) {
-                if (isStringAComma(currentString) &&
-                    isStringEmpty(typedString)) {
-                  changeTypedString("0,");
-                } else if (isStringAZero(typedString) &&
-                    !isStringAComma(currentString)) {
-                  changeTypedString(currentString);
-                } else {
-                  changeTypedString("$typedString$currentString");
-                }
-              }
-              ;
-            }
+                    // critera for the board
+                    if (!((isStringAComma(currentString) &&
+                            doesStringContainComma(typedString)) ||
+                        (isStringAZero(currentString) &&
+                            isStringAZero(typedString)) ||
+                        (isCommaInThisPosition(typedString, 2)) ||
+                        (!isStringAComma(currentString) &&
+                            !doesStringContainComma(typedString) &&
+                            isStringThisLength(typedString, 3)))) {
+                      if (isStringAComma(currentString) &&
+                          isStringEmpty(typedString)) {
+                        changeTypedString("0,");
+                      } else if (isStringAZero(typedString) &&
+                          !isStringAComma(currentString)) {
+                        changeTypedString(currentString);
+                      } else {
+                        changeTypedString("$typedString$currentString");
+                      }
+                    }
+                    ;
+                  }
                 : null,
             child: Container(alignment: Alignment.center, child: currentChild),
           );
