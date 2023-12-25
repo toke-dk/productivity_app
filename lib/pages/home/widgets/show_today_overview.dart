@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/widgets/display_activity_type.dart';
 import '../../../models/activity.dart';
 
 class ShowTodayOverview extends StatelessWidget {
@@ -42,9 +43,9 @@ class ShowTodayOverview extends StatelessWidget {
       children: [
         Container(
             padding: const EdgeInsets.all(13),
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(14)),
             child: Column(
               children: [
@@ -81,16 +82,7 @@ class _ShowActivityTypeColors extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                  constraints: const BoxConstraints(
-                    maxHeight: 20,
-                    maxWidth: 20,
-                  ),
-                  child: currentType.image),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(currentType.name),
+              DisplayActivityType(activityType: currentType),
               const Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

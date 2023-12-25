@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
+import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount({super.key, required this.activityType});
@@ -29,23 +30,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 20,
-                child: ClipOval(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: widget.activityType.image,
-                )),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              Text(widget.activityType.name)
-            ],
-          ),
+          DisplayActivityType(activityType: widget.activityType),
           const Spacer(
             flex: 1,
           ),

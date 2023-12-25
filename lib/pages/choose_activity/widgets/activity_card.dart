@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/widgets/display_activity_type.dart';
 
 import '../../../models/activity.dart';
 
@@ -19,23 +20,7 @@ class ActivityCard extends StatelessWidget {
           color: Colors.grey[100],
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 20,
-              child: ClipOval(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: activityType.image,
-              )),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(activityType.name)
-          ],
-        ),
+        child: DisplayActivityType(activityType: activityType, axisDirection: Axis.vertical,)
       ),
     );
   }

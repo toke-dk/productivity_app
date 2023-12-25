@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class ActivityReceipt extends StatelessWidget {
   const ActivityReceipt({super.key, required this.activityType});
@@ -37,23 +38,7 @@ class ActivityReceipt extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                child: ClipOval(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: activityType.image,
-                                )),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(activityType.name)
-                            ],
-                          ),
+                          DisplayActivityType(activityType: activityType),
                           const SizedBox(
                             height: 20,
                           ),
