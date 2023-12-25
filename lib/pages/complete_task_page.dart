@@ -16,6 +16,7 @@ class CompleteTaskPage extends StatefulWidget {
 
 class _CompleteTaskPageState extends State<CompleteTaskPage> {
   bool _isToggled = false;
+  bool _showConfetti = false;
 
   final controller = ConfettiController();
 
@@ -23,7 +24,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
   void initState() {
     controller.addListener(() {
       setState(() {
-        _isToggled = controller.state == ConfettiControllerState.playing;
+        _showConfetti = controller.state == ConfettiControllerState.playing;
       });
     });
     super.initState();
@@ -52,15 +53,21 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                   onPressed: () async {
                     setState(() {
                       _isToggled = !_isToggled;
+                      _showConfetti = true;
                     });
-                    await Future.delayed(const Duration(milliseconds: 400));
+                    await Future.delayed(const Duration(milliseconds: 350));
                     controller.play();
-                    await Future.delayed(const Duration(seconds: 3));
+                    await Future.delayed(const Duration(milliseconds: 50));
                     controller.stop();
+                    await Future.delayed(const Duration(seconds: 2));
+                    if (context.mounted) {
+                      //// TODO navigate to page here
+                    }
+
                     setState(() {});
                   },
                   icon: const Icon(
-                    Icons.check_circle_outlined,
+                    Icons.check_circle_outline_rounded,
                     size: 200,
                   ),
                 )
@@ -77,7 +84,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     _isToggled = !_isToggled;
                   }),
                   icon: const Icon(
-                    Icons.thumb_up,
+                    Icons.thumb_up_alt_rounded,
                     size: 200,
                   ),
                 )
@@ -93,10 +100,14 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     .scaleXY(end: 1 / 1.1, duration: 100.ms),
                 ConfettiWidget(
                   confettiController: controller,
-                  shouldLoop: true,
+                  gravity: 0.01,
                   blastDirectionality: BlastDirectionality.explosive,
                   emissionFrequency: 0,
-                  numberOfParticles: 10,
+                  maxBlastForce: 10,
+                  minBlastForce: 9,
+                  maximumSize: Size(15, 15),
+                  minimumSize: Size(14, 14),
+                  numberOfParticles: 35,
                 ),
               ],
             ),
