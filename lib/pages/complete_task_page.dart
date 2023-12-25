@@ -4,6 +4,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/pages/activity_receipt.dart';
 
 class CompleteTaskPage extends StatefulWidget {
   const CompleteTaskPage({super.key, required this.activityType});
@@ -61,7 +62,12 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                     controller.stop();
                     await Future.delayed(const Duration(seconds: 2));
                     if (context.mounted) {
-                      //// TODO navigate to page here
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ActivityReceipt(
+                                    activityType: widget.activityType,
+                                  )));
                     }
 
                     setState(() {});
