@@ -43,7 +43,7 @@ class ActivityReceipt extends StatelessWidget {
                   ),
                   activity.activityType.possibleUnits[0] != Units.unitLess
                       ? Container(
-                          margin: EdgeInsets.only(bottom: 10),
+                          margin: const EdgeInsets.only(bottom: 10),
                           child:
                               Text(activity.activityType.possibleUnits[0].name))
                       : const SizedBox(),
@@ -99,8 +99,8 @@ class ActivityReceipt extends StatelessWidget {
                           const Text(
                             "Navn",
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
                             child: Divider(
                               height: 20,
                             ),
@@ -108,7 +108,7 @@ class ActivityReceipt extends StatelessWidget {
                           Text(DateFormat("dd-MM-yyyy")
                               .format(DateTime.now())
                               .toString()),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           )
                         ],
@@ -124,7 +124,7 @@ class ActivityReceipt extends StatelessWidget {
                 ),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             MyThemeButton(
               onTap: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
@@ -132,7 +132,7 @@ class ActivityReceipt extends StatelessWidget {
               trailingIcon: Icons.arrow_forward,
               labelText: "Færdiggør",
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             )
           ],
