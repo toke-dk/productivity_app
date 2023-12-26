@@ -6,6 +6,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/pages/activity_receipt.dart';
 
+import '../models/unit.dart';
+
 class CompleteTaskPage extends StatefulWidget {
   const CompleteTaskPage({super.key, required this.activityType});
 

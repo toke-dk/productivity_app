@@ -4,6 +4,8 @@ import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
+import '../../models/unit.dart';
+
 class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount({super.key, required this.activityType});
 

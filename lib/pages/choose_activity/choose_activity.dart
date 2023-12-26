@@ -4,6 +4,7 @@ import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.d
 import 'package:productivity_app/pages/choose_activity/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
 import 'package:productivity_app/pages/complete_task_page.dart';
+import 'package:provider/provider.dart';
 
 class ChooseActivityScreen extends StatelessWidget {
   const ChooseActivityScreen({super.key, required this.isTask});
@@ -13,7 +14,8 @@ class ChooseActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActivityType> allActivityTypes = kActivityTypes;
+    final List<ActivityType> allActivityTypes =
+        Provider.of<ActivityProvider>(context).getAllActivityTypes;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,8 +51,12 @@ class ChooseActivityScreen extends StatelessWidget {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => isTask ? CompleteTaskPage(activityType: activityType,) : AddActivityAmount(
-                                            activityType: activityType)));
+                                        builder: (context) => isTask
+                                            ? CompleteTaskPage(
+                                                activityType: activityType,
+                                              )
+                                            : AddActivityAmount(
+                                                activityType: activityType)));
                               },
                             )),
                   ),
@@ -77,9 +83,12 @@ class ChooseActivityScreen extends StatelessWidget {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => isTask ? CompleteTaskPage(activityType: activityType,) :AddActivityAmount(
-                                            activityType: activityType)));
-
+                                        builder: (context) => isTask
+                                            ? CompleteTaskPage(
+                                                activityType: activityType,
+                                              )
+                                            : AddActivityAmount(
+                                                activityType: activityType)));
                               },
                             )),
                   ),

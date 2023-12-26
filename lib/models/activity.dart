@@ -1,22 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-final List<ActivityType> kActivityTypes = [
-  ActivityType(
-      name: "Cykling",
-      possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
-      image: Icon(Icons.directions_bike_outlined)),
-  ActivityType(
-      name: "Armhævning",
-      possibleUnits: [Units.unitLess],
-      image: Icon(Icons.fitness_center)),
-  ActivityType(
-      name: "Læsning",
-      possibleUnits: [Units.minutes, Units.hours],
-      image: Icon(Icons.chrome_reader_mode_outlined)),
-  ActivityType(
-      name: "Dummy", possibleUnits: [Units.unitLess], image: Placeholder())
-];
+import 'package:productivity_app/models/unit.dart';
 
 class Activity {
   double? amount;
@@ -55,32 +41,53 @@ extension Activities on List<Activity> {
   }
 }
 
-enum Units { unitLess, kilometer, hours, minutes }
+/// Provider
+class ActivityProvider extends ChangeNotifier{
 
-extension UnitsExtension on Units {
-  String get textForUnitMeasure {
-    switch (this) {
-      case Units.kilometer:
-        return "Distance";
-      case Units.hours:
-        return "Tid";
-      case Units.minutes:
-        return "Tid";
-      case Units.unitLess:
-        return "Antal";
-    }
+  /// Activity types
+  final List<ActivityType> _allActivityTypes = [
+    ActivityType(
+        name: "Cykling",
+        possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
+        image: Icon(Icons.directions_bike_outlined)),
+    ActivityType(
+        name: "Armhævning",
+        possibleUnits: [Units.unitLess],
+        image: Icon(Icons.fitness_center)),
+    ActivityType(
+        name: "Læsning",
+        possibleUnits: [Units.minutes, Units.hours],
+        image: Icon(Icons.chrome_reader_mode_outlined)),
+    ActivityType(
+        name: "Dummy", possibleUnits: [Units.unitLess], image: Placeholder())
+  ];
+
+  List<ActivityType> get getAllActivityTypes => UnmodifiableListView(_allActivityTypes);
+
+  /// Activity
+  static ActivityType? _currentActivityType;
+  ActivityType? get getCurrentActivityType => _currentActivityType;
+
+  void setCurrentActivity(ActivityType newActivityType){
+    _currentActivityType = newActivityType;
+    notifyListeners();
   }
 
-  String get stringName {
-    switch (this) {
-      case Units.unitLess:
-        return "";
-      case Units.kilometer:
-        return "kilometer";
-      case Units.hours:
-        return "timer";
-      case Units.minutes:
-        return "minutter";
-    }
+  static double? _currentAmount;
+  double? get getAmount => _currentAmount;
+
+  void setCurrentAmount(double newAmount){
+    _currentAmount = newAmount;
+    notifyListeners();
   }
+
+  static Units? _currentUnit;
+  Units? get getCurrentUnit => _currentUnit;
+
+  void setCurrentUnit(Units newUnit){
+    _currentUnit = newUnit;
+    notifyListeners();
+  }
+
+
 }
