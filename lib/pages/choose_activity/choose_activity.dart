@@ -12,6 +12,22 @@ class ChooseActivityScreen extends StatelessWidget {
   final bool isTask;
   final double horizontalPadding = 15;
 
+  void setCurrentActivityType(ActivityType activityType, BuildContext context) {
+    Provider.of<ActivityProvider>(context, listen: false)
+        .setCurrentActivity(activityType);
+  }
+
+  Future onActivityTypeTap(
+      {required ActivityType activityType, required BuildContext context}) {
+    setCurrentActivityType(activityType, context);
+
+    return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                isTask ? const CompleteTaskPage() : const AddActivityAmount()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<ActivityType> allActivityTypes =
@@ -37,29 +53,11 @@ class ChooseActivityScreen extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: const Text("Anbefalet"),
                   ),
-                  GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    padding: const EdgeInsets.all(10),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: List.generate(
-                        2,
-                        (index) => ActivityCard(
-                              activityType: allActivityTypes[index],
-                              onTap: (ActivityType activityType) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => isTask
-                                            ? CompleteTaskPage(
-                                                activityType: activityType,
-                                              )
-                                            : AddActivityAmount(
-                                                activityType: activityType)));
-                              },
-                            )),
-                  ),
+                  ActivityTypesGridView(
+                      maxRows: 1,
+                      activityTypes: allActivityTypes,
+                      onTap: (ActivityType activityType) => onActivityTypeTap(
+                          activityType: activityType, context: context)),
                   const SizedBox(
                     height: 20,
                   ),
@@ -68,36 +66,53 @@ class ChooseActivityScreen extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: const Text("Alle"),
                   ),
-                  GridView.count(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    padding: const EdgeInsets.all(10),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: List.generate(
-                        allActivityTypes.length,
-                        (index) => ActivityCard(
-                              activityType: allActivityTypes[index],
-                              onTap: (ActivityType activityType) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => isTask
-                                            ? CompleteTaskPage(
-                                                activityType: activityType,
-                                              )
-                                            : AddActivityAmount(
-                                                activityType: activityType)));
-                              },
-                            )),
-                  ),
+                  ActivityTypesGridView(
+                      activityTypes: allActivityTypes,
+                      onTap: (ActivityType activityType) => onActivityTypeTap(
+                          activityType: activityType, context: context)),
                 ],
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class ActivityTypesGridView extends StatelessWidget {
+  const ActivityTypesGridView(
+      {super.key,
+      required this.activityTypes,
+      this.maxRows,
+      required this.onTap});
+
+  final List<ActivityType> activityTypes;
+  final int? maxRows;
+  final Function(ActivityType activityType) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    int crossCount = 3;
+    int listLength = activityTypes.length;
+    int amountOfGenerates =
+        maxRows == null || (listLength / crossCount).ceil() < maxRows!
+            ? listLength
+            : 3 * maxRows!;
+
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      padding: const EdgeInsets.all(10),
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      children: List.generate(
+          amountOfGenerates,
+          (index) => ActivityCard(
+                activityType: activityTypes[index],
+                onTap: (ActivityType activityType) =>
+                    onTap(activityTypes[index]),
+              )),
     );
   }
 }
