@@ -55,7 +55,8 @@ class DistributionBar extends StatelessWidget {
     Colors.orange,
     Colors.blue,
     Colors.purple,
-    Colors.indigo
+    Colors.indigo,
+    Colors.red,
   ];
 
   // makes the percentage list for the gradient
@@ -67,7 +68,7 @@ class DistributionBar extends StatelessWidget {
       if (i == 0) {
         percentageDuplicateList.addAll([currentPercent, currentPercent]);
       } else {
-        double previousPercent = percentageDuplicateList[i - 1];
+        double previousPercent = percentageDuplicateList.last;
         percentageDuplicateList.addAll([
           previousPercent + currentPercent,
           previousPercent + currentPercent
@@ -117,7 +118,6 @@ class DistributionBar extends StatelessWidget {
           activityTypeCounter.values.toList()[i] / activities.length;
     }
 
-    print("${activityTypeDistribution.keys.map((key) => "act. ${key.name}")}, amount: ${activityTypeDistribution.values.map((val) => "act. ${val}")}");
 
     return Column(
       children: [
