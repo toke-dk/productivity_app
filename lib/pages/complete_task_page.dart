@@ -12,7 +12,6 @@ import '../models/unit.dart';
 class CompleteTaskPage extends StatefulWidget {
   const CompleteTaskPage({super.key});
 
-
   @override
   State<CompleteTaskPage> createState() => _CompleteTaskPageState();
 }
@@ -41,9 +40,8 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ActivityType activityType = Provider
-        .of<ActivityProvider>(context)
-        .getCurrentActivityType!;
+    final ActivityType activityType =
+        Provider.of<ActivityProvider>(context).getCurrentActivityType!;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,8 +69,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  ActivityReceipt(
+                              builder: (context) => ActivityReceipt(
                                     activity: Activity(
                                         activityType: activityType,
                                         chosenUnit: Units.unitLess,
@@ -89,30 +86,24 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                 )
                     .animate(onPlay: (controller) => controller.repeat())
                     .shake(
-                    hz: 4,
-                    curve: Curves.easeInOutCubic,
-                    duration: 700.ms,
-                    delay: 1.seconds)
+                        hz: 4,
+                        curve: Curves.easeInOutCubic,
+                        duration: 700.ms,
+                        delay: 1.seconds)
                     .animate(target: _isToggled ? 1 : 0)
                     .scaleXY(end: 0, duration: 100.ms),
-                IconButton(
-                  onPressed: () =>
-                      setState(() {
-                        _isToggled = !_isToggled;
-                      }),
-                  icon: const Icon(
-                    Icons.thumb_up_alt_rounded,
-                    size: 200,
-                  ),
+                const Icon(
+                  Icons.thumb_up_alt_rounded,
+                  size: 200,
                 )
                     .animate(target: _isToggled ? 1 : 0)
                     .then(delay: 400.ms)
                     .scaleXY(
-                  begin: 0,
-                  end: 1.1,
-                  duration: 100.ms,
-                  curve: Curves.easeInOutCubic,
-                )
+                      begin: 0,
+                      end: 1.1,
+                      duration: 100.ms,
+                      curve: Curves.easeInOutCubic,
+                    )
                     .then(delay: 50.ms)
                     .scaleXY(end: 1 / 1.1, duration: 100.ms),
                 ConfettiWidget(
@@ -133,7 +124,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
             ),
             const Icon(Icons.arrow_downward)
                 .animate(
-                onPlay: (controller) => controller.repeat(reverse: true))
+                    onPlay: (controller) => controller.repeat(reverse: true))
                 .moveY(end: 10, delay: 1.seconds),
             const SizedBox(
               height: 30,
@@ -145,9 +136,9 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                   radius: 20,
                   child: ClipOval(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: activityType.image,
-                      )),
+                    padding: const EdgeInsets.all(8.0),
+                    child: activityType.image,
+                  )),
                 ),
                 const SizedBox(
                   width: 10,
