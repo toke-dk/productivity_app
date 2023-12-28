@@ -47,7 +47,7 @@ class ShowTodayOverview extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(14)),
-            child: Column(
+            child: activities.isNotEmpty ? Column(
               children: [
                 const _QuickStatsText(),
                 const SizedBox(
@@ -61,7 +61,10 @@ class ShowTodayOverview extends StatelessWidget {
                 ),
                 _ShowActivityTypeColors(typeCounts: activityTypeCounter)
               ],
-            )),
+            ): Center(child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text("Ingen aktiviteter i dag", style: Theme.of(context).textTheme.bodyLarge,),
+            ),)),
       ],
     );
   }

@@ -15,8 +15,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<ActivityType> allActivityTypes = Provider.of<ActivityProvider>(context).getAllActivityTypes;
+    final List<ActivityType> allActivityTypes =
+        Provider.of<ActivityProvider>(context).getAllActivityTypes;
 
     final activitiesPlaceHolder = [
       Activity(
@@ -56,6 +56,9 @@ class MyHomePage extends StatelessWidget {
       ),
     ];
 
+    final completedActivities =
+        Provider.of<ActivityProvider>(context).getAllActivities;
+
     return Scaffold(
         floatingActionButton: const AddActivitiesFAB(),
         appBar: AppBar(
@@ -66,7 +69,7 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
         body: ShowTodayOverview(
-          activities: activitiesPlaceHolder,
+          activities: completedActivities,
         ));
   }
 }

@@ -5,6 +5,7 @@ import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
+import 'package:provider/provider.dart';
 
 class ActivityReceipt extends StatelessWidget {
   const ActivityReceipt({super.key, required this.activity});
@@ -130,6 +131,8 @@ class ActivityReceipt extends StatelessWidget {
             const Spacer(),
             MyThemeButton(
               onTap: () {
+                Provider.of<ActivityProvider>(context, listen: false)
+                    .addActivity(activity);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               trailingIcon: Icons.arrow_forward,

@@ -64,7 +64,7 @@ class ActivityProvider extends ChangeNotifier{
 
   List<ActivityType> get getAllActivityTypes => UnmodifiableListView(_allActivityTypes);
 
-  /// Activity
+  /// When making an activity
   static ActivityType? _currentActivityType;
   ActivityType? get getCurrentActivityType => _currentActivityType;
 
@@ -86,6 +86,15 @@ class ActivityProvider extends ChangeNotifier{
 
   void setCurrentUnit(Units newUnit){
     _currentUnit = newUnit;
+    notifyListeners();
+  }
+
+  /// All activities
+  static final List<Activity> _allActivities = [];
+  List<Activity> get getAllActivities => _allActivities;
+
+  void addActivity(Activity newActivity) {
+    _allActivities.add(newActivity);
     notifyListeners();
   }
 
