@@ -38,7 +38,7 @@ class DataBaseService {
 
   Future<List<String>> getActivities(BuildContext context) async {
     final List<Map<String, dynamic>> maps = await _db.query(tableName);
-    return List.generate(maps.length, (index) => "${maps[index]}");
+    return List.generate(maps.length, (index) => "${maps[index][columnActivityTypeName]}");
   }
   
   Future<void> deleteAll () async {

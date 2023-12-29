@@ -4,6 +4,7 @@ import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.d
 import 'package:productivity_app/pages/choose_activity/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
 import 'package:productivity_app/pages/complete_task_page.dart';
+import 'package:productivity_app/shared/allActivityTypes.dart';
 import 'package:provider/provider.dart';
 
 class ChooseActivityScreen extends StatelessWidget {
@@ -30,9 +31,7 @@ class ChooseActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActivityType> allActivityTypes =
-        Provider.of<ActivityProvider>(context).getAllActivityTypes;
-
+    final List<ActivityType> allActivityTypes = kAllActivityTypes;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

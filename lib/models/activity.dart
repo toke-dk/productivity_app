@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:productivity_app/models/unit.dart';
+import 'package:productivity_app/shared/allActivityTypes.dart';
 import 'package:provider/provider.dart';
 
 class Activity {
@@ -29,7 +30,7 @@ class Activity {
   /// want a constructor to create a new instance of your class
   factory Activity.fromMap(Map<String, dynamic> map, BuildContext context) {
     return Activity(
-        activityType: map["activityTypeName"].toActivityType(context));
+        activityType: map["activityTypeName"].toActivityType());
   }
 
   @override
@@ -39,12 +40,7 @@ class Activity {
 }
 
 extension ActivityTypeStringExtension on String {
-  ActivityType toActivityType(BuildContext context) =>
-      Provider
-          .of<ActivityProvider>(context, listen: false)
-          .getAllActivities
-          .firstWhere((activity) => activity.activityType.name == this)
-          .activityType;
+  ActivityType toActivityType() => kAllActivityTypes.firstWhere((element) => element.name == this);
 }
 
 class ActivityType {
@@ -73,26 +69,6 @@ extension Activities on List<Activity> {
 
 /// Provider
 class ActivityProvider extends ChangeNotifier {
-  /// Activity types
-  final List<ActivityType> _allActivityTypes = [
-    ActivityType(
-        name: "Cykling",
-        possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
-        image: Icon(Icons.directions_bike_outlined)),
-    ActivityType(
-        name: "Armhævning",
-        possibleUnits: [Units.unitLess],
-        image: Icon(Icons.fitness_center)),
-    ActivityType(
-        name: "Læsning",
-        possibleUnits: [Units.minutes, Units.hours],
-        image: Icon(Icons.chrome_reader_mode_outlined)),
-    ActivityType(
-        name: "Dummy", possibleUnits: [Units.unitLess], image: Placeholder())
-  ];
-
-  List<ActivityType> get getAllActivityTypes =>
-      UnmodifiableListView(_allActivityTypes);
 
   /// When making an activity
   static ActivityType? _currentActivityType;
