@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 enum Units { unitLess, kilometer, hours, minutes }
 
 extension UnitsExtension on Units {
@@ -26,4 +28,8 @@ extension UnitsExtension on Units {
         return "minutter";
     }
   }
+}
+
+extension UnitStringExtension on String {
+  Units toUnit() => Units.values.byName(this);
 }

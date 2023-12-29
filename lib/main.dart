@@ -2,17 +2,21 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/home/home.dart';
+import 'package:productivity_app/services/database_service.dart';
+import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
+  
+  
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Velkommen'),
+        home: MyHomePage(title: 'Velkommen'),
       ),
     );
   }

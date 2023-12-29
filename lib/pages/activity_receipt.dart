@@ -19,7 +19,7 @@ class ActivityReceipt extends StatelessWidget {
         Text(
           activity.isTask == true
               ? "Fuldført"
-              : activity.chosenUnit.textForUnitMeasure,
+              : activity.chosenUnit!.textForUnitMeasure,
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(
