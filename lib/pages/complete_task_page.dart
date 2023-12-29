@@ -122,10 +122,10 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
             const SizedBox(
               height: 30,
             ),
-            const Icon(Icons.arrow_downward)
+            const Icon(Icons.arrow_upward)
                 .animate(
                     onPlay: (controller) => controller.repeat(reverse: true))
-                .moveY(end: 10, delay: 1.seconds),
+                .moveY(end: -10, delay: 1.seconds),
             const SizedBox(
               height: 30,
             ),
