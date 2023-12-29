@@ -3,14 +3,22 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/unit.dart';
+import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
 class ActivityReceipt extends StatelessWidget {
-  const ActivityReceipt({super.key, required this.activity});
+  ActivityReceipt({super.key, required this.activity});
 
   final Activity activity;
+
+  final DataBaseService _databaseService = DataBaseService();
+
+
+  Future<void> addActivity(Activity activity) async {
+    return await _databaseService.addActivity(activity);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,8 +139,7 @@ class ActivityReceipt extends StatelessWidget {
             const Spacer(),
             MyThemeButton(
               onTap: () {
-                Provider.of<ActivityProvider>(context, listen: false)
-                    .addActivity(activity);
+                addActivity(activity);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               trailingIcon: Icons.arrow_forward,

@@ -49,6 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   _databaseService.addActivity(Activity(
                       activityType: allActivityTypes[0],
                       chosenUnit: Units.unitLess));
+                  setState(() {
+                  });
                 },
                 icon: const Icon(Icons.bar_chart_rounded)),
             IconButton(

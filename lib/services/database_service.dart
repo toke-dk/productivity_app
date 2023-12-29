@@ -20,6 +20,11 @@ class DataBaseService {
   // static const String columnAmount = "amount";
   // static const String columnDate = "date";
 
+  // Singleton pattern
+  static final DataBaseService _dataBaseService = DataBaseService._internal();
+  factory DataBaseService() => _dataBaseService;
+  DataBaseService._internal();
+
   late Database _db;
 
   Future<void> initDatabase() async {
