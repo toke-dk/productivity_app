@@ -140,6 +140,7 @@ class ActivityReceipt extends StatelessWidget {
             MyThemeButton(
               onTap: () {
                 addActivity(activity);
+                Provider.of<ActivityProvider>(context, listen: false).addActivity(activity);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               trailingIcon: Icons.arrow_forward,

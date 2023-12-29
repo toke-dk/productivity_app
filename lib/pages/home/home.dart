@@ -25,6 +25,13 @@ class _MyHomePageState extends State<MyHomePage> {
   late List<Activity> completedActivities;
 
   @override
+  void didChangeDependencies() {
+    // this is what changes the state so that it automtically refreshes
+    print(Provider.of<ActivityProvider>(context).getAllActivities);
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
     _databaseService.initDatabase();
     print("initialized");
@@ -84,7 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             IconButton(
-                onPressed: () => setState(() {}), icon: const Icon(Icons.refresh))
+                onPressed: () => setState(() {}),
+                icon: const Icon(Icons.refresh))
           ],
         ));
   }
