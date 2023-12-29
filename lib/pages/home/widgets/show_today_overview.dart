@@ -4,7 +4,7 @@ import '../../../models/activity.dart';
 import 'distribution_bar.dart';
 
 class ShowTodayOverview extends StatelessWidget {
-  ShowTodayOverview({super.key, required this.activities});
+  const ShowTodayOverview({super.key, required this.activities});
 
   final List<Activity> activities;
 

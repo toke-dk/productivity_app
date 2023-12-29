@@ -49,35 +49,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   _databaseService.addActivity(Activity(
                       activityType: allActivityTypes[0],
                       chosenUnit: Units.unitLess));
-                  setState(() {
-                  });
+                  setState(() {});
                 },
                 icon: const Icon(Icons.bar_chart_rounded)),
             IconButton(
                 onPressed: () async {
                   final res = await _databaseService.getActivities(context);
+                  setState(() {});
                   print(" here: ${res}");
                 },
-                icon: Icon(Icons.hail)),
+                icon: const Icon(Icons.hail)),
             IconButton(
                 onPressed: () async {
                   await _databaseService.deleteAll();
                 },
-                icon: Icon(Icons.delete))
+                icon: const Icon(Icons.delete))
           ],
         ),
-        body: FutureBuilder(
-          future: getActivities(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasData) {
-              print(snapshot.data!);
-              return ShowTodayOverview(
-                activities: snapshot.data!,
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator(),);
-            }
-          },
+        body: Column(
+          children: [
+            FutureBuilder(
+              future: getActivities(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data!);
+                  return ShowTodayOverview(
+                    activities: snapshot.data!,
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+            IconButton(
+                onPressed: () => setState(() {}), icon: const Icon(Icons.refresh))
+          ],
         ));
   }
 }
