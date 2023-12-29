@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 
 class AddActivitiesFAB extends StatelessWidget {
-  const AddActivitiesFAB({super.key});
+  const AddActivitiesFAB({super.key, required this.onActivityComplete});
+
+  final Function(Activity activity) onActivityComplete;
 
   SpeedDialChild makeAccordingDial(
     BuildContext context, {
@@ -21,7 +24,7 @@ class AddActivitiesFAB extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ChooseActivityScreen(isTask: isTask)));
+                  builder: (context) => ChooseActivityScreen(isTask: isTask, onActivityComplete: onActivityComplete,)));
         });
   }
 

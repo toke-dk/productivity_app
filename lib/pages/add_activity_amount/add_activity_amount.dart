@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import '../../models/unit.dart';
 
 class AddActivityAmount extends StatefulWidget {
-  const AddActivityAmount({super.key});
+  const AddActivityAmount({super.key, required this.onActivityComplete});
+
+  final Function(Activity activity) onActivityComplete;
 
   @override
   State<AddActivityAmount> createState() => _AddActivityAmountState();
@@ -116,7 +118,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
                                     //// TODO: Make this right
                                     chosenUnit:
-                                        activityType.possibleUnits[0]),
+                                        activityType.possibleUnits[0]), onActivityComplete: widget.onActivityComplete,
                               )))
                   : null,
               changeTypedString: (String newString) {

@@ -25,21 +25,19 @@ class _MyHomePageState extends State<MyHomePage> {
   late List<Activity> completedActivities;
 
   @override
-  void didChangeDependencies() {
-    // this is what changes the state so that it automtically refreshes
-    print(Provider.of<ActivityProvider>(context).getAllActivities);
-    super.didChangeDependencies();
-  }
-
-  @override
   void initState() {
     _databaseService.initDatabase();
     print("initialized");
     super.initState();
   }
 
-  Future<List<Activity>> getActivities() async {
+  Future<List<Activity>> _getActivities() async {
     return _databaseService.getActivities(context);
+  }
+
+  Future<void> _onActivityComplete(Activity activity) async {
+    _databaseService.addActivity(activity);
+    setState(() {});
   }
 
   @override
@@ -47,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<ActivityType> allActivityTypes = kAllActivityTypes;
 
     return Scaffold(
-        floatingActionButton: const AddActivitiesFAB(),
+        floatingActionButton: AddActivitiesFAB(onActivityComplete: _onActivityComplete,),
         appBar: AppBar(
           title: Text(widget.title),
           actions: [
@@ -76,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: [
             FutureBuilder(
-              future: getActivities(),
+              future: _getActivities(),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   print(snapshot.data!);

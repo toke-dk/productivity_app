@@ -8,7 +8,9 @@ import 'package:productivity_app/shared/allActivityTypes.dart';
 import 'package:provider/provider.dart';
 
 class ChooseActivityScreen extends StatelessWidget {
-  const ChooseActivityScreen({super.key, required this.isTask});
+  const ChooseActivityScreen({super.key, required this.isTask, required this.onActivityComplete});
+
+  final Function(Activity activity) onActivityComplete;
 
   final bool isTask;
   final double horizontalPadding = 15;
@@ -26,7 +28,7 @@ class ChooseActivityScreen extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                isTask ? const CompleteTaskPage() : const AddActivityAmount()));
+                isTask ? CompleteTaskPage(onActivityComplete: onActivityComplete,) : AddActivityAmount(onActivityComplete: onActivityComplete,)));
   }
 
   @override

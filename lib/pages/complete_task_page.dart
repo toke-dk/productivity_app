@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 import '../models/unit.dart';
 
 class CompleteTaskPage extends StatefulWidget {
-  const CompleteTaskPage({super.key});
+  const CompleteTaskPage({super.key, required this.onActivityComplete});
+
+  final Function(Activity activity) onActivityComplete;
 
   @override
   State<CompleteTaskPage> createState() => _CompleteTaskPageState();
@@ -73,7 +75,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                                     activity: Activity(
                                         activityType: activityType,
                                         chosenUnit: Units.unitLess,
-                                        isTask: true),
+                                        isTask: true), onActivityComplete: widget.onActivityComplete,
                                   )));
                     }
 

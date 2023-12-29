@@ -9,9 +9,11 @@ import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
 class ActivityReceipt extends StatelessWidget {
-  ActivityReceipt({super.key, required this.activity});
+  ActivityReceipt({super.key, required this.activity, required this.onActivityComplete});
 
   final Activity activity;
+
+  final Function(Activity activity) onActivityComplete;
 
   final DataBaseService _databaseService = DataBaseService();
 
@@ -139,8 +141,7 @@ class ActivityReceipt extends StatelessWidget {
             const Spacer(),
             MyThemeButton(
               onTap: () {
-                addActivity(activity);
-                Provider.of<ActivityProvider>(context, listen: false).addActivity(activity);
+                onActivityComplete(activity);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               trailingIcon: Icons.arrow_forward,
