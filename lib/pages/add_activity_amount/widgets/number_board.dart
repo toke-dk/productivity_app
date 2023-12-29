@@ -51,7 +51,7 @@ class MyNumberBoard extends StatelessWidget {
         crossAxisCount: 3,
         children: List.generate(12, (index) {
           Widget currentChild;
-          String currentString = index.toString();
+          String currentString = (index+1).toString();
 
           if (index == 9) {
             currentString = ",";
