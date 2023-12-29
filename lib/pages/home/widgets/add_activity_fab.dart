@@ -5,6 +5,26 @@ import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 class AddActivitiesFAB extends StatelessWidget {
   const AddActivitiesFAB({super.key});
 
+  SpeedDialChild makeAccordingDial(
+    BuildContext context, {
+    required bool isTask,
+  }) {
+    return SpeedDialChild(
+        shape: const CircleBorder(),
+        elevation: 0,
+        labelWidget: Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: isTask ? const Text("Opgave") : const Text("Aktivitet"),
+        ),
+        child: isTask ? const Icon(Icons.task_alt) : const Icon(Icons.task),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChooseActivityScreen(isTask: isTask)));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
@@ -13,36 +33,8 @@ class AddActivitiesFAB extends StatelessWidget {
       spaceBetweenChildren: 10,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       children: [
-        SpeedDialChild(
-            shape: const CircleBorder(),
-            elevation: 0,
-            labelWidget: const Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: Text("Opgave"),
-            ),
-            child: const Icon(Icons.task_alt),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ChooseActivityScreen(isTask: true)));
-            }),
-        SpeedDialChild(
-            shape: const CircleBorder(),
-            elevation: 0,
-            labelWidget: const Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: Text("Aktivitet"),
-            ),
-            child: const Icon(Icons.task),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const ChooseActivityScreen(isTask: false)));
-            }),
+        makeAccordingDial(context, isTask: true),
+        makeAccordingDial(context, isTask: false)
       ],
     );
   }
