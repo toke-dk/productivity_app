@@ -28,14 +28,14 @@ class Activity {
 
   /// factory is used in a constructor when you don't necessarily
   /// want a constructor to create a new instance of your class
-  factory Activity.fromMap(Map<String, dynamic> map, BuildContext context) {
+  factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
-        activityType: map["activityTypeName"].toActivityType());
+        activityType: map["activityTypeName"].toString().toActivityType());
   }
 
   @override
   String toString() {
-    return 'Dog{activityTypeName: ${activityType.name}, name: ${amount ?? 0}';
+    return 'Activity{activityTypeName: ${activityType.name}}';
   }
 }
 

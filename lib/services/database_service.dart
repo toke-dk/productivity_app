@@ -15,6 +15,7 @@ class DataBaseService {
 
   static const String columnId = "id";
   static const String columnActivityTypeName = "activityTypeName";
+
   // static const String columnChosenUnit = "chosenUnit";
   // static const String columnAmount = "amount";
   // static const String columnDate = "date";
@@ -32,17 +33,17 @@ class DataBaseService {
         """CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY, $columnActivityTypeName TEXT)""");
   }
 
-  Future<void> addActivity (Activity activity) async {
+  Future<void> addActivity(Activity activity) async {
     await _db.insert(tableName, activity.toMap());
   }
 
-  Future<List<String>> getActivities(BuildContext context) async {
+  Future<List<Activity>> getActivities(BuildContext context) async {
     final List<Map<String, dynamic>> maps = await _db.query(tableName);
-    return List.generate(maps.length, (index) => "${maps[index][columnActivityTypeName]}");
-  }
-  
-  Future<void> deleteAll () async {
-    await _db.rawDelete("DELETE FROM $tableName");
+    return List.generate(
+        maps.length, (index) => Activity.fromMap(maps[index]));
   }
 
+  Future<void> deleteAll() async {
+    await _db.rawDelete("DELETE FROM $tableName");
+  }
 }
