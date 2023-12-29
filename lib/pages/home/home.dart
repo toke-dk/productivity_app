@@ -22,6 +22,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final DataBaseService _databaseService = DataBaseService();
 
+  late List<Activity> completedActivities;
+
   @override
   void initState() {
     _databaseService.initDatabase();
@@ -29,12 +31,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  Future<List<Activity>> getActivities() async {
+    return _databaseService.getActivities(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<ActivityType> allActivityTypes = kAllActivityTypes;
-
-    final completedActivities =
-        Provider.of<ActivityProvider>(context).getAllActivities;
 
     return Scaffold(
         floatingActionButton: const AddActivitiesFAB(),
@@ -50,8 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(Icons.bar_chart_rounded)),
             IconButton(
                 onPressed: () async {
-                  final res =
-                      await _databaseService.getActivities(context);
+                  final res = await _databaseService.getActivities(context);
                   print(" here: ${res}");
                 },
                 icon: Icon(Icons.hail)),
@@ -62,8 +64,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icon(Icons.delete))
           ],
         ),
-        body: ShowTodayOverview(
-          activities: completedActivities,
+        body: FutureBuilder(
+          future: getActivities(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              print(snapshot.data!);
+              return ShowTodayOverview(
+                activities: snapshot.data!,
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator(),);
+            }
+          },
         ));
   }
 }

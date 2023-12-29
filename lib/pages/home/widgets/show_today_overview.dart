@@ -26,7 +26,7 @@ class ShowTodayOverview extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      DistributionBar(
+                      DistributionBar(activities: activities,
                       ),
                     ],
                   )

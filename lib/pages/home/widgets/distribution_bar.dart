@@ -47,7 +47,9 @@ class _ShowActivityTypeColors extends StatelessWidget {
 }
 
 class DistributionBar extends StatelessWidget {
-  DistributionBar({super.key});
+  DistributionBar({super.key, required this.activities});
+
+  final List<Activity> activities;
 
 
   final List<Color> barColors = [
@@ -92,9 +94,6 @@ class DistributionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<Activity> activities = Provider.of<ActivityProvider>(context).getAllActivities;
-
 
     // counts occurrence of each type of activity
     Map<ActivityType, int> activityTypeCounter = {};
