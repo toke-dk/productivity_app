@@ -21,7 +21,7 @@ class ReportPage extends StatefulWidget {
 
   final Color barBackgroundColor = Colors.black.withOpacity(0.1);
   final Color barColor = Colors.orangeAccent;
-  final Color touchedBarColor = Colors.green;
+  final Color touchedBarColor = Colors.white;
 
   @override
   State<StatefulWidget> createState() => ReportPageState();
@@ -86,18 +86,18 @@ class ReportPageState extends State<ReportPage> {
       x: x,
       barRods: [
         BarChartRodData(
-          toY: isTouched ? y + 1 : y,
-          color: isTouched ? widget.touchedBarColor : barColor,
+          toY: y,
+          color: barColor,
           width: width,
           rodStackItems: [
             BarChartRodStackItem(0, 5, Colors.red),
             BarChartRodStackItem(5, 6, Colors.blue)
           ],
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           borderSide: isTouched
-              ? BorderSide(color: widget.touchedBarColor)
-              : const BorderSide(color: Colors.black, width: 0),
+              ? BorderSide(color: widget.touchedBarColor,width: 4)
+              : const BorderSide(color: Colors.transparent),
         ),
       ],
       showingTooltipIndicators: showTooltips,
@@ -170,7 +170,7 @@ class ReportPageState extends State<ReportPage> {
                 TextSpan(
                   text: (rod.toY - 1).toString(),
                   style: TextStyle(
-                    color: widget.touchedBarColor,
+                    color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
