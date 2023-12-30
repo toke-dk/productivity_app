@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
@@ -11,13 +12,16 @@ class DataBaseService {
   static const String _databaseName = 'productivity_data.dart';
   static const int _databaseVersion = 1;
 
-  static const String tableName = "activities";
-
+  /// Activity
+  static const String tableActivityName = "activities";
   static const String columnId = "id";
   static const String columnActivityTypeName = "activityTypeName";
   static const String columnChosenUnit = "chosenUnit";
   static const String columnAmount = "amount";
   static const String columnDateCompleted = "dateCompleted";
+
+  /// Task
+  static const String tableTaskName = "tasks";
 
   // Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
@@ -37,27 +41,48 @@ class DataBaseService {
   /// Activity
   Future<void> _onCreate(Database db, int version) async {
     await db.execute("""
-        CREATE TABLE $tableName(
+        CREATE TABLE $tableActivityName(
         $columnId INTEGER PRIMARY KEY, 
         $columnActivityTypeName TEXT, 
         $columnAmount DOUBLE, 
         $columnChosenUnit TEXT, 
         $columnDateCompleted DATETIME
         )""");
+
+    await db.execute("""
+        CREATE TABLE $tableTaskName(
+        $columnId INTEGER PRIMARY KEY, 
+        $columnActivityTypeName TEXT, 
+        $columnDateCompleted TEXT
+        )""");
   }
 
   Future<void> addActivity(Activity activity) async {
-    await _db.insert(tableName, activity.toMap());
+    await _db.insert(tableActivityName, activity.toMap());
   }
 
-  Future<List<Activity>> getActivities(BuildContext context) async {
-    final List<Map<String, dynamic>> maps = await _db.query(tableName);
+  Future<void> deleteAllActivities() async {
+    await _db.rawDelete("DELETE FROM $tableActivityName");
+  }
+
+  Future<List<Activity>> getActivities() async {
+    final List<Map<String, dynamic>> maps = await _db.query(tableActivityName);
     return List.generate(maps.length, (index) => Activity.fromMap(maps[index]));
   }
 
-  Future<void> deleteAll() async {
-    await _db.rawDelete("DELETE FROM $tableName");
+  /// Task
+
+  Future<void> deleteTasksTable() async {
+    await _db.execute("DROP TABLE $tableTaskName");
   }
 
-  /// Task
+  Future<void> addTask(Task task) async {
+    await _db.insert(tableTaskName, task.toMap());
+  }
+
+  Future<List<Task>> getTasks() async {
+    final List<Map<String,dynamic>> maps = await _db.query(tableTaskName);
+    return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
+  }
+
 }

@@ -18,12 +18,6 @@ class ActivityReceipt extends StatelessWidget {
 
   final Function({Activity? activity, Task? task}) onActivityComplete;
 
-  final DataBaseService _databaseService = DataBaseService();
-
-  Future<void> addActivity(Activity activity) async {
-    return await _databaseService.addActivity(activity);
-  }
-
   @override
   Widget build(BuildContext context) {
     final finalTask = Column(

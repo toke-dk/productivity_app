@@ -29,11 +29,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<Activity>> _getActivities() async {
-    return _databaseService.getActivities(context);
+    return _databaseService.getActivities();
+  }
+
+  Future<List<Task>> _getTasks() async {
+    return _databaseService.getTasks();
   }
 
   Future<void> _onActivityComplete({Activity? activity, Task? task}) async {
-    if (activity != null) _databaseService.addActivity(activity);
+    if (activity != null) {
+      _databaseService.addActivity(activity);
+    } else if (task != null) {
+      _databaseService.addTask(task);
+    }
     setState(() {});
   }
 
@@ -61,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(onPressed: () async {}, icon: const Icon(Icons.hail)),
             IconButton(
                 onPressed: () async {
-                  await _databaseService.deleteAll();
+                  await _databaseService.deleteAllActivities();
                   setState(() {});
                 },
                 icon: const Icon(Icons.delete))
