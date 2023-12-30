@@ -4,9 +4,9 @@ import '../../../models/activity.dart';
 import 'distribution_bar.dart';
 
 class ShowTodayOverview extends StatelessWidget {
-  const ShowTodayOverview({super.key, required this.activities});
+  const ShowTodayOverview({super.key, required this.activityTypeCounts});
 
-  final List<Activity> activities;
+  final Map<ActivityType, int> activityTypeCounts;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ShowTodayOverview extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(14)),
-            child: activities.isNotEmpty
+            child: activityTypeCounts.isNotEmpty
                 ? Column(
                     children: [
                       const _QuickStatsText(),
@@ -26,7 +26,7 @@ class ShowTodayOverview extends StatelessWidget {
                         height: 20,
                       ),
                       DistributionBar(
-                        activities: activities,
+                        activityTypeCounts: activityTypeCounts,
                       ),
                     ],
                   )

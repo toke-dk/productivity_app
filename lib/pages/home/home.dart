@@ -66,7 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {});
                 },
                 icon: const Icon(Icons.bar_chart_rounded)),
-            IconButton(onPressed: () async {}, icon: const Icon(Icons.hail)),
+            IconButton(
+                onPressed: () async {
+                  print(
+                      "unique activity types: ${makeActivityTypeCounts(activities: await _getActivities(), tasks: await _getTasks())}");
+                },
+                icon: const Icon(Icons.hail)),
             IconButton(
                 onPressed: () async {
                   await _databaseService.deleteAllActivities();
@@ -78,11 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: [
             FutureBuilder(
-              future: _getActivities(),
+              future: Future(() async => makeActivityTypeCounts(activities: await _getActivities(), tasks: await _getTasks())),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   return ShowTodayOverview(
-                    activities: snapshot.data!,
+                    activityTypeCounts: snapshot.data!,
                   );
                 } else {
                   return const Center(
@@ -97,4 +102,24 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ));
   }
+}
+
+Map<ActivityType, int> makeActivityTypeCounts(
+    {required List<Activity> activities, required List<Task> tasks}) {
+
+  final List<ActivityType> activityTypes = activities
+      .map((e) => e.activityType)
+      .toList()
+    ..addAll(tasks.map((e) => e.activityType));
+
+  Map<ActivityType, int> activityTypeCounter = {};
+
+  for (var activityType in activityTypes) {
+    activityTypeCounter[activityType] =
+        !activityTypeCounter.containsKey(activityType)
+            ? (1)
+            : (activityTypeCounter[activityType]! + 1);
+  }
+
+  return activityTypeCounter;
 }

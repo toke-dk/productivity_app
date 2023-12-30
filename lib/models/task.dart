@@ -9,7 +9,7 @@ class Task {
   Map<String, dynamic> toMap() {
     return {
       'activityTypeName': activityType.name,
-      'dateCompleted': dateCompleted,
+      'dateCompleted': dateCompleted.toString(),
     };
   }
 

@@ -46,9 +46,9 @@ class _ShowActivityTypeColors extends StatelessWidget {
 }
 
 class DistributionBar extends StatelessWidget {
-  DistributionBar({super.key, required this.activities});
+  DistributionBar({super.key, required this.activityTypeCounts});
 
-  final List<Activity> activities;
+  final Map<ActivityType, int> activityTypeCounts;
 
   final List<Color> barColors = [
     Colors.green,
@@ -92,26 +92,18 @@ class DistributionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // counts occurrence of each type of activity
-    Map<ActivityType, int> activityTypeCounter = {};
-    for (var activity in activities) {
-      activityTypeCounter[activity.activityType] =
-          !activityTypeCounter.containsKey(activity.activityType)
-              ? (1)
-              : (activityTypeCounter[activity.activityType]! + 1);
-    }
 
     // gives percentage to each type of activity
     Map<ActivityType, double> activityTypeDistribution = {};
-    for (var i = 0; i < activityTypeCounter.length; i++) {
-      ActivityType currentActivityType = activityTypeCounter.keys.toList()[i];
+    for (var i = 0; i < activityTypeCounts.length; i++) {
+      ActivityType currentActivityType = activityTypeCounts.keys.toList()[i];
 
       // set the color for the type
       currentActivityType.color = barColors[i];
 
       // give the activity type a distribution value
       activityTypeDistribution[currentActivityType] =
-          activityTypeCounter.values.toList()[i] / activities.length;
+          activityTypeCounts.values.toList()[i] /activityTypeCounts.values.toList().reduce((a, b) => a+b);
     }
 
     return Column(
@@ -131,7 +123,7 @@ class DistributionBar extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        _ShowActivityTypeColors(typeCounts: activityTypeCounter)
+        _ShowActivityTypeColors(typeCounts: activityTypeCounts)
       ],
     );
   }
