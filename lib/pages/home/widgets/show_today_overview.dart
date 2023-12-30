@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/shared/myThemedBoxShadow.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import '../../../models/activity.dart';
 import 'distribution_bar.dart';
@@ -10,36 +11,34 @@ class ShowTodayOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-            padding: const EdgeInsets.all(13),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(14)),
-            child: activityTypeCounts.isNotEmpty
-                ? Column(
-                    children: [
-                      const _QuickStatsText(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      DistributionBar(
-                        activityTypeCounts: activityTypeCounts,
-                      ),
-                    ],
-                  )
-                : Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        "Ingen aktiviteter i dag",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  )),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(13),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+          boxShadow: [kMyThemedBoxShadow],
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(14)),
+      child: activityTypeCounts.isNotEmpty
+          ? Column(
+              children: [
+                const _QuickStatsText(),
+                const SizedBox(
+                  height: 20,
+                ),
+                DistributionBar(
+                  activityTypeCounts: activityTypeCounts,
+                ),
+              ],
+            )
+          : Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  "Ingen aktiviteter i dag",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            ),
     );
   }
 }

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
-import 'package:productivity_app/pages/choose_activity/widgets/activity_card.dart';
+import 'package:productivity_app/shared/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
 import 'package:productivity_app/pages/complete_task_page.dart';
 import 'package:productivity_app/shared/allActivityTypes.dart';
 import 'package:provider/provider.dart';
 
 class ChooseActivityScreen extends StatelessWidget {
-  const ChooseActivityScreen({super.key, required this.isTask, required this.onActivityComplete});
+  const ChooseActivityScreen(
+      {super.key, required this.isTask, required this.onActivityComplete});
 
   final Function({Activity? activity, Task? task}) onActivityComplete;
 
@@ -28,8 +29,13 @@ class ChooseActivityScreen extends StatelessWidget {
     return Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                isTask ? CompleteTaskPage(onActivityComplete: onActivityComplete,) : AddActivityAmount(onActivityComplete: onActivityComplete,)));
+            builder: (context) => isTask
+                ? CompleteTaskPage(
+                    onActivityComplete: onActivityComplete,
+                  )
+                : AddActivityAmount(
+                    onActivityComplete: onActivityComplete,
+                  )));
   }
 
   @override
@@ -105,9 +111,9 @@ class ActivityTypesGridView extends StatelessWidget {
     return GridView.count(
       shrinkWrap: true,
       crossAxisCount: 3,
-      padding: const EdgeInsets.all(10),
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
+      padding: const EdgeInsets.all(20),
+      crossAxisSpacing: 30,
+      mainAxisSpacing: 30,
       children: List.generate(
           amountOfGenerates,
           (index) => ActivityCard(
