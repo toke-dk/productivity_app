@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
@@ -9,11 +10,12 @@ import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
 class ActivityReceipt extends StatelessWidget {
-  ActivityReceipt({super.key, required this.activity, required this.onActivityComplete});
+  ActivityReceipt({super.key, this.activity, required this.onActivityComplete, this.task});
 
-  final Activity activity;
+  final Activity? activity;
+  final Task? task;
 
-  final Function(Activity activity) onActivityComplete;
+  final Function({Activity? activity, Task? task}) onActivityComplete;
 
   final DataBaseService _databaseService = DataBaseService();
 
@@ -27,15 +29,15 @@ class ActivityReceipt extends StatelessWidget {
     final finalTask = Column(
       children: [
         Text(
-          activity.isTask == true
+          task != null
               ? "Fuldført"
-              : activity.chosenUnit!.textForUnitMeasure,
+              : activity!.chosenUnit.textForUnitMeasure,
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(
           height: 20,
         ),
-        activity.isTask == true
+        task != null
             ? const Icon(
                 Icons.check_circle_outline_rounded,
                 size: 100,
@@ -45,20 +47,20 @@ class ActivityReceipt extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    activity.activityType.possibleUnits[0].stringName,
+                    activity!.activityType.possibleUnits[0].stringName,
                     style: const TextStyle(color: Colors.transparent),
                   ),
                   Text(
-                    activity.amount.toString(),
+                    activity!.amount.toString(),
                     style: const TextStyle(fontSize: 40),
                   ),
                   const SizedBox(
                     width: 5,
                   ),
-                  activity.activityType.possibleUnits[0] != Units.unitLess
+                  activity!.activityType.possibleUnits[0] != Units.unitLess
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
-                          child: Text(activity
+                          child: Text(activity!
                               .activityType.possibleUnits[0].stringName))
                       : const SizedBox(),
                 ],
@@ -98,7 +100,7 @@ class ActivityReceipt extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           DisplayActivityType(
-                              activityType: activity.activityType),
+                              activityType: task?.activityType ?? activity!.activityType),
                           const SizedBox(
                             height: 20,
                           ),
@@ -141,7 +143,11 @@ class ActivityReceipt extends StatelessWidget {
             const Spacer(),
             MyThemeButton(
               onTap: () {
-                onActivityComplete(activity);
+                if (task != null) {
+                  onActivityComplete(task: task);
+                } else {
+                  onActivityComplete(activity: activity);
+                }
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               trailingIcon: Icons.arrow_forward,

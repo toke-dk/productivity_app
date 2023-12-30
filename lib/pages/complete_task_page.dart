@@ -4,6 +4,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,7 @@ import '../models/unit.dart';
 class CompleteTaskPage extends StatefulWidget {
   const CompleteTaskPage({super.key, required this.onActivityComplete});
 
-  final Function(Activity activity) onActivityComplete;
+  final Function({Activity? activity, Task? task}) onActivityComplete;
 
   @override
   State<CompleteTaskPage> createState() => _CompleteTaskPageState();
@@ -72,10 +73,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ActivityReceipt(
-                                    activity: Activity(
-                                        activityType: activityType,
-                                        chosenUnit: Units.unitLess,
-                                        isTask: true), onActivityComplete: widget.onActivityComplete,
+                                    task: Task(activityType: activityType, dateCompleted: DateTime.now()), onActivityComplete: widget.onActivityComplete,
                                   )));
                     }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
@@ -10,7 +11,7 @@ import '../../models/unit.dart';
 class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount({super.key, required this.onActivityComplete});
 
-  final Function(Activity activity) onActivityComplete;
+  final Function({Activity? activity, Task? task}) onActivityComplete;
 
   @override
   State<AddActivityAmount> createState() => _AddActivityAmountState();
@@ -118,7 +119,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
                                     //// TODO: Make this right
                                     chosenUnit:
-                                        activityType.possibleUnits[0]), onActivityComplete: widget.onActivityComplete,
+                                        activityType.possibleUnits[0], dateCompleted: DateTime.now()), onActivityComplete: widget.onActivityComplete,
                               )))
                   : null,
               changeTypedString: (String newString) {

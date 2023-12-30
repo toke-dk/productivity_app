@@ -15,10 +15,9 @@ class DataBaseService {
 
   static const String columnId = "id";
   static const String columnActivityTypeName = "activityTypeName";
-
-  // static const String columnChosenUnit = "chosenUnit";
-  // static const String columnAmount = "amount";
-  // static const String columnDate = "date";
+  static const String columnChosenUnit = "chosenUnit";
+  static const String columnAmount = "amount";
+  static const String columnDateCompleted = "dateCompleted";
 
   // Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
@@ -33,9 +32,17 @@ class DataBaseService {
         onCreate: _onCreate, version: _databaseVersion);
   }
 
+  /// Activity
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(
-        """CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY, $columnActivityTypeName TEXT)""");
+        """
+        CREATE TABLE $tableName(
+        $columnId INTEGER PRIMARY KEY, 
+        $columnActivityTypeName TEXT, 
+        $columnAmount DOUBLE, 
+        $columnChosenUnit TEXT, 
+        $columnDateCompleted DATETIME
+        )""");
   }
 
   Future<void> addActivity(Activity activity) async {
@@ -51,4 +58,7 @@ class DataBaseService {
   Future<void> deleteAll() async {
     await _db.rawDelete("DELETE FROM $tableName");
   }
+
+  /// Task
+
 }

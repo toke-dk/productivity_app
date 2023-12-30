@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/pages/new_activity.dart';
 import 'package:productivity_app/services/database_service.dart';
@@ -35,8 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return _databaseService.getActivities(context);
   }
 
-  Future<void> _onActivityComplete(Activity activity) async {
-    _databaseService.addActivity(activity);
+  Future<void> _onActivityComplete({Activity? activity, Task? task}) async {
+    if (activity != null) _databaseService.addActivity(activity);
     setState(() {});
   }
 
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   _databaseService.addActivity(Activity(
                       activityType: allActivityTypes[0],
-                      chosenUnit: Units.unitLess));
+                      chosenUnit: Units.unitLess, amount: 42, dateCompleted: DateTime.now()));
                   setState(() {});
                 },
                 icon: const Icon(Icons.bar_chart_rounded)),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
@@ -10,7 +11,7 @@ import 'package:provider/provider.dart';
 class ChooseActivityScreen extends StatelessWidget {
   const ChooseActivityScreen({super.key, required this.isTask, required this.onActivityComplete});
 
-  final Function(Activity activity) onActivityComplete;
+  final Function({Activity? activity, Task? task}) onActivityComplete;
 
   final bool isTask;
   final double horizontalPadding = 15;

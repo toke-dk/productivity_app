@@ -2,27 +2,31 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/shared/allActivityTypes.dart';
 import 'package:provider/provider.dart';
 
 class Activity {
-  double? amount;
+  double amount;
   ActivityType activityType;
-  bool? isTask;
-  Units? chosenUnit;
+  Units chosenUnit;
+  DateTime dateCompleted;
 
   Activity({
-    this.amount,
+    required this.amount,
     required this.activityType,
-    this.chosenUnit,
-    this.isTask,
+    required this.chosenUnit,
+    required this.dateCompleted,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'activityTypeName': activityType.name,
+      'amount': amount,
+      'chosenUnit':chosenUnit.name.toString(),
+      'dateCompleted': dateCompleted.toString(),
     };
   }
 
@@ -30,17 +34,28 @@ class Activity {
   /// want a constructor to create a new instance of your class
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
-        activityType: map["activityTypeName"].toString().toActivityType());
+      activityType: map["activityTypeName"].toString().toActivityType(),
+      amount: map["amount"],
+      chosenUnit: map["chosenUnit"].toString().toUnit(),
+      dateCompleted: DateTime.parse(map["dateCompleted"].toString()),
+    );
   }
 
   @override
   String toString() {
-    return 'Activity{activityTypeName: ${activityType.name}}';
+    return '''
+    Activity{
+    activityTypeName: ${activityType.name}, 
+    amount: $amount, 
+    chosenUnit: $chosenUnit, 
+    dateCompleted: $dateCompleted}
+    ''';
   }
 }
 
 extension ActivityTypeStringExtension on String {
-  ActivityType toActivityType() => kAllActivityTypes.firstWhere((element) => element.name == this);
+  ActivityType toActivityType() =>
+      kAllActivityTypes.firstWhere((element) => element.name == this);
 }
 
 class ActivityType {
@@ -60,16 +75,14 @@ class ActivityType {
 extension Activities on List<Activity> {
   Map<Activity, double> get distributeActivities {
     Map<Activity, double> finalMap = {};
-    forEach((element) =>
-    finalMap[element] =
-    !finalMap.containsKey(element) ? (1) : (finalMap[element]! + 1));
+    forEach((element) => finalMap[element] =
+        !finalMap.containsKey(element) ? (1) : (finalMap[element]! + 1));
     return finalMap;
   }
 }
 
 /// Provider
 class ActivityProvider extends ChangeNotifier {
-
   /// When making an activity
   static ActivityType? _currentActivityType;
 
