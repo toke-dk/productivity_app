@@ -21,7 +21,9 @@ class DataBaseService {
 
   // Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
+
   factory DataBaseService() => _dataBaseService;
+
   DataBaseService._internal();
 
   late Database _db;
@@ -34,8 +36,7 @@ class DataBaseService {
 
   /// Activity
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(
-        """
+    await db.execute("""
         CREATE TABLE $tableName(
         $columnId INTEGER PRIMARY KEY, 
         $columnActivityTypeName TEXT, 
@@ -51,8 +52,7 @@ class DataBaseService {
 
   Future<List<Activity>> getActivities(BuildContext context) async {
     final List<Map<String, dynamic>> maps = await _db.query(tableName);
-    return List.generate(
-        maps.length, (index) => Activity.fromMap(maps[index]));
+    return List.generate(maps.length, (index) => Activity.fromMap(maps[index]));
   }
 
   Future<void> deleteAll() async {
@@ -60,5 +60,4 @@ class DataBaseService {
   }
 
   /// Task
-
 }

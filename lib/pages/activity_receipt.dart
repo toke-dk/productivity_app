@@ -10,7 +10,8 @@ import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
 class ActivityReceipt extends StatelessWidget {
-  ActivityReceipt({super.key, this.activity, required this.onActivityComplete, this.task});
+  ActivityReceipt(
+      {super.key, this.activity, required this.onActivityComplete, this.task});
 
   final Activity? activity;
   final Task? task;
@@ -18,7 +19,6 @@ class ActivityReceipt extends StatelessWidget {
   final Function({Activity? activity, Task? task}) onActivityComplete;
 
   final DataBaseService _databaseService = DataBaseService();
-
 
   Future<void> addActivity(Activity activity) async {
     return await _databaseService.addActivity(activity);
@@ -29,9 +29,7 @@ class ActivityReceipt extends StatelessWidget {
     final finalTask = Column(
       children: [
         Text(
-          task != null
-              ? "Fuldført"
-              : activity!.chosenUnit.textForUnitMeasure,
+          task != null ? "Fuldført" : activity!.chosenUnit.textForUnitMeasure,
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(
@@ -100,7 +98,8 @@ class ActivityReceipt extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           DisplayActivityType(
-                              activityType: task?.activityType ?? activity!.activityType),
+                              activityType:
+                                  task?.activityType ?? activity!.activityType),
                           const SizedBox(
                             height: 20,
                           ),

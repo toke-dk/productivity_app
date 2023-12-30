@@ -53,11 +53,13 @@ class _MyThemeButtonState extends State<MyThemeButton> {
       child: InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
-        onTapDown: widget.onTap != null ? (TapDownDetails _) {
-          setState(() {
-            isToggled = true;
-          });
-        } : null,
+        onTapDown: widget.onTap != null
+            ? (TapDownDetails _) {
+                setState(() {
+                  isToggled = true;
+                });
+              }
+            : null,
         onTapUp: (_) => setState(() {
           isToggled = false;
         }),

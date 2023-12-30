@@ -10,7 +10,6 @@ class ShowTodayOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Container(
@@ -26,7 +25,8 @@ class ShowTodayOverview extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      DistributionBar(activities: activities,
+                      DistributionBar(
+                        activities: activities,
                       ),
                     ],
                   )
@@ -43,7 +43,6 @@ class ShowTodayOverview extends StatelessWidget {
     );
   }
 }
-
 
 class _QuickStatsText extends StatelessWidget {
   const _QuickStatsText({super.key});
@@ -92,4 +91,3 @@ class _QuickStatsText extends StatelessWidget {
     );
   }
 }
-

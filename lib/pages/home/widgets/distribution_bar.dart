@@ -11,38 +11,37 @@ class _ShowActivityTypeColors extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
         children: List.generate(typeCounts.length, (index) {
-          final ActivityType currentType = typeCounts.keys.toList()[index];
-          final int currentAmount = typeCounts.values.toList()[index];
-          return Column(
+      final ActivityType currentType = typeCounts.keys.toList()[index];
+      final int currentAmount = typeCounts.values.toList()[index];
+      return Column(
+        children: [
+          Row(
             children: [
-              Row(
+              DisplayActivityType(activityType: currentType),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  DisplayActivityType(activityType: currentType),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: 15,
-                        height: 8,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: currentType.color),
-                      ),
-                      Text(currentAmount.toString()),
-                    ],
-                  )
+                  Container(
+                    width: 15,
+                    height: 8,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: currentType.color),
+                  ),
+                  Text(currentAmount.toString()),
                 ],
-              ),
-              const SizedBox(
-                height: 10,
               )
             ],
-          );
-        }));
+          ),
+          const SizedBox(
+            height: 10,
+          )
+        ],
+      );
+    }));
   }
 }
 
@@ -50,7 +49,6 @@ class DistributionBar extends StatelessWidget {
   DistributionBar({super.key, required this.activities});
 
   final List<Activity> activities;
-
 
   final List<Color> barColors = [
     Colors.green,
@@ -86,7 +84,7 @@ class DistributionBar extends StatelessWidget {
 
   // makes the color list for gradients
   List<Color> makeGradientColors(
-      Map<ActivityType, double> activityTypeDistribution) =>
+          Map<ActivityType, double> activityTypeDistribution) =>
       activityTypeDistribution.keys
           .map((e) => [e.color!, e.color!])
           .expand((element) => element)
@@ -94,14 +92,13 @@ class DistributionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // counts occurrence of each type of activity
     Map<ActivityType, int> activityTypeCounter = {};
     for (var activity in activities) {
       activityTypeCounter[activity.activityType] =
-      !activityTypeCounter.containsKey(activity.activityType)
-          ? (1)
-          : (activityTypeCounter[activity.activityType]! + 1);
+          !activityTypeCounter.containsKey(activity.activityType)
+              ? (1)
+              : (activityTypeCounter[activity.activityType]! + 1);
     }
 
     // gives percentage to each type of activity
@@ -116,7 +113,6 @@ class DistributionBar extends StatelessWidget {
       activityTypeDistribution[currentActivityType] =
           activityTypeCounter.values.toList()[i] / activities.length;
     }
-
 
     return Column(
       children: [
