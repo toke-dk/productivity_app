@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
+import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/shared/allActivityTypes.dart';
 import 'package:provider/provider.dart';
@@ -121,3 +122,18 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class ActivityTypeCount {
+  int amountDone;
+  ActivityType activityType;
+
+  ActivityTypeCount({required this.amountDone, required this.activityType});
+}
+
+class ActivityTypeCountDate {
+  DateTime date;
+  List<ActivityTypeCount> activityTypeCounts;
+
+  ActivityTypeCountDate({required this.date, required this.activityTypeCounts});
+}
+
