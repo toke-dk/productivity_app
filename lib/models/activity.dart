@@ -54,25 +54,6 @@ class Activity {
   }
 }
 
-extension ActivityTypeStringExtension on String {
-  ActivityType toActivityType() =>
-      kAllActivityTypes.firstWhere((element) => element.name == this);
-}
-
-class ActivityType {
-  String name;
-  List<Units> possibleUnits;
-  Color? color;
-  Widget image;
-
-  ActivityType({
-    required this.name,
-    required this.possibleUnits,
-    required this.image,
-    this.color,
-  });
-}
-
 extension Activities on List<Activity> {
   Map<Activity, double> get distributeActivities {
     Map<Activity, double> finalMap = {};
@@ -123,6 +104,28 @@ class ActivityProvider extends ChangeNotifier {
   }
 }
 
+
+/// The [ActivityType] class describes what type of activities is done
+
+extension ActivityTypeStringExtension on String {
+  ActivityType toActivityType() =>
+      kAllActivityTypes.firstWhere((element) => element.name == this);
+}
+
+class ActivityType {
+  String name;
+  List<Units> possibleUnits;
+  Color? color;
+  Widget image;
+
+  ActivityType({
+    required this.name,
+    required this.possibleUnits,
+    required this.image,
+    this.color,
+  });
+}
+
 class ActivityTypeCount {
   int amountDone;
   ActivityType activityType;
@@ -136,4 +139,6 @@ class ActivityTypeCountDate {
 
   ActivityTypeCountDate({required this.date, required this.activityTypeCounts});
 }
+
+
 
