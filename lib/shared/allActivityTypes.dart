@@ -7,15 +7,25 @@ final List<ActivityType> kAllActivityTypes = [
   ActivityType(
       name: "Cykling",
       possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
-      image: Icon(Icons.directions_bike_outlined)),
+      image: const Icon(Icons.directions_bike_outlined)),
   ActivityType(
       name: "Armhævning",
       possibleUnits: [Units.unitLess],
-      image: Icon(Icons.fitness_center)),
+      image: const Icon(Icons.fitness_center)),
   ActivityType(
       name: "Læsning",
       possibleUnits: [Units.minutes, Units.hours],
-      image: Icon(Icons.chrome_reader_mode_outlined)),
+      image: const Icon(Icons.chrome_reader_mode_outlined)),
   ActivityType(
-      name: "Dummy", possibleUnits: [Units.unitLess], image: Placeholder())
+      name: "Squats",
+      possibleUnits: [Units.unitLess],
+      image: const Icon(Icons.chair_alt)),
+  ActivityType(
+      name: "Ingen Slik",
+      possibleUnits: [Units.unitLess],
+      image: const Icon(Icons.flag)),
+  ActivityType(
+      name: "Dummy",
+      possibleUnits: [Units.unitLess],
+      image: const Placeholder()),
 ];
