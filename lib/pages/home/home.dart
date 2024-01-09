@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/task.dart';
+import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActivityTypes.dart';
@@ -97,9 +98,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ),
+            FutureBuilder(
+              future: Future(() async => [await _getActivities(), await _getTasks()]),
+              builder: (context, snapshot) {
+                return snapshot.hasData ? ActionsList(
+                  activities: snapshot.data![0] as List<Activity>,
+                  tasks: snapshot.data![1] as List<Task>,
+                ) : Center(child: const CircularProgressIndicator());
+              }
+            ),
             IconButton(
                 onPressed: () => setState(() {}),
-                icon: const Icon(Icons.refresh))
+                icon: const Icon(Icons.refresh)),
           ],
         ));
   }
