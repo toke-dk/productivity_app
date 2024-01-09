@@ -76,6 +76,10 @@ class DataBaseService {
     await _db.execute("DROP TABLE $tableTaskName");
   }
 
+  Future<void> deleteAllTasks() async {
+    await _db.rawDelete("DELETE FROM $tableTaskName");
+  }
+
   Future<void> addTask(Task task) async {
     await _db.insert(tableTaskName, task.toMap());
   }

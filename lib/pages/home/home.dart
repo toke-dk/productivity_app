@@ -75,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
                 onPressed: () async {
                   await _databaseService.deleteAllActivities();
+                  await _databaseService.deleteAllTasks();
                   setState(() {});
                 },
                 icon: const Icon(Icons.delete))
