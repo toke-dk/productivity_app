@@ -24,6 +24,12 @@ final List<ActivityType> kAllActivityTypes = [
       name: "Ingen Slik",
       possibleUnits: [Units.unitLess],
       image: const Icon(Icons.flag)),
+  ActivityType(name: "Ingen Rød Kød",
+      possibleUnits: [Units.unitLess],
+      image: const Icon(Icons.no_food)),
+  ActivityType(name: "Vegetar",
+      possibleUnits: [Units.unitLess],
+      image: const Icon(Icons.breakfast_dining)),
   ActivityType(
       name: "Dummy",
       possibleUnits: [Units.unitLess],
