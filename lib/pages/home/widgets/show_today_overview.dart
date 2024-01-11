@@ -10,6 +10,12 @@ class ShowTodayOverview extends StatelessWidget {
 
   final Map<ActionType, int> actionTypeCounts;
 
+  int countAllActions (Map<ActionType, int> actionTypeCounts) {
+    int val = 0;
+    actionTypeCounts.forEach((key, value) {val+=value;});
+    return val;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +34,7 @@ class ShowTodayOverview extends StatelessWidget {
               },
             child: Column(
                 children: [
-                  const _QuickStatsText(),
+                  _QuickStatsText(amountOfTotalActions: countAllActions(actionTypeCounts),),
                   const SizedBox(
                     height: 20,
                   ),
@@ -52,7 +58,8 @@ class ShowTodayOverview extends StatelessWidget {
 }
 
 class _QuickStatsText extends StatelessWidget {
-  const _QuickStatsText({super.key});
+  const _QuickStatsText({super.key, required this.amountOfTotalActions});
+  final int amountOfTotalActions;
 
   @override
   Widget build(BuildContext context) {
@@ -66,34 +73,34 @@ class _QuickStatsText extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "X",
+                  amountOfTotalActions.toString(),
                   style: Theme.of(context)
                       .textTheme
                       .headlineLarge!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 const Text(
-                  " aktiviteter",
+                  " handlinger",
                 ),
               ],
             ),
-            const Row(
-              children: [
-                Text(
-                  "y aktiviteter",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(" mere end sidste uge"),
-              ],
-            )
+            // const Row(
+            //   children: [
+            //     Text(
+            //       "y aktiviteter",
+            //       style: TextStyle(fontWeight: FontWeight.bold),
+            //     ),
+            //     Text(" mere end sidste uge"),
+            //   ],
+            // )
           ],
         ),
-        DropdownButton(
-            underline: const SizedBox(),
-            items: const [
-              DropdownMenuItem(child: Text("Aktivitet")),
-            ],
-            onChanged: null)
+        // DropdownButton(
+        //     underline: const SizedBox(),
+        //     items: const [
+        //       DropdownMenuItem(child: Text("Aktivitet")),
+        //     ],
+        //     onChanged: null)
       ],
     );
   }
