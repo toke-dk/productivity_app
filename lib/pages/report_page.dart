@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 // Source: https://pub.dev/packages/fl_chart
 // Specific: https://github.com/imaNNeo/fl_chart/blob/main/repo_files/documentations/bar_chart.md
 
+/// Double chart example
+/// https://github.com/imaNNeo/fl_chart/blob/main/example/lib/presentation/samples/bar/bar_chart_sample7.dart
+
 class ReportPage extends StatefulWidget {
   ReportPage({super.key});
 
@@ -96,7 +99,7 @@ class ReportPageState extends State<ReportPage> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           borderSide: isTouched
-              ? BorderSide(color: widget.touchedBarColor,width: 4)
+              ? BorderSide(color: widget.touchedBarColor, width: 4)
               : const BorderSide(color: Colors.transparent),
         ),
       ],
