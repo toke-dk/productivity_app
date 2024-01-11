@@ -130,18 +130,18 @@ class ActionType {
   });
 }
 
-class ActivityTypeCount {
+class ActionTypeCount {
   int amountDone;
-  ActionType activityType;
+  ActionType actionType;
 
-  ActivityTypeCount({required this.amountDone, required this.activityType});
+  ActionTypeCount({required this.amountDone, required this.actionType});
 }
 
-class ActivityTypeCountDate {
+class ActionTypeCountDate {
   DateTime date;
-  List<ActivityTypeCount> activityTypeCounts;
+  List<ActionTypeCount> actionTypeCounts;
 
-  ActivityTypeCountDate({required this.date, required this.activityTypeCounts});
+  ActionTypeCountDate({required this.date, required this.actionTypeCounts});
 }
 
 
