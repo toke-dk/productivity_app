@@ -20,9 +20,9 @@ class ActionsList extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10), color: Colors.grey[100]),
       padding: EdgeInsets.all(12),
-      child: Column(
+      child: tasks.isEmpty && activities.isEmpty ? Text("Ingen handlinger endnu") : Column(
         children: [
-          Text("Akitviteter"),
+          activities.isNotEmpty ? Text("Akitviteter") : SizedBox(),
           Column(
             children: List.generate(activities.length, (index) {
               final Activity currActivity = activities[index];
@@ -31,22 +31,28 @@ class ActionsList extends StatelessWidget {
                 child: Row(
                   children: [
                     DisplayActionType(actionType: currActivity.activityType),
-                    Spacer(flex: 3,),
-                    Text(DateFormat("dd.MMM-yy").format(currActivity.dateCompleted).toString()),
-                    Spacer(flex: 1,),
+                    Spacer(
+                      flex: 3,
+                    ),
+                    Text(DateFormat("dd.MMM-yy")
+                        .format(currActivity.dateCompleted)
+                        .toString()),
+                    Spacer(
+                      flex: 1,
+                    ),
                     Text(currActivity.amount.toString()),
                     currActivity.chosenUnit.stringName != ""
                         ? Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Text(currActivity.chosenUnit.stringName),
-                        )
+                            padding: const EdgeInsets.only(left: 4),
+                            child: Text(currActivity.chosenUnit.stringName),
+                          )
                         : const SizedBox(),
                   ],
                 ),
               );
             }),
           ),
-          Text("Opgaver"),
+          tasks.isNotEmpty ? Text("Opgaver") : SizedBox(),
           Column(
             children: List.generate(tasks.length, (index) {
               final Task currActivity = tasks[index];
@@ -55,8 +61,12 @@ class ActionsList extends StatelessWidget {
                 child: Row(
                   children: [
                     DisplayActionType(actionType: currActivity.activityType),
-                    Spacer(flex: 3,),
-                    Text(DateFormat("dd.MMM-yy").format(currActivity.dateCompleted).toString()),
+                    Spacer(
+                      flex: 3,
+                    ),
+                    Text(DateFormat("dd.MMM-yy")
+                        .format(currActivity.dateCompleted)
+                        .toString()),
                   ],
                 ),
               );

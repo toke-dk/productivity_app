@@ -42,7 +42,7 @@ class ShowTodayOverview extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
-                  "Ingen aktiviteter i dag",
+                  "Ingen handlinger endnu",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
