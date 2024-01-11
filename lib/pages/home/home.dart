@@ -4,6 +4,7 @@ import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/activity.dart';
 import '../../models/unit.dart';
@@ -46,6 +47,15 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
+  launchFeedBackForm() async {
+    final Uri feedbackUrl = Uri.parse(
+        "https://docs.google.com/forms/d/e/1FAIpQLSehUorGGbMuzEKFkIiPL3srDSerNT2EpNyOtY1X1v3qBh6L_w/viewform");
+    if (!await launchUrl(feedbackUrl)) {
+      throw Exception("Could not launch $feedbackUrl");
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final List<ActionType> allActivityTypes = kAllActionTypes;
@@ -53,6 +63,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         floatingActionButton: AddActivitiesFAB(
           onActivityComplete: _onActivityComplete,
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(child: Text("Menu")),
+              ListTile(
+                title: Text("Feedback"),
+                onTap: launchFeedBackForm,
+                leading: Icon(Icons.open_in_new),
+              )
+            ],
+          ),
         ),
         appBar: AppBar(
           title: Text(widget.title),
@@ -85,7 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: [
             FutureBuilder(
-              future: Future(() async => makeActivityTypeCounts(activities: await _getActivities(), tasks: await _getTasks())),
+              future: Future(() async => makeActivityTypeCounts(
+                  activities: await _getActivities(),
+                  tasks: await _getTasks())),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   return ShowTodayOverview(
@@ -99,14 +123,16 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             FutureBuilder(
-              future: Future(() async => [await _getActivities(), await _getTasks()]),
-              builder: (context, snapshot) {
-                return snapshot.hasData ? ActionsList(
-                  activities: snapshot.data![0] as List<Activity>,
-                  tasks: snapshot.data![1] as List<Task>,
-                ) : Center(child: const CircularProgressIndicator());
-              }
-            ),
+                future: Future(
+                    () async => [await _getActivities(), await _getTasks()]),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                      ? ActionsList(
+                          activities: snapshot.data![0] as List<Activity>,
+                          tasks: snapshot.data![1] as List<Task>,
+                        )
+                      : Center(child: const CircularProgressIndicator());
+                }),
             IconButton(
                 onPressed: () => setState(() {}),
                 icon: const Icon(Icons.refresh)),
@@ -117,7 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Map<ActionType, int> makeActivityTypeCounts(
     {required List<Activity> activities, required List<Task> tasks}) {
-
   final List<ActionType> activityTypes = activities
       .map((e) => e.activityType)
       .toList()
