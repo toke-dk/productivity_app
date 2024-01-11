@@ -5,6 +5,7 @@ import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 
 import '../../models/activity.dart';
 import '../../models/unit.dart';
@@ -79,34 +80,29 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  _databaseService.addActivity(Activity(
-                      activityType: allActivityTypes[0],
-                      chosenUnit: Units.unitLess,
-                      amount: 42,
-                      dateCompleted: DateTime.now()));
-                  setState(() {});
-                },
-                icon: const Icon(Icons.bar_chart_rounded)),
-            IconButton(
-                onPressed: () async {
-                  print(
-                      "unique activity types: ${makeActivityTypeCounts(activities: await _getActivities(), tasks: await _getTasks())}");
-                },
-                icon: const Icon(Icons.hail)),
-            IconButton(
-                onPressed: () async {
-                  await _databaseService.deleteAllActivities();
-                  await _databaseService.deleteAllTasks();
-                  setState(() {});
-                },
-                icon: const Icon(Icons.delete))
-          ],
-        ),
+        appBar: AppBar(title: Text(widget.title), actions: [
+          Foundation.kDebugMode
+              ? IconButton(
+                  onPressed: () async {
+                    await _databaseService.addActivity(Activity(
+                        amount: 42,
+                        activityType: kAllActionTypes[0],
+                        chosenUnit: Units.kilometer,
+                        dateCompleted: DateTime.now()));
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.add_task))
+              : SizedBox(),
+          Foundation.kDebugMode
+              ? IconButton(
+                  onPressed: () async {
+                    await _databaseService.deleteAllActivities();
+                    await _databaseService.deleteAllTasks();
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.delete))
+              : SizedBox()
+        ]),
         body: Column(
           children: [
             FutureBuilder(
