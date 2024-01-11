@@ -91,8 +91,8 @@ class ActivityReceipt extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          DisplayActivityType(
-                              activityType:
+                          DisplayActionType(
+                              actionType:
                                   task?.activityType ?? activity!.activityType),
                           const SizedBox(
                             height: 20,

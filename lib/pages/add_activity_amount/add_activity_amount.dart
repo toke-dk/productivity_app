@@ -26,7 +26,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
   @override
   Widget build(BuildContext context) {
-    final ActivityType activityType =
+    final ActionType activityType =
         Provider.of<ActivityProvider>(context).getCurrentActivityType!;
 
     return Scaffold(
@@ -38,7 +38,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           const SizedBox(
             height: 15,
           ),
-          DisplayActivityType(activityType: activityType),
+          DisplayActionType(actionType: activityType),
           const Spacer(
             flex: 1,
           ),

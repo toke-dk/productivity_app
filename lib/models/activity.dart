@@ -6,12 +6,12 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/unit.dart';
-import 'package:productivity_app/shared/allActivityTypes.dart';
+import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:provider/provider.dart';
 
 class Activity {
   double amount;
-  ActivityType activityType;
+  ActionType activityType;
   Units chosenUnit;
   DateTime dateCompleted;
 
@@ -35,7 +35,7 @@ class Activity {
   /// want a constructor to create a new instance of your class
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
-      activityType: map["activityTypeName"].toString().toActivityType(),
+      activityType: map["activityTypeName"].toString().toActionType(),
       amount: map["amount"],
       chosenUnit: map["chosenUnit"].toString().toUnit(),
       dateCompleted: DateTime.parse(map["dateCompleted"].toString()),
@@ -66,11 +66,11 @@ extension Activities on List<Activity> {
 /// Provider
 class ActivityProvider extends ChangeNotifier {
   /// When making an activity
-  static ActivityType? _currentActivityType;
+  static ActionType? _currentActivityType;
 
-  ActivityType? get getCurrentActivityType => _currentActivityType;
+  ActionType? get getCurrentActivityType => _currentActivityType;
 
-  void setCurrentActivity(ActivityType newActivityType) {
+  void setCurrentActivity(ActionType newActivityType) {
     _currentActivityType = newActivityType;
     notifyListeners();
   }
@@ -105,14 +105,14 @@ class ActivityProvider extends ChangeNotifier {
 }
 
 
-/// The [ActivityType] class describes what type of activities is done
+/// The [ActionType] class describes what type of activities is done
 
 extension ActivityTypeStringExtension on String {
-  ActivityType toActivityType() =>
-      kAllActivityTypes.firstWhere((element) => element.name == this);
+  ActionType toActionType() =>
+      kAllActionTypes.firstWhere((element) => element.name == this);
 }
 
-class ActivityType {
+class ActionType {
   String name;
   List<Units> possibleUnits;
   Color? color;
@@ -120,7 +120,7 @@ class ActivityType {
   bool asTask;
   bool asActivity;
 
-  ActivityType({
+  ActionType({
     required this.name,
     required this.possibleUnits,
     required this.image,
@@ -132,7 +132,7 @@ class ActivityType {
 
 class ActivityTypeCount {
   int amountDone;
-  ActivityType activityType;
+  ActionType activityType;
 
   ActivityTypeCount({required this.amountDone, required this.activityType});
 }

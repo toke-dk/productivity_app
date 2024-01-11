@@ -5,7 +5,7 @@ import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.d
 import 'package:productivity_app/shared/widgets/activity_card.dart';
 import 'package:productivity_app/pages/choose_activity/widgets/search_appbar.dart';
 import 'package:productivity_app/pages/complete_task_page.dart';
-import 'package:productivity_app/shared/allActivityTypes.dart';
+import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:provider/provider.dart';
 
 class ChooseActivityScreen extends StatelessWidget {
@@ -17,13 +17,13 @@ class ChooseActivityScreen extends StatelessWidget {
   final bool isTask;
   final double horizontalPadding = 15;
 
-  void setCurrentActivityType(ActivityType activityType, BuildContext context) {
+  void setCurrentActivityType(ActionType activityType, BuildContext context) {
     Provider.of<ActivityProvider>(context, listen: false)
         .setCurrentActivity(activityType);
   }
 
   Future onActivityTypeTap(
-      {required ActivityType activityType, required BuildContext context}) {
+      {required ActionType activityType, required BuildContext context}) {
     setCurrentActivityType(activityType, context);
 
     return Navigator.pushReplacement(
@@ -40,7 +40,7 @@ class ChooseActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActivityType> allActivityTypes = kAllActivityTypes;
+    final List<ActionType> allActivityTypes = kAllActionTypes;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -82,7 +82,7 @@ class ChooseActivityScreen extends StatelessWidget {
                           : allActivityTypes
                               .where((element) => element.asActivity)
                               .toList(),
-                      onTap: (ActivityType activityType) => onActivityTypeTap(
+                      onTap: (ActionType activityType) => onActivityTypeTap(
                           activityType: activityType, context: context)),
                 ],
               )
@@ -101,9 +101,9 @@ class ActivityTypesGridView extends StatelessWidget {
       this.maxRows,
       required this.onTap});
 
-  final List<ActivityType> activityTypes;
+  final List<ActionType> activityTypes;
   final int? maxRows;
-  final Function(ActivityType activityType) onTap;
+  final Function(ActionType activityType) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +123,8 @@ class ActivityTypesGridView extends StatelessWidget {
       children: List.generate(
           amountOfGenerates,
           (index) => ActivityCard(
-                activityType: activityTypes[index],
-                onTap: (ActivityType activityType) =>
+                actionType: activityTypes[index],
+                onTap: (ActionType activityType) =>
                     onTap(activityTypes[index]),
               )),
     );

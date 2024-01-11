@@ -43,7 +43,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ActivityType activityType =
+    final ActionType actionType =
         Provider.of<ActivityProvider>(context).getCurrentActivityType!;
 
     return Scaffold(
@@ -74,7 +74,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                           MaterialPageRoute(
                               builder: (context) => ActivityReceipt(
                                     task: Task(
-                                        activityType: activityType,
+                                        activityType: actionType,
                                         dateCompleted: DateTime.now()),
                                     onActivityComplete:
                                         widget.onActivityComplete,
@@ -141,13 +141,13 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                   child: ClipOval(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: activityType.image,
+                    child: actionType.image,
                   )),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
-                Text(activityType.name)
+                Text(actionType.name)
               ],
             )
           ],

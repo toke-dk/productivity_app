@@ -7,19 +7,19 @@ import '../../../widgets/display_activity_type.dart';
 class _ShowActivityTypeColors extends StatelessWidget {
   const _ShowActivityTypeColors({super.key, required this.typeCounts});
 
-  final Map<ActivityType, int> typeCounts;
+  final Map<ActionType, int> typeCounts;
 
   @override
   Widget build(BuildContext context) {
     return Column(
         children: List.generate(typeCounts.length, (index) {
-      final ActivityType currentType = typeCounts.keys.toList()[index];
+      final ActionType currentType = typeCounts.keys.toList()[index];
       final int currentAmount = typeCounts.values.toList()[index];
       return Column(
         children: [
           Row(
             children: [
-              DisplayActivityType(activityType: currentType),
+              DisplayActionType(actionType: currentType),
               const Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -48,7 +48,7 @@ class _ShowActivityTypeColors extends StatelessWidget {
 class DistributionBar extends StatelessWidget {
   DistributionBar({super.key, required this.activityTypeCounts});
 
-  final Map<ActivityType, int> activityTypeCounts;
+  final Map<ActionType, int> activityTypeCounts;
 
   final List<Color> barColors = [
     Colors.green,
@@ -60,7 +60,7 @@ class DistributionBar extends StatelessWidget {
   ];
 
   // makes the percentage list for the gradient
-  List<double> makeStops(Map<ActivityType, double> activityTypeDistribution) {
+  List<double> makeStops(Map<ActionType, double> activityTypeDistribution) {
     List<double> percentageDuplicateList = [];
 
     for (var i = 0; i < activityTypeDistribution.length; i++) {
@@ -84,7 +84,7 @@ class DistributionBar extends StatelessWidget {
 
   // makes the color list for gradients
   List<Color> makeGradientColors(
-          Map<ActivityType, double> activityTypeDistribution) =>
+          Map<ActionType, double> activityTypeDistribution) =>
       activityTypeDistribution.keys
           .map((e) => [e.color!, e.color!])
           .expand((element) => element)
@@ -94,9 +94,9 @@ class DistributionBar extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // gives percentage to each type of activity
-    Map<ActivityType, double> activityTypeDistribution = {};
+    Map<ActionType, double> activityTypeDistribution = {};
     for (var i = 0; i < activityTypeCounts.length; i++) {
-      ActivityType currentActivityType = activityTypeCounts.keys.toList()[i];
+      ActionType currentActivityType = activityTypeCounts.keys.toList()[i];
 
       // set the color for the type
       currentActivityType.color = barColors[i];

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
 
-class DisplayActivityType extends StatelessWidget {
-  const DisplayActivityType(
+class DisplayActionType extends StatelessWidget {
+  const DisplayActionType(
       {super.key,
-      required this.activityType,
+      required this.actionType,
       this.axisDirection = Axis.horizontal});
 
-  final ActivityType activityType;
+  final ActionType actionType;
   final Axis axisDirection;
 
   @override
@@ -18,14 +18,14 @@ class DisplayActivityType extends StatelessWidget {
         child: ClipOval(
             child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: activityType.image,
+          child: actionType.image,
         )),
       ),
       SizedBox(
         width: axisDirection == Axis.horizontal ? 10 : 0,
         height: axisDirection == Axis.vertical ? 10 : 0,
       ),
-      Text(activityType.name)
+      Text(actionType.name)
     ];
 
     return axisDirection == Axis.horizontal

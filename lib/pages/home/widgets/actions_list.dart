@@ -30,7 +30,7 @@ class ActionsList extends StatelessWidget {
                 padding: EdgeInsets.only(top: index != 0 ? 12 : 0),
                 child: Row(
                   children: [
-                    DisplayActivityType(activityType: currActivity.activityType),
+                    DisplayActionType(actionType: currActivity.activityType),
                     Spacer(flex: 3,),
                     Text(DateFormat("dd.MMM-yy").format(currActivity.dateCompleted).toString()),
                     Spacer(flex: 1,),
@@ -54,7 +54,7 @@ class ActionsList extends StatelessWidget {
                 padding: EdgeInsets.only(top: index != 0 ? 12 : 0),
                 child: Row(
                   children: [
-                    DisplayActivityType(activityType: currActivity.activityType),
+                    DisplayActionType(actionType: currActivity.activityType),
                     Spacer(flex: 3,),
                     Text(DateFormat("dd.MMM-yy").format(currActivity.dateCompleted).toString()),
                   ],

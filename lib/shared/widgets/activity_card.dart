@@ -6,15 +6,15 @@ import '../../models/activity.dart';
 
 class ActivityCard extends StatelessWidget {
   const ActivityCard(
-      {super.key, required this.activityType, required this.onTap});
+      {super.key, required this.actionType, required this.onTap});
 
-  final ActivityType activityType;
-  final Function(ActivityType activityType) onTap;
+  final ActionType actionType;
+  final Function(ActionType actionType) onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap(activityType),
+      onTap: () => onTap(actionType),
       splashColor: Colors.transparent,
       child: Container(
           decoration: BoxDecoration(
@@ -22,8 +22,8 @@ class ActivityCard extends StatelessWidget {
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
           ),
-          child: DisplayActivityType(
-            activityType: activityType,
+          child: DisplayActionType(
+            actionType: actionType,
             axisDirection: Axis.vertical,
           )),
     );

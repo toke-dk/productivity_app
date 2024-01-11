@@ -8,7 +8,7 @@ import 'distribution_bar.dart';
 class ShowTodayOverview extends StatelessWidget {
   const ShowTodayOverview({super.key, required this.activityTypeCounts});
 
-  final Map<ActivityType, int> activityTypeCounts;
+  final Map<ActionType, int> activityTypeCounts;
 
   @override
   Widget build(BuildContext context) {

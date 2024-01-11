@@ -3,7 +3,7 @@ import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
-import 'package:productivity_app/shared/allActivityTypes.dart';
+import 'package:productivity_app/shared/allActionTypes.dart';
 
 import '../../models/activity.dart';
 import '../../models/unit.dart';
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActivityType> allActivityTypes = kAllActivityTypes;
+    final List<ActionType> allActivityTypes = kAllActionTypes;
 
     return Scaffold(
         floatingActionButton: AddActivitiesFAB(
@@ -115,15 +115,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Map<ActivityType, int> makeActivityTypeCounts(
+Map<ActionType, int> makeActivityTypeCounts(
     {required List<Activity> activities, required List<Task> tasks}) {
 
-  final List<ActivityType> activityTypes = activities
+  final List<ActionType> activityTypes = activities
       .map((e) => e.activityType)
       .toList()
     ..addAll(tasks.map((e) => e.activityType));
 
-  Map<ActivityType, int> activityTypeCounter = {};
+  Map<ActionType, int> activityTypeCounter = {};
 
   for (var activityType in activityTypes) {
     activityTypeCounter[activityType] =
