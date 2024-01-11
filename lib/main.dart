@@ -16,6 +16,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  String makeWelcomeMessage(DateTime date) {
+    if (date.hour> 4 && date.hour <= 10) {
+      return "God morgen";
+    } else if (date.hour > 10 && date.hour <= 11) {
+      return "God formiddag";
+    } else if (date.hour > 11 && date.hour <= 16) {
+      return "God eftermiddag";
+    } else return "God aften";
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -28,7 +38,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
           useMaterial3: true,
         ),
-        home: MyHomePage(title: 'Velkommen'),
+        home: MyHomePage(title: "${makeWelcomeMessage(DateTime.now())}, Anja"),
       ),
     );
   }

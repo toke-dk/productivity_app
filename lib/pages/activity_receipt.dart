@@ -106,7 +106,7 @@ class ActivityReceipt extends StatelessWidget {
                             height: 10,
                           ),
                           const Text(
-                            "Navn",
+                            "Anja A. Hansen",
                           ),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
