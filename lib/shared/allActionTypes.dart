@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart' as Foundation;
 import '../models/activity.dart';
 import '../models/unit.dart';
 
@@ -35,8 +35,4 @@ final List<ActionType> kAllActionTypes = [
       name: "Vegetar",
       possibleUnits: [Units.unitLess],
       image: const Icon(Icons.breakfast_dining)),
-  ActionType(
-      name: "Dummy",
-      possibleUnits: [Units.unitLess],
-      image: const Placeholder()),
 ];
