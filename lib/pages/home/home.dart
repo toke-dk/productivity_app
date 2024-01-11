@@ -26,7 +26,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    _databaseService.initDatabase();
+    print("init");
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await _databaseService.initDatabase();
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -54,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception("Could not launch $feedbackUrl");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
