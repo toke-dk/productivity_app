@@ -39,7 +39,7 @@ class ActivityReceipt extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    activity!.activityType.possibleUnits[0].stringName,
+                    activity!.actionType.possibleUnits[0].stringName,
                     style: const TextStyle(color: Colors.transparent),
                   ),
                   Text(
@@ -49,11 +49,11 @@ class ActivityReceipt extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  activity!.activityType.possibleUnits[0] != Units.unitLess
+                  activity!.actionType.possibleUnits[0] != Units.unitLess
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Text(activity!
-                              .activityType.possibleUnits[0].stringName))
+                              .actionType.possibleUnits[0].stringName))
                       : const SizedBox(),
                 ],
               ),
@@ -93,7 +93,7 @@ class ActivityReceipt extends StatelessWidget {
                         children: [
                           DisplayActionType(
                               actionType:
-                                  task?.activityType ?? activity!.activityType),
+                                  task?.actionType ?? activity!.actionType),
                           const SizedBox(
                             height: 20,
                           ),

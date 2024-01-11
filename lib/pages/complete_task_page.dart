@@ -44,7 +44,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
   @override
   Widget build(BuildContext context) {
     final ActionType actionType =
-        Provider.of<ActivityProvider>(context).getCurrentActivityType!;
+        Provider.of<ActivityProvider>(context).getCurrentActionType!;
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +74,7 @@ class _CompleteTaskPageState extends State<CompleteTaskPage> {
                           MaterialPageRoute(
                               builder: (context) => ActivityReceipt(
                                     task: Task(
-                                        activityType: actionType,
+                                        actionType: actionType,
                                         dateCompleted: DateTime.now()),
                                     onActivityComplete:
                                         widget.onActivityComplete,

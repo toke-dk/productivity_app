@@ -17,14 +17,14 @@ class ChooseActivityScreen extends StatelessWidget {
   final bool isTask;
   final double horizontalPadding = 15;
 
-  void setCurrentActivityType(ActionType activityType, BuildContext context) {
+  void setCurrentActionType(ActionType actionType, BuildContext context) {
     Provider.of<ActivityProvider>(context, listen: false)
-        .setCurrentActivity(activityType);
+        .setCurrentActivity(actionType);
   }
 
-  Future onActivityTypeTap(
-      {required ActionType activityType, required BuildContext context}) {
-    setCurrentActivityType(activityType, context);
+  Future onActionTypeTap(
+      {required ActionType actionType, required BuildContext context}) {
+    setCurrentActionType(actionType, context);
 
     return Navigator.pushReplacement(
         context,
@@ -40,7 +40,7 @@ class ChooseActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActionType> allActivityTypes = kAllActionTypes;
+    final List<ActionType> allActionTypes = kAllActionTypes;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -61,11 +61,11 @@ class ChooseActivityScreen extends StatelessWidget {
                   //       EdgeInsets.symmetric(horizontal: horizontalPadding),
                   //   child: const Text("Anbefalet"),
                   // ),
-                  // ActivityTypesGridView(
+                  // ActionTypesGridView(
                   //     maxRows: 1,
-                  //     activityTypes: allActivityTypes,
-                  //     onTap: (ActivityType activityType) => onActivityTypeTap(
-                  //         activityType: activityType, context: context)),
+                  //     actionTypes: allActionTypes,
+                  //     onTap: (ActionType actionType) => onActionTypeTap(
+                  //         actionType: actionType, context: context)),
                   // const SizedBox(
                   //   height: 20,
                   // ),
@@ -74,16 +74,16 @@ class ChooseActivityScreen extends StatelessWidget {
                         EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: const Text("Alle"),
                   ),
-                  ActivityTypesGridView(
-                      activityTypes: isTask
-                          ? allActivityTypes
+                  ActionTypesGridView(
+                      actionTypes: isTask
+                          ? allActionTypes
                               .where((element) => element.asTask)
                               .toList()
-                          : allActivityTypes
+                          : allActionTypes
                               .where((element) => element.asActivity)
                               .toList(),
-                      onTap: (ActionType activityType) => onActivityTypeTap(
-                          activityType: activityType, context: context)),
+                      onTap: (ActionType actionType) => onActionTypeTap(
+                          actionType: actionType, context: context)),
                 ],
               )
             ],
@@ -94,21 +94,21 @@ class ChooseActivityScreen extends StatelessWidget {
   }
 }
 
-class ActivityTypesGridView extends StatelessWidget {
-  const ActivityTypesGridView(
+class ActionTypesGridView extends StatelessWidget {
+  const ActionTypesGridView(
       {super.key,
-      required this.activityTypes,
+      required this.actionTypes,
       this.maxRows,
       required this.onTap});
 
-  final List<ActionType> activityTypes;
+  final List<ActionType> actionTypes;
   final int? maxRows;
-  final Function(ActionType activityType) onTap;
+  final Function(ActionType actionType) onTap;
 
   @override
   Widget build(BuildContext context) {
     int crossCount = 3;
-    int listLength = activityTypes.length;
+    int listLength = actionTypes.length;
     int amountOfGenerates =
         maxRows == null || (listLength / crossCount).ceil() < maxRows!
             ? listLength
@@ -123,9 +123,9 @@ class ActivityTypesGridView extends StatelessWidget {
       children: List.generate(
           amountOfGenerates,
           (index) => ActivityCard(
-                actionType: activityTypes[index],
-                onTap: (ActionType activityType) =>
-                    onTap(activityTypes[index]),
+                actionType: actionTypes[index],
+                onTap: (ActionType actionType) =>
+                    onTap(actionTypes[index]),
               )),
     );
   }

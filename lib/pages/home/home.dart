@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ActionType> allActivityTypes = kAllActionTypes;
+    final List<ActionType> allActionTypes = kAllActionTypes;
 
     return Scaffold(
         floatingActionButton: AddActivitiesFAB(
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     await _databaseService.addActivity(Activity(
                         amount: 42,
-                        activityType: kAllActionTypes[0],
+                        actionType: kAllActionTypes[0],
                         chosenUnit: Units.kilometer,
                         dateCompleted: DateTime.now()));
                     setState(() {});
@@ -106,13 +106,13 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(
           children: [
             FutureBuilder(
-              future: Future(() async => makeActivityTypeCounts(
+              future: Future(() async => makeActionTypeCounts(
                   activities: await _getActivities(),
                   tasks: await _getTasks())),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.hasData) {
                   return ShowTodayOverview(
-                    activityTypeCounts: snapshot.data!,
+                    actionTypeCounts: snapshot.data!,
                   );
                 } else {
                   return const Center(
@@ -140,21 +140,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Map<ActionType, int> makeActivityTypeCounts(
+Map<ActionType, int> makeActionTypeCounts(
     {required List<Activity> activities, required List<Task> tasks}) {
-  final List<ActionType> activityTypes = activities
-      .map((e) => e.activityType)
+  final List<ActionType> actionTypes = activities
+      .map((e) => e.actionType)
       .toList()
-    ..addAll(tasks.map((e) => e.activityType));
+    ..addAll(tasks.map((e) => e.actionType));
 
-  Map<ActionType, int> activityTypeCounter = {};
+  Map<ActionType, int> actionTypeCounter = {};
 
-  for (var activityType in activityTypes) {
-    activityTypeCounter[activityType] =
-        !activityTypeCounter.containsKey(activityType)
+  for (var actionType in actionTypes) {
+    actionTypeCounter[actionType] =
+        !actionTypeCounter.containsKey(actionType)
             ? (1)
-            : (activityTypeCounter[activityType]! + 1);
+            : (actionTypeCounter[actionType]! + 1);
   }
 
-  return activityTypeCounter;
+  return actionTypeCounter;
 }

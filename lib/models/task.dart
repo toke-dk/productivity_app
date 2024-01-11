@@ -1,21 +1,21 @@
 import 'package:productivity_app/models/activity.dart';
 
 class Task {
-  ActionType activityType;
+  ActionType actionType;
   DateTime dateCompleted;
 
-  Task({required this.activityType, required this.dateCompleted});
+  Task({required this.actionType, required this.dateCompleted});
 
   Map<String, dynamic> toMap() {
     return {
-      'activityTypeName': activityType.name,
+      'activityTypeName': actionType.name,
       'dateCompleted': dateCompleted.toString(),
     };
   }
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
-        activityType: map["activityTypeName"].toString().toActionType(),
+        actionType: map["activityTypeName"].toString().toActionType(),
         dateCompleted: DateTime.parse(map["dateCompleted"].toString()));
   }
 }

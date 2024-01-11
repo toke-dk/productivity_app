@@ -30,7 +30,7 @@ class ActionsList extends StatelessWidget {
                 padding: EdgeInsets.only(top: index != 0 ? 12 : 0),
                 child: Row(
                   children: [
-                    DisplayActionType(actionType: currActivity.activityType),
+                    DisplayActionType(actionType: currActivity.actionType),
                     Spacer(
                       flex: 3,
                     ),
@@ -60,7 +60,7 @@ class ActionsList extends StatelessWidget {
                 padding: EdgeInsets.only(top: index != 0 ? 12 : 0),
                 child: Row(
                   children: [
-                    DisplayActionType(actionType: currActivity.activityType),
+                    DisplayActionType(actionType: currActivity.actionType),
                     Spacer(
                       flex: 3,
                     ),

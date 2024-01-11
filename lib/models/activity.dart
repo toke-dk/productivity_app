@@ -11,20 +11,20 @@ import 'package:provider/provider.dart';
 
 class Activity {
   double amount;
-  ActionType activityType;
+  ActionType actionType;
   Units chosenUnit;
   DateTime dateCompleted;
 
   Activity({
     required this.amount,
-    required this.activityType,
+    required this.actionType,
     required this.chosenUnit,
     required this.dateCompleted,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'activityTypeName': activityType.name,
+      'activityTypeName': actionType.name,
       'amount': amount,
       'chosenUnit':chosenUnit.name.toString(),
       'dateCompleted': dateCompleted.toString(),
@@ -35,7 +35,7 @@ class Activity {
   /// want a constructor to create a new instance of your class
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
-      activityType: map["activityTypeName"].toString().toActionType(),
+      actionType: map["activityTypeName"].toString().toActionType(),
       amount: map["amount"],
       chosenUnit: map["chosenUnit"].toString().toUnit(),
       dateCompleted: DateTime.parse(map["dateCompleted"].toString()),
@@ -46,7 +46,7 @@ class Activity {
   String toString() {
     return '''
     Activity{
-    activityTypeName: ${activityType.name}, 
+    activityTypeName: ${actionType.name}, 
     amount: $amount, 
     chosenUnit: $chosenUnit, 
     dateCompleted: $dateCompleted}
@@ -66,12 +66,12 @@ extension Activities on List<Activity> {
 /// Provider
 class ActivityProvider extends ChangeNotifier {
   /// When making an activity
-  static ActionType? _currentActivityType;
+  static ActionType? _currentActionType;
 
-  ActionType? get getCurrentActivityType => _currentActivityType;
+  ActionType? get getCurrentActionType => _currentActionType;
 
-  void setCurrentActivity(ActionType newActivityType) {
-    _currentActivityType = newActivityType;
+  void setCurrentActivity(ActionType newActionType) {
+    _currentActionType = newActionType;
     notifyListeners();
   }
 
@@ -107,7 +107,7 @@ class ActivityProvider extends ChangeNotifier {
 
 /// The [ActionType] class describes what type of activities is done
 
-extension ActivityTypeStringExtension on String {
+extension ActionTypeStringExtension on String {
   ActionType toActionType() =>
       kAllActionTypes.firstWhere((element) => element.name == this);
 }

@@ -6,9 +6,9 @@ import '../../../models/activity.dart';
 import 'distribution_bar.dart';
 
 class ShowTodayOverview extends StatelessWidget {
-  const ShowTodayOverview({super.key, required this.activityTypeCounts});
+  const ShowTodayOverview({super.key, required this.actionTypeCounts});
 
-  final Map<ActionType, int> activityTypeCounts;
+  final Map<ActionType, int> actionTypeCounts;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ShowTodayOverview extends StatelessWidget {
           boxShadow: [kMyThemedBoxShadow],
           color: Colors.grey[100],
           borderRadius: BorderRadius.circular(14)),
-      child: activityTypeCounts.isNotEmpty
+      child: actionTypeCounts.isNotEmpty
           ? InkWell(
             onTap: () {
               print("tap");
@@ -33,7 +33,7 @@ class ShowTodayOverview extends StatelessWidget {
                     height: 20,
                   ),
                   DistributionBar(
-                    activityTypeCounts: activityTypeCounts,
+                    actionTypeCounts: actionTypeCounts,
                   ),
                 ],
               ),

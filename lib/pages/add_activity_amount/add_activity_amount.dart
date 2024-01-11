@@ -26,8 +26,8 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
   @override
   Widget build(BuildContext context) {
-    final ActionType activityType =
-        Provider.of<ActivityProvider>(context).getCurrentActivityType!;
+    final ActionType actionType =
+        Provider.of<ActivityProvider>(context).getCurrentActionType!;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,12 +38,12 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           const SizedBox(
             height: 15,
           ),
-          DisplayActionType(actionType: activityType),
+          DisplayActionType(actionType: actionType),
           const Spacer(
             flex: 1,
           ),
           Text(
-            activityType.possibleUnits[0].textForUnitMeasure,
+            actionType.possibleUnits[0].textForUnitMeasure,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(
@@ -61,7 +61,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
               Row(
                 children: [
                   Text(
-                    activityType.possibleUnits[0].stringName,
+                    actionType.possibleUnits[0].stringName,
                     style: const TextStyle(color: Colors.transparent),
                   ),
                   !isStringEmpty(typedString)
@@ -78,11 +78,11 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                   const SizedBox(
                     width: 5,
                   ),
-                  activityType.possibleUnits[0] != Units.unitLess
+                  actionType.possibleUnits[0] != Units.unitLess
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Text(
-                              activityType.possibleUnits[0].stringName),
+                              actionType.possibleUnits[0].stringName),
                         )
                       : const SizedBox(),
                 ],
@@ -115,11 +115,11 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                                 activity: Activity(
                                     amount: double.parse(
                                         typedString.replaceAll(",", ".")),
-                                    activityType: activityType,
+                                    actionType: actionType,
 
                                     //// TODO: Make this right
                                     chosenUnit:
-                                        activityType.possibleUnits[0], dateCompleted: DateTime.now()), onActivityComplete: widget.onActivityComplete,
+                                        actionType.possibleUnits[0], dateCompleted: DateTime.now()), onActivityComplete: widget.onActivityComplete,
                               )))
                   : null,
               changeTypedString: (String newString) {
