@@ -56,26 +56,32 @@ class ChooseActivityScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalPadding),
-                    child: const Text("Anbefalet"),
-                  ),
-                  ActivityTypesGridView(
-                      maxRows: 1,
-                      activityTypes: allActivityTypes,
-                      onTap: (ActivityType activityType) => onActivityTypeTap(
-                          activityType: activityType, context: context)),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  // Padding(
+                  //   padding:
+                  //       EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  //   child: const Text("Anbefalet"),
+                  // ),
+                  // ActivityTypesGridView(
+                  //     maxRows: 1,
+                  //     activityTypes: allActivityTypes,
+                  //     onTap: (ActivityType activityType) => onActivityTypeTap(
+                  //         activityType: activityType, context: context)),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
                   Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: const Text("Alle"),
                   ),
                   ActivityTypesGridView(
-                      activityTypes: allActivityTypes,
+                      activityTypes: isTask
+                          ? allActivityTypes
+                              .where((element) => element.asTask)
+                              .toList()
+                          : allActivityTypes
+                              .where((element) => element.asActivity)
+                              .toList(),
                       onTap: (ActivityType activityType) => onActivityTypeTap(
                           activityType: activityType, context: context)),
                 ],

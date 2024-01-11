@@ -117,12 +117,16 @@ class ActivityType {
   List<Units> possibleUnits;
   Color? color;
   Widget image;
+  bool asTask;
+  bool asActivity;
 
   ActivityType({
     required this.name,
     required this.possibleUnits,
     required this.image,
     this.color,
+    this.asTask = true,
+    this.asActivity = true,
   });
 }
 
