@@ -28,6 +28,19 @@ extension UnitsExtension on Units {
         return "minutter";
     }
   }
+
+  String get shortStringName {
+    switch (this) {
+      case Units.unitLess:
+        return "";
+      case Units.kilometer:
+        return "km";
+      case Units.hours:
+        return "t";
+      case Units.minutes:
+        return "m";
+    }
+  }
 }
 
 extension UnitStringExtension on String {

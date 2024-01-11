@@ -41,10 +41,10 @@ class ActionsList extends StatelessWidget {
                       flex: 1,
                     ),
                     Text(currActivity.amount.toString()),
-                    currActivity.chosenUnit.stringName != ""
+                    currActivity.chosenUnit.shortStringName != ""
                         ? Padding(
                             padding: const EdgeInsets.only(left: 4),
-                            child: Text(currActivity.chosenUnit.stringName),
+                            child: Text(currActivity.chosenUnit.shortStringName),
                           )
                         : const SizedBox(),
                   ],
