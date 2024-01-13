@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
+import 'package:productivity_app/shared/date_time_extension.dart';
 
 import '../../models/activity.dart';
 import '../../shared/widgets/activity_card.dart';
@@ -20,6 +23,13 @@ class _AddGoalPageState extends State<AddGoalPage> {
   int? _selectedIndex;
 
   GoalTypeFormats? _selectedFormat;
+
+  DateTime _selectedStartDate = DateTime.now();
+  DateTime _selectedEndDate = DateTime.now().add(1.days);
+
+  bool doesStartEndDateConflict() =>
+      _selectedStartDate.isAfter(_selectedEndDate) ||
+      _selectedStartDate.isSameDate(_selectedEndDate);
 
   bool nextButtonDisabled() {
     if (_currentStepIndex == 0 && _selectedActionType == null)
@@ -87,8 +97,76 @@ class _AddGoalPageState extends State<AddGoalPage> {
                         _selectedFormat = GoalTypeFormats.checkMark;
                       });
                   },
-                )
+                ),
               ],
+            )),
+        Step(
+            title: Text("Specifikationer"),
+            content: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text("Start Dato"),
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          initialDate: _selectedStartDate);
+                      if (pickedDate != null &&
+                          pickedDate != _selectedStartDate) {
+                        setState(() {
+                          _selectedStartDate = pickedDate;
+                        });
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: doesStartEndDateConflict() ? Colors.red[100] : null,
+                          borderRadius: BorderRadius.circular(3),
+                          border: Border.all(color: Colors.grey[900]!)),
+                      child: Row(
+                        children: [
+                          Text(DateFormat("EEE. dd. MMM. yyyy")
+                              .format(_selectedStartDate)),
+                          Spacer(),
+                          doesStartEndDateConflict() ? Icon(Icons.warning, color: Colors.red,) : SizedBox()
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text("Slut Dato"),
+                  GestureDetector(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                          initialDate: _selectedEndDate);
+                      if (pickedDate != null &&
+                          pickedDate != _selectedEndDate) {
+                        setState(() {
+                          _selectedEndDate = pickedDate;
+                        });
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          border: Border.all(color: Colors.grey[900]!)),
+                      child: Text(DateFormat("EEE. dd. MMM. yyyy")
+                          .format(_selectedEndDate)),
+                    ),
+                  ),
+                ],
+              ),
             ))
       ];
 
@@ -134,7 +212,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
               ),
           currentStep: _currentStepIndex,
           onStepContinue: () {
-            if (_currentStepIndex <= 0) {
+            if (_currentStepIndex < _steps().length - 1) {
               setState(() {
                 _currentStepIndex += 1;
               });
