@@ -45,7 +45,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
     else if (_currentStepIndex == 1 && _selectedFormat == null)
       return true;
     else if ((_currentStepIndex == 2 && doesStartEndDateConflict()) ||
-        (_currentStepIndex == 2 && _selectedTotalAmount == null)) return true;
+        (_currentStepIndex == 2 &&
+            _selectedTotalAmount == null &&
+            _selectedFormat == GoalTypeFormats.typing)) return true;
     return false;
   }
 
@@ -199,78 +201,90 @@ class _AddGoalPageState extends State<AddGoalPage> {
                   SizedBox(
                     height: 18,
                   ),
-                  Text("Dage om ugen ($_selectedDaysPerWeek)"),
-                  Row(
-                    children: [
-                      Text("1"),
-                      Expanded(
-                        child: Slider(
-                            min: 1,
-                            max: 7,
-                            value: _selectedDaysPerWeek.toDouble(),
-                            divisions: 7,
-                            label: _selectedDaysPerWeek.toString(),
-                            onChanged: (double newVal) {
-                              setState(() {
-                                _selectedDaysPerWeek = newVal.toInt();
-                              });
-                            }),
-                      ),
-                      Text("7")
-                    ],
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Antal i alt"),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            child: TextField(
-                              onChanged: (String newVal) => setState(() {
-                                _selectedTotalAmount =
-                                    newVal != "" ? int.parse(newVal) : null;
-                              }),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              textAlign: TextAlign.center,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  hintText: "Eks. 42",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )),
+                  _selectedFormat != GoalTypeFormats.checkMark
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Antal i alt"),
+                            SizedBox(
+                              height: 8,
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          _selectedActionType != null
-                              ? DropdownMenu(
-                                  onSelected: (String? newVal) =>
-                                      _selectedUnit = newVal?.toUnitFromStringName() ?? null,
-                                  initialSelection: _selectedActionType!
-                                      .possibleUnits[0].stringName,
-                                  dropdownMenuEntries: _selectedActionType!
-                                      .possibleUnits
-                                      .map((e) => e.stringName)
-                                      .map<DropdownMenuEntry<String>>(
-                                          (String val) => DropdownMenuEntry(
-                                              value: val, label: val))
-                                      .toList())
-                              : SizedBox(),
-                        ],
-                      ),
-                    ],
-                  )
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 100,
+                                  child: TextField(
+                                    onChanged: (String newVal) => setState(() {
+                                      _selectedTotalAmount = newVal != ""
+                                          ? int.parse(newVal)
+                                          : null;
+                                    }),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                        hintText: "Eks. 42",
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                _selectedActionType != null &&
+                                        (_selectedActionType!.possibleUnits.toList()
+                                              ..removeWhere((Units unit) =>
+                                                  unit == Units.unitLess))
+                                            .isNotEmpty
+                                    ? DropdownMenu(
+                                        onSelected: (String? newVal) => _selectedUnit =
+                                            newVal?.toUnitFromStringName() ??
+                                                null,
+                                        initialSelection: _selectedActionType!
+                                            .possibleUnits[0].stringName,
+                                        dropdownMenuEntries: _selectedActionType!
+                                            .possibleUnits
+                                            .map((e) => e.stringName)
+                                            .map<DropdownMenuEntry<String>>(
+                                                (String val) =>
+                                                    DropdownMenuEntry(value: val, label: val))
+                                            .toList())
+                                    : SizedBox(),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Text("Dage om ugen ($_selectedDaysPerWeek)"),
+                            Row(
+                              children: [
+                                Text("1"),
+                                Expanded(
+                                  child: Slider(
+                                      min: 1,
+                                      max: 7,
+                                      value: _selectedDaysPerWeek.toDouble(),
+                                      divisions: 7,
+                                      label: _selectedDaysPerWeek.toString(),
+                                      onChanged: (double newVal) {
+                                        setState(() {
+                                          _selectedDaysPerWeek = newVal.toInt();
+                                        });
+                                      }),
+                                ),
+                                Text("7")
+                              ],
+                            ),
+                            SizedBox(
+                              height: 18,
+                            ),
+                          ],
+                        )
                 ],
               ),
             ))
@@ -278,6 +292,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
   @override
   Widget build(BuildContext context) {
+    print((_selectedActionType!.possibleUnits.toList()
+          ..removeWhere((Units unit) => unit == Units.unitLess))
+        .isEmpty);
     return Scaffold(
       appBar: AppBar(
         title: Text("Tilføj mål"),
@@ -364,11 +381,11 @@ class _FormatBox extends StatelessWidget {
             Center(
                 child: format == GoalTypeFormats.typing
                     ? Icon(
-                        Icons.check_circle,
+                        Icons.onetwothree,
                         size: 30,
                       )
                     : Icon(
-                        Icons.onetwothree,
+                        Icons.check_circle,
                         size: 50,
                       )),
             Positioned(
