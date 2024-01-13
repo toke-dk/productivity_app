@@ -63,6 +63,11 @@ class _AddGoalPageState extends State<AddGoalPage> {
               dense: true,
               actionTypes: kAllActionTypes,
               onTap: (ActionType actionType, int index) {
+                if (_selectedFormat != null) {
+                  setState(() {
+                    _selectedFormat = null;
+                  });
+                }
                 if (index == _selectedIndex) {
                   print("same");
                   setState(() {
@@ -80,37 +85,41 @@ class _AddGoalPageState extends State<AddGoalPage> {
             title: Text("Vælg format"),
             content: Row(
               children: [
-                _FormatBox(
-                  selected: _selectedFormat == GoalTypeFormats.typing,
-                  format: GoalTypeFormats.typing,
-                  onTap: () {
-                    if (_selectedFormat == GoalTypeFormats.typing) {
-                      setState(() {
-                        _selectedFormat = null;
-                      });
-                    } else
-                      setState(() {
-                        _selectedFormat = GoalTypeFormats.typing;
-                      });
-                  },
-                ),
+                _selectedActionType!.asTask
+                    ? _FormatBox(
+                        selected: _selectedFormat == GoalTypeFormats.checkMark,
+                        format: GoalTypeFormats.checkMark,
+                        onTap: () {
+                          if (_selectedFormat == GoalTypeFormats.checkMark) {
+                            setState(() {
+                              _selectedFormat = null;
+                            });
+                          } else
+                            setState(() {
+                              _selectedFormat = GoalTypeFormats.checkMark;
+                            });
+                        },
+                      )
+                    : SizedBox(),
                 SizedBox(
                   width: 40,
                 ),
-                _FormatBox(
-                  selected: _selectedFormat == GoalTypeFormats.checkMark,
-                  format: GoalTypeFormats.checkMark,
-                  onTap: () {
-                    if (_selectedFormat == GoalTypeFormats.checkMark) {
-                      setState(() {
-                        _selectedFormat = null;
-                      });
-                    } else
-                      setState(() {
-                        _selectedFormat = GoalTypeFormats.checkMark;
-                      });
-                  },
-                ),
+                _selectedActionType!.asActivity
+                    ? _FormatBox(
+                        selected: _selectedFormat == GoalTypeFormats.typing,
+                        format: GoalTypeFormats.typing,
+                        onTap: () {
+                          if (_selectedFormat == GoalTypeFormats.typing) {
+                            setState(() {
+                              _selectedFormat = null;
+                            });
+                          } else
+                            setState(() {
+                              _selectedFormat = GoalTypeFormats.typing;
+                            });
+                        },
+                      )
+                    : SizedBox(),
               ],
             )),
         Step(
