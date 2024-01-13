@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:productivity_app/models/goal.dart';
+import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:productivity_app/shared/date_time_extension.dart';
@@ -29,6 +31,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
   int _selectedDaysPerWeek = 7;
 
+  int? _selectedTotalAmount;
+
+  Units _selectedUnit() => _selectedActionType!.possibleUnits[0];
+
   bool doesStartEndDateConflict() =>
       _selectedStartDate.isAfter(_selectedEndDate) ||
       _selectedStartDate.isSameDate(_selectedEndDate);
@@ -38,7 +44,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
       return true;
     else if (_currentStepIndex == 1 && _selectedFormat == null)
       return true;
-    else if (_currentStepIndex == 2 && doesStartEndDateConflict()) return true;
+    else if ((_currentStepIndex == 2 &&
+        doesStartEndDateConflict()) ||
+        _selectedTotalAmount == null) return true;
     return false;
   }
 
@@ -210,6 +218,39 @@ class _AddGoalPageState extends State<AddGoalPage> {
                             }),
                       ),
                       Text("7")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Antal i alt"),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: TextField(
+                          onChanged: (String newVal) => setState(() {
+                            _selectedTotalAmount =
+                                newVal != "" ? int.parse(newVal) : null;
+                          }),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: "Eks. 42",
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
+                      )
                     ],
                   )
                 ],
