@@ -103,7 +103,7 @@ class ActionTypesGridView extends StatelessWidget {
       this.dense = false,
       this.crossCount = 3,
       this.hasShadow = true,
-      this.cardBorder});
+      this.cardBorder, this.builder});
 
   final bool dense;
   final List<ActionType> actionTypes;
@@ -112,6 +112,7 @@ class ActionTypesGridView extends StatelessWidget {
   final bool hasShadow;
   final BoxBorder? cardBorder;
   final Function(ActionType actionType) onTap;
+  final Widget Function(int index)? builder;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +130,7 @@ class ActionTypesGridView extends StatelessWidget {
       mainAxisSpacing: dense ? 10 : 30,
       children: List.generate(
           amountOfGenerates,
-          (index) => ActivityCard(
+          builder ?? (index) => ActivityCard(
                 border: cardBorder,
                 hasShadow: hasShadow,
                 dense: dense,

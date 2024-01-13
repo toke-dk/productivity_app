@@ -3,6 +3,7 @@ import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 
 import '../../models/activity.dart';
+import '../../shared/widgets/activity_card.dart';
 
 class AddGoalPage extends StatelessWidget {
   const AddGoalPage({super.key});
@@ -22,9 +23,14 @@ class AddGoalPage extends StatelessWidget {
             title: Text("Vælg handling"),
             content: ActionTypesGridView(
               crossCount: 4,
+              builder: (index) => ActivityCard(
+                border: Border.all(color: Colors.blue),
+                hasShadow: false,
+                dense: true,
+                actionType: kAllActionTypes[index],
+                onTap: (ActionType type) {},
+              ),
               dense: true,
-              hasShadow: false,
-              cardBorder: Border.all(color: Colors.blue),
               actionTypes: kAllActionTypes,
               onTap: (ActionType actionType) {},
             )),
