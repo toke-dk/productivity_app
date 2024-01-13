@@ -6,12 +6,17 @@ import '../../models/activity.dart';
 
 class ActivityCard extends StatelessWidget {
   const ActivityCard(
-      {super.key, required this.actionType, required this.onTap, this.dense = false, this.hasShadow = true, this.border});
+      {super.key,
+      required this.actionType,
+      required this.onTap,
+      this.dense = false,
+      this.hasShadow = true,
+      this.selected = false});
 
   final bool dense;
   final ActionType actionType;
   final bool hasShadow;
-  final BoxBorder? border;
+  final bool selected;
   final Function(ActionType actionType) onTap;
 
   @override
@@ -24,7 +29,7 @@ class ActivityCard extends StatelessWidget {
             boxShadow: hasShadow ? [kMyThemedBoxShadow] : [],
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
-            border: border,
+            border: selected ? Border.all(color: Colors.blue) : null,
           ),
           child: DisplayActionType(
             dense: dense,

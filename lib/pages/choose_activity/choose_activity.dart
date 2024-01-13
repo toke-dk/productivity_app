@@ -82,7 +82,7 @@ class ChooseActivityScreen extends StatelessWidget {
                           : allActionTypes
                               .where((element) => element.asActivity)
                               .toList(),
-                      onTap: (ActionType actionType) => onActionTypeTap(
+                      onTap: (ActionType actionType, _) => onActionTypeTap(
                           actionType: actionType, context: context)),
                 ],
               )
@@ -103,7 +103,8 @@ class ActionTypesGridView extends StatelessWidget {
       this.dense = false,
       this.crossCount = 3,
       this.hasShadow = true,
-      this.cardBorder, this.builder});
+      this.cardBorder,
+      this.selected});
 
   final bool dense;
   final List<ActionType> actionTypes;
@@ -111,8 +112,8 @@ class ActionTypesGridView extends StatelessWidget {
   final int crossCount;
   final bool hasShadow;
   final BoxBorder? cardBorder;
-  final Function(ActionType actionType) onTap;
-  final Widget Function(int index)? builder;
+  final Function(ActionType actionType, int index) onTap;
+  final bool Function(int index)? selected;
 
   @override
   Widget build(BuildContext context) {
@@ -130,12 +131,13 @@ class ActionTypesGridView extends StatelessWidget {
       mainAxisSpacing: dense ? 10 : 30,
       children: List.generate(
           amountOfGenerates,
-          builder ?? (index) => ActivityCard(
-                border: cardBorder,
+          (index) => ActivityCard(
+                selected: selected != null ? selected!(index) : false,
                 hasShadow: hasShadow,
                 dense: dense,
                 actionType: actionTypes[index],
-                onTap: (ActionType actionType) => onTap(actionTypes[index]),
+                onTap: (ActionType actionType) =>
+                    onTap(actionTypes[index], index),
               )),
     );
   }
