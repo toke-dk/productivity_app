@@ -27,6 +27,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
   DateTime _selectedStartDate = DateTime.now();
   DateTime _selectedEndDate = DateTime.now().add(1.days);
 
+  int _selectedDaysPerWeek = 7;
+
   bool doesStartEndDateConflict() =>
       _selectedStartDate.isAfter(_selectedEndDate) ||
       _selectedStartDate.isSameDate(_selectedEndDate);
@@ -34,7 +36,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
   bool nextButtonDisabled() {
     if (_currentStepIndex == 0 && _selectedActionType == null)
       return true;
-    else if (_currentStepIndex == 1 && _selectedFormat == null) return true;
+    else if (_currentStepIndex == 1 && _selectedFormat == null)
+      return true;
     else if (_currentStepIndex == 2 && doesStartEndDateConflict()) return true;
     return false;
   }
@@ -126,7 +129,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     child: Container(
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: doesStartEndDateConflict() ? Colors.red[100] : null,
+                          color: doesStartEndDateConflict()
+                              ? Colors.red[100]
+                              : null,
                           borderRadius: BorderRadius.circular(3),
                           border: Border.all(color: Colors.grey[900]!)),
                       child: Row(
@@ -134,7 +139,12 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           Text(DateFormat("EEE. dd. MMM. yyyy")
                               .format(_selectedStartDate)),
                           Spacer(),
-                          doesStartEndDateConflict() ? Icon(Icons.warning, color: Colors.red,) : SizedBox()
+                          doesStartEndDateConflict()
+                              ? Icon(
+                                  Icons.warning,
+                                  color: Colors.red,
+                                )
+                              : SizedBox()
                         ],
                       ),
                     ),
@@ -166,6 +176,42 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           .format(_selectedEndDate)),
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  !doesStartEndDateConflict()
+                      ? Center(
+                          child: Text(
+                          "${_selectedEndDate.difference(_selectedStartDate).inDays} dage",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(color: Colors.grey[600]),
+                        ))
+                      : SizedBox(),
+                  SizedBox(
+                    height: 18,
+                  ),
+                  Text("Dage om ugen ($_selectedDaysPerWeek)"),
+                  Row(
+                    children: [
+                      Text("1"),
+                      Expanded(
+                        child: Slider(
+                            min: 1,
+                            max: 7,
+                            value: _selectedDaysPerWeek.toDouble(),
+                            divisions: 7,
+                            label: _selectedDaysPerWeek.toString(),
+                            onChanged: (double newVal) {
+                              setState(() {
+                                _selectedDaysPerWeek = newVal.toInt();
+                              });
+                            }),
+                      ),
+                      Text("7")
+                    ],
+                  )
                 ],
               ),
             ))
