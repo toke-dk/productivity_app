@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 
@@ -14,8 +15,18 @@ class AddGoalPage extends StatefulWidget {
 
 class _AddGoalPageState extends State<AddGoalPage> {
   int _currentStepIndex = 0;
+
   ActionType? _selectedActionType;
   int? _selectedIndex;
+
+  GoalTypeFormats? _selectedFormat;
+
+  bool nextButtonDisabled() {
+    if (_currentStepIndex == 0 && _selectedActionType == null)
+      return true;
+    else if (_currentStepIndex == 1 && _selectedFormat == null) return true;
+    return false;
+  }
 
   List<Step> _steps() => [
         Step(
@@ -44,8 +55,40 @@ class _AddGoalPageState extends State<AddGoalPage> {
             )),
         Step(
             title: Text("Vælg format"),
-            content: Container(
-              child: Text("Text here"),
+            content: Row(
+              children: [
+                _FormatBox(
+                  selected: _selectedFormat == GoalTypeFormats.typing,
+                  format: GoalTypeFormats.typing,
+                  onTap: () {
+                    if (_selectedFormat == GoalTypeFormats.typing) {
+                      setState(() {
+                        _selectedFormat = null;
+                      });
+                    } else
+                      setState(() {
+                        _selectedFormat = GoalTypeFormats.typing;
+                      });
+                  },
+                ),
+                SizedBox(
+                  width: 40,
+                ),
+                _FormatBox(
+                  selected: _selectedFormat == GoalTypeFormats.checkMark,
+                  format: GoalTypeFormats.checkMark,
+                  onTap: () {
+                    if (_selectedFormat == GoalTypeFormats.checkMark) {
+                      setState(() {
+                        _selectedFormat = null;
+                      });
+                    } else
+                      setState(() {
+                        _selectedFormat = GoalTypeFormats.checkMark;
+                      });
+                  },
+                )
+              ],
             ))
       ];
 
@@ -66,12 +109,12 @@ class _AddGoalPageState extends State<AddGoalPage> {
                       TextButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStatePropertyAll(
-                                  _selectedActionType != null
+                                  !nextButtonDisabled()
                                       ? Theme.of(context).colorScheme.primary
                                       : Theme.of(context).disabledColor),
                               foregroundColor: MaterialStatePropertyAll(
                                   Theme.of(context).colorScheme.onPrimary)),
-                          onPressed: _selectedActionType != null
+                          onPressed: !nextButtonDisabled()
                               ? details.onStepContinue
                               : null,
                           child: Text(_steps().length - 1 != details.currentStep
@@ -104,10 +147,58 @@ class _AddGoalPageState extends State<AddGoalPage> {
               });
             }
           },
-          onStepTapped: (int index) => setState(() {
-                _currentStepIndex = index;
-              }),
           steps: _steps()),
+    );
+  }
+}
+
+class _FormatBox extends StatelessWidget {
+  const _FormatBox(
+      {super.key,
+      this.selected = false,
+      required this.format,
+      required this.onTap});
+
+  final GoalTypeFormats format;
+  final bool selected;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        width: 110,
+        height: 150,
+        decoration: BoxDecoration(
+            border: selected ? Border.all(color: Colors.blue) : null,
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.grey[100]),
+        child: Stack(
+          children: [
+            Center(
+                child: format == GoalTypeFormats.typing
+                    ? Icon(
+                        Icons.check_circle,
+                        size: 30,
+                      )
+                    : Icon(
+                        Icons.onetwothree,
+                        size: 50,
+                      )),
+            Positioned(
+                left: 0,
+                right: 0,
+                child: Text(
+                  format == GoalTypeFormats.typing
+                      ? "Indtastning"
+                      : "Afkrydsning",
+                  textAlign: TextAlign.center,
+                ))
+          ],
+        ),
+      ),
     );
   }
 }
