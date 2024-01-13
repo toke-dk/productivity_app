@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
 
+/// The [Units.unitLess] is it is just about amounts and no distance or time
+/// Therefore it is not necescaraly empty as for tasks only, but it is a just
+/// counter
+
 enum Units { unitLess, kilometer, hours, minutes }
 
 final String _strNameUnitLess = "";

@@ -236,7 +236,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                                   width: 10,
                                 ),
                                 _selectedActionType != null &&
-                                        (_selectedActionType!.possibleUnits.toList()
+                                        (_selectedActionType!.possibleUnits!.toList()
                                               ..removeWhere((Units unit) =>
                                                   unit == Units.unitLess))
                                             .isNotEmpty
@@ -245,9 +245,9 @@ class _AddGoalPageState extends State<AddGoalPage> {
                                             newVal?.toUnitFromStringName() ??
                                                 null,
                                         initialSelection: _selectedActionType!
-                                            .possibleUnits[0].stringName,
+                                            .possibleUnits![0].stringName,
                                         dropdownMenuEntries: _selectedActionType!
-                                            .possibleUnits
+                                            .possibleUnits!
                                             .map((e) => e.stringName)
                                             .map<DropdownMenuEntry<String>>(
                                                 (String val) =>
@@ -292,9 +292,6 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
   @override
   Widget build(BuildContext context) {
-    print((_selectedActionType!.possibleUnits.toList()
-          ..removeWhere((Units unit) => unit == Units.unitLess))
-        .isEmpty);
     return Scaffold(
       appBar: AppBar(
         title: Text("Tilføj mål"),

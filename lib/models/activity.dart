@@ -114,7 +114,7 @@ extension ActionTypeStringExtension on String {
 
 class ActionType {
   String name;
-  List<Units> possibleUnits;
+  List<Units>? possibleUnits;
   Color? color;
   Widget image;
   bool asTask;
@@ -122,7 +122,7 @@ class ActionType {
 
   ActionType({
     required this.name,
-    required this.possibleUnits,
+    this.possibleUnits,
     required this.image,
     this.color,
     this.asTask = true,

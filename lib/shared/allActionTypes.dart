@@ -23,16 +23,13 @@ final List<ActionType> kAllActionTypes = [
   ActionType(
       asActivity: false,
       name: "Ingen Slik",
-      possibleUnits: [Units.unitLess],
       image: const Icon(Icons.flag)),
   ActionType(
       asActivity: false,
       name: "Ingen Rød Kød",
-      possibleUnits: [Units.unitLess],
       image: const Icon(Icons.no_food)),
   ActionType(
       asActivity: false,
       name: "Vegetar",
-      possibleUnits: [Units.unitLess],
       image: const Icon(Icons.breakfast_dining)),
 ];
