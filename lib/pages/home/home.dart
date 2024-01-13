@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/home/widgets/actions_list.dart';
+import 'package:productivity_app/pages/home/widgets/show_goals.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
@@ -103,6 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.delete))
               : SizedBox()
         ]),
+
+        /// Main content
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -121,6 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   }
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: ShowGoalsWidget(),
               ),
               FutureBuilder(
                   future: Future(
