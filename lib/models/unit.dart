@@ -2,6 +2,11 @@ import 'package:flutter/foundation.dart';
 
 enum Units { unitLess, kilometer, hours, minutes }
 
+final String _strNameUnitLess = "";
+final String _strNameKilometer = "kilometer";
+final String _strNameHours = "timer";
+final String _strNameMinutes = "minutter";
+
 extension UnitsExtension on Units {
   String get textForUnitMeasure {
     switch (this) {
@@ -19,13 +24,13 @@ extension UnitsExtension on Units {
   String get stringName {
     switch (this) {
       case Units.unitLess:
-        return "";
+        return _strNameUnitLess;
       case Units.kilometer:
-        return "kilometer";
+        return _strNameKilometer;
       case Units.hours:
-        return "timer";
+        return _strNameHours;
       case Units.minutes:
-        return "minutter";
+        return _strNameMinutes;
     }
   }
 
@@ -45,5 +50,15 @@ extension UnitsExtension on Units {
 
 extension UnitStringExtension on String {
   Units toUnit() => Units.values.byName(this);
-}
 
+  Units? toUnitFromStringName() {
+    if (this == _strNameUnitLess)
+      return Units.unitLess;
+    else if (this == _strNameMinutes)
+      return Units.minutes;
+    else if (this == _strNameHours)
+      return Units.hours;
+    else if (this == _strNameKilometer) return Units.kilometer;
+    return null;
+  }
+}

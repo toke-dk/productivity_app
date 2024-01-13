@@ -33,7 +33,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
   int? _selectedTotalAmount;
 
-  Units _selectedUnit() => _selectedActionType!.possibleUnits[0];
+  Units? _selectedUnit;
 
   bool doesStartEndDateConflict() =>
       _selectedStartDate.isAfter(_selectedEndDate) ||
@@ -44,9 +44,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
       return true;
     else if (_currentStepIndex == 1 && _selectedFormat == null)
       return true;
-    else if ((_currentStepIndex == 2 &&
-        doesStartEndDateConflict()) ||
-        _selectedTotalAmount == null) return true;
+    else if ((_currentStepIndex == 2 && doesStartEndDateConflict()) ||
+        (_currentStepIndex == 2 && _selectedTotalAmount == null)) return true;
     return false;
   }
 
@@ -230,27 +229,46 @@ class _AddGoalPageState extends State<AddGoalPage> {
                       SizedBox(
                         height: 8,
                       ),
-                      SizedBox(
-                        width: 100,
-                        child: TextField(
-                          onChanged: (String newVal) => setState(() {
-                            _selectedTotalAmount =
-                                newVal != "" ? int.parse(newVal) : null;
-                          }),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: "Eks. 42",
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                        ),
-                      )
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            child: TextField(
+                              onChanged: (String newVal) => setState(() {
+                                _selectedTotalAmount =
+                                    newVal != "" ? int.parse(newVal) : null;
+                              }),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              textAlign: TextAlign.center,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  hintText: "Eks. 42",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          _selectedActionType != null
+                              ? DropdownMenu(
+                                  onSelected: (String? newVal) =>
+                                      _selectedUnit = newVal?.toUnitFromStringName() ?? null,
+                                  initialSelection: _selectedActionType!
+                                      .possibleUnits[0].stringName,
+                                  dropdownMenuEntries: _selectedActionType!
+                                      .possibleUnits
+                                      .map((e) => e.stringName)
+                                      .map<DropdownMenuEntry<String>>(
+                                          (String val) => DropdownMenuEntry(
+                                              value: val, label: val))
+                                      .toList())
+                              : SizedBox(),
+                        ],
+                      ),
                     ],
                   )
                 ],
