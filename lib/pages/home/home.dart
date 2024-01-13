@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: ShowGoalsWidget(),
+                child: ShowGoalsWidget(goals: [],),
               ),
               FutureBuilder(
                   future: Future(
