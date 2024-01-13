@@ -14,7 +14,6 @@ class DisplayActionType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(dense);
     List<Widget> childrenToDisplay = [
       CircleAvatar(
         radius: 20,
@@ -33,17 +32,17 @@ class DisplayActionType extends StatelessWidget {
 
     return axisDirection == Axis.horizontal
         ? Transform.scale(
-      scale: dense ? 0.8 : 1,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: childrenToDisplay),
-        )
+            scale: dense ? 0.8 : 1,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: childrenToDisplay),
+          )
         : Transform.scale(
-      scale: dense ? 0.8 : 1,
-          child: Column(
+            scale: dense ? 0.8 : 1,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: childrenToDisplay,
             ),
-        );
+          );
   }
 }

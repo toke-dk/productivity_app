@@ -13,17 +13,11 @@ class AddGoalPage extends StatefulWidget {
 }
 
 class _AddGoalPageState extends State<AddGoalPage> {
-  final int _currentStepIndex = 0;
+  int _currentStepIndex = 0;
   ActionType? _selectedActionType;
   int? _selectedIndex;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Tilføj mål"),
-      ),
-      body: Stepper(currentStep: 0, steps: [
+  List<Step> _steps() => [
         Step(
             title: Text("Vælg handling"),
             content: ActionTypesGridView(
@@ -35,9 +29,17 @@ class _AddGoalPageState extends State<AddGoalPage> {
               dense: true,
               actionTypes: kAllActionTypes,
               onTap: (ActionType actionType, int index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
+                if (index == _selectedIndex) {
+                  print("same");
+                  setState(() {
+                    _selectedActionType = null;
+                    _selectedIndex = null;
+                  });
+                } else
+                  setState(() {
+                    _selectedActionType = actionType;
+                    _selectedIndex = index;
+                  });
               },
             )),
         Step(
@@ -45,7 +47,67 @@ class _AddGoalPageState extends State<AddGoalPage> {
             content: Container(
               child: Text("Text here"),
             ))
-      ]),
+      ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Tilføj mål"),
+      ),
+      body: Stepper(
+          controlsBuilder: (BuildContext context, ControlsDetails details) =>
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    children: [
+                      TextButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  _selectedActionType != null
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context).disabledColor),
+                              foregroundColor: MaterialStatePropertyAll(
+                                  Theme.of(context).colorScheme.onPrimary)),
+                          onPressed: _selectedActionType != null
+                              ? details.onStepContinue
+                              : null,
+                          child: Text(_steps().length - 1 != details.currentStep
+                              ? "Fortsæt"
+                              : "Tilføj mål")),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      TextButton(
+                          onPressed: details.currentStep != 0
+                              ? details.onStepCancel
+                              : null,
+                          child: Text("Tilbage")),
+                    ],
+                  ),
+                ),
+              ),
+          currentStep: _currentStepIndex,
+          onStepContinue: () {
+            if (_currentStepIndex <= 0) {
+              setState(() {
+                _currentStepIndex += 1;
+              });
+            }
+          },
+          onStepCancel: () {
+            if (_currentStepIndex > 0) {
+              setState(() {
+                _currentStepIndex -= 1;
+              });
+            }
+          },
+          onStepTapped: (int index) => setState(() {
+                _currentStepIndex = index;
+              }),
+          steps: _steps()),
     );
   }
 }
