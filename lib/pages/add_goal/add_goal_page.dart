@@ -35,6 +35,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
     if (_currentStepIndex == 0 && _selectedActionType == null)
       return true;
     else if (_currentStepIndex == 1 && _selectedFormat == null) return true;
+    else if (_currentStepIndex == 2 && doesStartEndDateConflict()) return true;
     return false;
   }
 
