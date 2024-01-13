@@ -5,13 +5,16 @@ class DisplayActionType extends StatelessWidget {
   const DisplayActionType(
       {super.key,
       required this.actionType,
-      this.axisDirection = Axis.horizontal});
+      this.axisDirection = Axis.horizontal,
+      this.dense = false});
 
   final ActionType actionType;
   final Axis axisDirection;
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
+    print(dense);
     List<Widget> childrenToDisplay = [
       CircleAvatar(
         radius: 20,
@@ -25,16 +28,22 @@ class DisplayActionType extends StatelessWidget {
         width: axisDirection == Axis.horizontal ? 10 : 0,
         height: axisDirection == Axis.vertical ? 10 : 0,
       ),
-      Text(actionType.name)
+      FittedBox(fit: BoxFit.fitWidth, child: Text(actionType.name))
     ];
 
     return axisDirection == Axis.horizontal
-        ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: childrenToDisplay)
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: childrenToDisplay,
-          );
+        ? Transform.scale(
+      scale: dense ? 0.8 : 1,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: childrenToDisplay),
+        )
+        : Transform.scale(
+      scale: dense ? 0.8 : 1,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: childrenToDisplay,
+            ),
+        );
   }
 }

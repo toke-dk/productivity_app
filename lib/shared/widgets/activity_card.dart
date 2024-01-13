@@ -6,9 +6,12 @@ import '../../models/activity.dart';
 
 class ActivityCard extends StatelessWidget {
   const ActivityCard(
-      {super.key, required this.actionType, required this.onTap});
+      {super.key, required this.actionType, required this.onTap, this.dense = false, this.hasShadow = true, this.border});
 
+  final bool dense;
   final ActionType actionType;
+  final bool hasShadow;
+  final BoxBorder? border;
   final Function(ActionType actionType) onTap;
 
   @override
@@ -18,11 +21,13 @@ class ActivityCard extends StatelessWidget {
       splashColor: Colors.transparent,
       child: Container(
           decoration: BoxDecoration(
-            boxShadow: [kMyThemedBoxShadow],
+            boxShadow: hasShadow ? [kMyThemedBoxShadow] : [],
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
+            border: border,
           ),
           child: DisplayActionType(
+            dense: dense,
             actionType: actionType,
             axisDirection: Axis.vertical,
           )),

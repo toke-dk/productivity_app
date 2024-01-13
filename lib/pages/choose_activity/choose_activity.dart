@@ -99,15 +99,22 @@ class ActionTypesGridView extends StatelessWidget {
       {super.key,
       required this.actionTypes,
       this.maxRows,
-      required this.onTap});
+      required this.onTap,
+      this.dense = false,
+      this.crossCount = 3,
+      this.hasShadow = true,
+      this.cardBorder});
 
+  final bool dense;
   final List<ActionType> actionTypes;
   final int? maxRows;
+  final int crossCount;
+  final bool hasShadow;
+  final BoxBorder? cardBorder;
   final Function(ActionType actionType) onTap;
 
   @override
   Widget build(BuildContext context) {
-    int crossCount = 3;
     int listLength = actionTypes.length;
     int amountOfGenerates =
         maxRows == null || (listLength / crossCount).ceil() < maxRows!
@@ -116,16 +123,18 @@ class ActionTypesGridView extends StatelessWidget {
 
     return GridView.count(
       shrinkWrap: true,
-      crossAxisCount: 3,
-      padding: const EdgeInsets.all(20),
-      crossAxisSpacing: 30,
-      mainAxisSpacing: 30,
+      crossAxisCount: crossCount,
+      padding: EdgeInsets.all(dense ? 0 : 20),
+      crossAxisSpacing: dense ? 10 : 30,
+      mainAxisSpacing: dense ? 10 : 30,
       children: List.generate(
           amountOfGenerates,
           (index) => ActivityCard(
+                border: cardBorder,
+                hasShadow: hasShadow,
+                dense: dense,
                 actionType: actionTypes[index],
-                onTap: (ActionType actionType) =>
-                    onTap(actionTypes[index]),
+                onTap: (ActionType actionType) => onTap(actionTypes[index]),
               )),
     );
   }
