@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
+import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:productivity_app/shared/date_time_extension.dart';
 
@@ -85,7 +86,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
             title: Text("Vælg format"),
             content: Row(
               children: [
-                _selectedActionType!.asTask
+                _selectedActionType != null && _selectedActionType!.asTask
                     ? _FormatBox(
                         selected: _selectedFormat == GoalTypeFormats.checkMark,
                         format: GoalTypeFormats.checkMark,
@@ -104,7 +105,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 SizedBox(
                   width: 40,
                 ),
-                _selectedActionType!.asActivity
+                _selectedActionType != null && _selectedActionType!.asActivity
                     ? _FormatBox(
                         selected: _selectedFormat == GoalTypeFormats.typing,
                         format: GoalTypeFormats.typing,
@@ -245,23 +246,31 @@ class _AddGoalPageState extends State<AddGoalPage> {
                                   width: 10,
                                 ),
                                 _selectedActionType != null &&
-                                        (_selectedActionType!.possibleUnits!.toList()
+                                        _selectedActionType!.possibleUnits !=
+                                            null &&
+                                        (_selectedActionType!.possibleUnits!
+                                                .toList()
                                               ..removeWhere((Units unit) =>
                                                   unit == Units.unitLess))
                                             .isNotEmpty
                                     ? DropdownMenu(
-                                        onSelected: (String? newVal) => _selectedUnit =
-                                            newVal?.toUnitFromStringName() ??
-                                                null,
+                                        onSelected: (String? newVal) =>
+                                            setState(() {
+                                              _selectedUnit = newVal
+                                                      ?.toUnitFromStringName() ??
+                                                  null;
+                                            }),
                                         initialSelection: _selectedActionType!
                                             .possibleUnits![0].stringName,
-                                        dropdownMenuEntries: _selectedActionType!
-                                            .possibleUnits!
-                                            .map((e) => e.stringName)
-                                            .map<DropdownMenuEntry<String>>(
-                                                (String val) =>
-                                                    DropdownMenuEntry(value: val, label: val))
-                                            .toList())
+                                        dropdownMenuEntries:
+                                            _selectedActionType!.possibleUnits!
+                                                .map((e) => e.stringName)
+                                                .map<DropdownMenuEntry<String>>(
+                                                    (String val) =>
+                                                        DropdownMenuEntry(
+                                                            value: val,
+                                                            label: val))
+                                                .toList())
                                     : SizedBox(),
                               ],
                             ),
@@ -298,6 +307,12 @@ class _AddGoalPageState extends State<AddGoalPage> {
               ),
             ))
       ];
+
+  final DataBaseService _databaseService = DataBaseService();
+
+  Future<void> _addGoal(Goal goal) async {
+    await _databaseService.addGoal(goal);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -345,6 +360,16 @@ class _AddGoalPageState extends State<AddGoalPage> {
               setState(() {
                 _currentStepIndex += 1;
               });
+            } else {
+              _addGoal(Goal(
+                      actionType: _selectedActionType!,
+                      typeFormat: _selectedFormat!,
+                      startDate: _selectedStartDate,
+                      endDate: _selectedStartDate,
+                      daysPerWeek: _selectedDaysPerWeek,
+                      frequencyFormat: GoalFrequencyFormats.inTotal,
+                      chosenUnit: _selectedUnit))
+                  .then((value) => Navigator.pop(context));
             }
           },
           onStepCancel: () {

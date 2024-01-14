@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
@@ -22,6 +23,17 @@ class DataBaseService {
 
   /// Task
   static const String tableTaskName = "tasks";
+
+  /// Goal
+  static const String tableGoalName = "goals";
+  static const String columnGoalId = "id";
+  static const String columnGoalActionTypeName = "goalActionTypeName";
+  static const String columnGoalTypeFormat = "goalTypeFormat";
+  static const String columnGoalStartDate = "goalStartDate";
+  static const String columnGoalEndDate = "goalEndDate";
+  static const String columnGoalDaysPerWeek = "goalDaysPerWeek";
+  static const String columnGoalFrequencyFormat = "goalFrequencyFormat";
+  static const String columnGoalChosenUnit = "goalChosenUnit";
 
   // Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
@@ -55,6 +67,18 @@ class DataBaseService {
         $columnActivityTypeName TEXT, 
         $columnDateCompleted TEXT
         )""");
+
+    await db.execute("""
+        CREATE TABLE $tableGoalName(
+        $columnGoalId INTEGER PRIMARY KEY, 
+        $columnGoalActionTypeName TEXT, 
+        $columnGoalTypeFormat TEXT,
+        $columnGoalStartDate TEXT,
+        $columnGoalEndDate TEXT,
+        $columnGoalDaysPerWeek INTEGER,
+        $columnGoalFrequencyFormat TEXT,
+        $columnGoalChosenUnit TEXT
+        )""");
   }
 
   Future<void> addActivity(Activity activity) async {
@@ -85,8 +109,12 @@ class DataBaseService {
   }
 
   Future<List<Task>> getTasks() async {
-    final List<Map<String,dynamic>> maps = await _db.query(tableTaskName);
+    final List<Map<String, dynamic>> maps = await _db.query(tableTaskName);
     return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
   }
 
+  /// Goal
+  Future<void> addGoal(Goal goal) async {
+    await _db.insert(tableGoalName, goal.toMap());
+  }
 }
