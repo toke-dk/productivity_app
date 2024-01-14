@@ -37,7 +37,7 @@ class Activity {
     return Activity(
       actionType: map["activityTypeName"].toString().toActionType(),
       amount: map["amount"],
-      chosenUnit: map["chosenUnit"].toString().toUnit(),
+      chosenUnit: map["chosenUnit"].toString().toUnit()!,
       dateCompleted: DateTime.parse(map["dateCompleted"].toString()),
     );
   }

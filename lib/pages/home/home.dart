@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
@@ -25,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final DataBaseService _databaseService = DataBaseService();
 
   late List<Activity> completedActivities;
+  late List<Goal> goals;
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
       await _databaseService.initDatabase();
       setState(() {});
     });
+
     super.initState();
   }
 
@@ -44,6 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return _databaseService.getTasks();
   }
 
+  Future<List<Goal>> _getGoals() async {
+    return _databaseService.getGoals();
+  }
+
+  Future<void> _addGoal(Goal goal) async {
+    setState(() {
+      _databaseService.addGoal(goal);
+    });
+  }
+
   Future<void> _onActivityComplete({Activity? activity, Task? task}) async {
     if (activity != null) {
       _databaseService.addActivity(activity);
@@ -53,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
-  launchFeedBackForm() async {
+  Future<void> launchFeedBackForm() async {
     final Uri feedbackUrl = Uri.parse(
         "https://docs.google.com/forms/d/e/1FAIpQLSehUorGGbMuzEKFkIiPL3srDSerNT2EpNyOtY1X1v3qBh6L_w/viewform");
     if (!await launchUrl(feedbackUrl)) {
@@ -113,7 +126,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 future: Future(() async => makeActionTypeCounts(
                     activities: await _getActivities(),
                     tasks: await _getTasks())),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
                     return ShowTodayOverview(
                       actionTypeCounts: snapshot.data!,
@@ -126,8 +140,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: ShowGoalsWidget(goals: [],),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: ShowGoalsWidget(
+                  goals: [],
+                  onGoalAdd: (Goal goal) {
+                    _addGoal(goal);
+                  },
+                ),
               ),
               FutureBuilder(
                   future: Future(
@@ -135,14 +155,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (context, snapshot) {
                     return snapshot.hasData
                         ? Column(
-                          children: [
-                            ActionsLog(
+                            children: [
+                              ActionsLog(
                                 activities: snapshot.data![0] as List<Activity>,
                                 tasks: snapshot.data![1] as List<Task>,
                               ),
-                          ],
-                        )
+                            ],
+                          )
                         : Center(child: const CircularProgressIndicator());
+                  }),
+              FutureBuilder(
+                  future: _getGoals(),
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? Text(snapshot.data!.isNotEmpty
+                            ? "mål navn: ${snapshot.data![0].actionType.name}"
+                            : "No")
+                        : Center(
+                            child: Text(snapshot.error.toString()),
+                          );
                   }),
               IconButton(
                   onPressed: () => setState(() {}),
@@ -163,10 +194,9 @@ Map<ActionType, int> makeActionTypeCounts(
   Map<ActionType, int> actionTypeCounter = {};
 
   for (var actionType in actionTypes) {
-    actionTypeCounter[actionType] =
-        !actionTypeCounter.containsKey(actionType)
-            ? (1)
-            : (actionTypeCounter[actionType]! + 1);
+    actionTypeCounter[actionType] = !actionTypeCounter.containsKey(actionType)
+        ? (1)
+        : (actionTypeCounter[actionType]! + 1);
   }
 
   return actionTypeCounter;

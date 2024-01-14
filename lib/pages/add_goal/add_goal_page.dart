@@ -13,7 +13,9 @@ import '../../models/activity.dart';
 import '../../shared/widgets/activity_card.dart';
 
 class AddGoalPage extends StatefulWidget {
-  const AddGoalPage({super.key});
+  const AddGoalPage({super.key, required this.onGoalAdd});
+
+  final Function(Goal goal) onGoalAdd;
 
   @override
   State<AddGoalPage> createState() => _AddGoalPageState();
@@ -308,12 +310,6 @@ class _AddGoalPageState extends State<AddGoalPage> {
             ))
       ];
 
-  final DataBaseService _databaseService = DataBaseService();
-
-  Future<void> _addGoal(Goal goal) async {
-    await _databaseService.addGoal(goal);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -361,15 +357,15 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 _currentStepIndex += 1;
               });
             } else {
-              _addGoal(Goal(
-                      actionType: _selectedActionType!,
-                      typeFormat: _selectedFormat!,
-                      startDate: _selectedStartDate,
-                      endDate: _selectedStartDate,
-                      daysPerWeek: _selectedDaysPerWeek,
-                      frequencyFormat: GoalFrequencyFormats.inTotal,
-                      chosenUnit: _selectedUnit))
-                  .then((value) => Navigator.pop(context));
+              widget.onGoalAdd(Goal(
+                  actionType: _selectedActionType!,
+                  typeFormat: _selectedFormat!,
+                  startDate: _selectedStartDate,
+                  endDate: _selectedStartDate,
+                  daysPerWeek: _selectedDaysPerWeek,
+                  frequencyFormat: GoalFrequencyFormats.inTotal,
+                  chosenUnit: _selectedUnit));
+              Navigator.pop(context);
             }
           },
           onStepCancel: () {

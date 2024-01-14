@@ -53,7 +53,7 @@ extension UnitsExtension on Units {
 }
 
 extension UnitStringExtension on String {
-  Units toUnit() => Units.values.byName(this);
+  Units? toUnit() => this != "null" ? Units.values.byName(this) : null;
 
   Units? toUnitFromStringName() {
     if (this == _strNameUnitLess)

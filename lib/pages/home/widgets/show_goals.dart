@@ -5,9 +5,10 @@ import 'package:productivity_app/widgets/MyThemeButton.dart';
 import '../../../models/goal.dart';
 
 class ShowGoalsWidget extends StatelessWidget {
-  const ShowGoalsWidget({super.key, required this.goals});
+  const ShowGoalsWidget({super.key, required this.goals, required this.onGoalAdd});
 
   final List<Goal> goals;
+  final Function(Goal goal) onGoalAdd;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class ShowGoalsWidget extends StatelessWidget {
                 MyThemeButton(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddGoalPage()));
+                        MaterialPageRoute(builder: (context) => AddGoalPage(onGoalAdd: onGoalAdd,)));
                   },
                   labelText: "Angiv mål!",
                 )

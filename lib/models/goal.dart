@@ -22,12 +22,12 @@ class Goal {
   Map<String, dynamic> toMap() {
     return {
       'goalActionTypeName': actionType.name,
-      'goalTypeFormat': typeFormat.toString(),
+      'goalTypeFormat': typeFormat.name.toString(),
       'goalStartDate': startDate.toString(),
       'goalEndDate': endDate.toString(),
       'goalDaysPerWeek': daysPerWeek,
-      'goalFrequencyFormat': frequencyFormat.toString(),
-      'goalChosenUnit': chosenUnit.toString(),
+      'goalFrequencyFormat': frequencyFormat?.name.toString(),
+      'goalChosenUnit': chosenUnit?.name.toString(),
     };
   }
 
@@ -36,7 +36,7 @@ class Goal {
   factory Goal.fromMap(Map<String, dynamic> map) {
     return Goal(
       actionType: map["goalActionTypeName"].toString().toActionType(),
-      typeFormat: map["goalTypeFormat"].toString().toGoalTypeFormats(),
+      typeFormat: map["goalTypeFormat"].toString().toGoalTypeFormats()!,
       startDate: DateTime.parse(map["goalStartDate"].toString()),
       endDate: DateTime.parse(map["goalEndDate"].toString()),
       daysPerWeek: map["goalDaysPerWeek"],
@@ -50,12 +50,12 @@ class Goal {
 enum GoalTypeFormats { checkMark, typing }
 
 extension GoalTypeFormatsExtension on String {
-  GoalTypeFormats toGoalTypeFormats() => GoalTypeFormats.values.byName(this);
+  GoalTypeFormats? toGoalTypeFormats() => this != "null" ? GoalTypeFormats.values.byName(this) : null;
 }
 
 enum GoalFrequencyFormats { perDay, perWeek, inTotal }
 
 extension GoalFrequencyFormatsExtension on String {
-  GoalFrequencyFormats? toGoalFrequencyFormats() =>
-      GoalFrequencyFormats.values.byName(this);
+  GoalFrequencyFormats? toGoalFrequencyFormats() => this != "null" ?
+      GoalFrequencyFormats.values.byName(this) : null;
 }

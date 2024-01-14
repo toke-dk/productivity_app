@@ -117,4 +117,9 @@ class DataBaseService {
   Future<void> addGoal(Goal goal) async {
     await _db.insert(tableGoalName, goal.toMap());
   }
+
+  Future<List<Goal>> getGoals() async {
+    final List<Map<String, dynamic>> maps = await _db.query(tableGoalName);
+    return List.generate(maps.length, (index) => Goal.fromMap(maps[index]));
+  }
 }
