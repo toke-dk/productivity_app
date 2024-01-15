@@ -26,7 +26,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final DataBaseService _databaseService = DataBaseService();
 
   late List<Activity> completedActivities;
-  late List<Goal> goals;
 
   @override
   void initState() {
@@ -47,14 +46,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return _databaseService.getTasks();
   }
 
-  Future<List<Goal>> _getGoals() async {
-    return _databaseService.getGoals();
+  Future<List<AmountGoal>> _getAmountGoals() async {
+    return _databaseService.getAmountGoals();
   }
 
-  Future<void> _addGoal(Goal goal) async {
-    setState(() {
-      _databaseService.addGoal(goal);
-    });
+  Future<List<CheckmarkGoal>> _getCheckmarkGoals() async {
+    return _databaseService.getCheckmarkGoal();
   }
 
   Future<void> _onActivityComplete({Activity? activity, Task? task}) async {
@@ -142,12 +139,21 @@ class _MyHomePageState extends State<MyHomePage> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: ShowGoalsWidget(
-                  goals: [],
-                  onGoalAdd: (Goal goal) {
-                    _addGoal(goal);
-                  },
-                ),
+                child: FutureBuilder(
+                    future: Future(() async =>
+                        [await _getAmountGoals(), await _getCheckmarkGoals()]),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ShowGoalsWidget(
+                          amountGoals: snapshot.data![0] as List<AmountGoal>,
+                          checkmarkGoals:
+                              snapshot.data![1] as List<CheckmarkGoal>,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      } else
+                        return Center(child: CircularProgressIndicator());
+                    }),
               ),
               FutureBuilder(
                   future: Future(
@@ -163,17 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             ],
                           )
                         : Center(child: const CircularProgressIndicator());
-                  }),
-              FutureBuilder(
-                  future: _getGoals(),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? Text(snapshot.data!.isNotEmpty
-                            ? "mål navn: ${snapshot.data![0].actionType.name}"
-                            : "No")
-                        : Center(
-                            child: Text(snapshot.error.toString()),
-                          );
                   }),
               IconButton(
                   onPressed: () => setState(() {}),

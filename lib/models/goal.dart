@@ -1,48 +1,69 @@
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/unit.dart';
 
-class Goal {
+class AmountGoal {
   ActionType actionType;
-  GoalTypeFormats typeFormat;
   DateTime startDate;
   DateTime endDate;
-  int? daysPerWeek;
-  GoalFrequencyFormats? frequencyFormat;
-  Units? chosenUnit;
+  GoalFrequencyFormats frequencyFormat;
+  Units chosenUnit;
 
-  Goal(
+  AmountGoal(
       {required this.actionType,
-      required this.typeFormat,
       required this.startDate,
       required this.endDate,
-      this.daysPerWeek,
-      this.frequencyFormat,
-      this.chosenUnit});
+      required this.frequencyFormat,
+      required this.chosenUnit});
 
   Map<String, dynamic> toMap() {
     return {
       'goalActionTypeName': actionType.name,
-      'goalTypeFormat': typeFormat.name.toString(),
       'goalStartDate': startDate.toString(),
       'goalEndDate': endDate.toString(),
-      'goalDaysPerWeek': daysPerWeek,
-      'goalFrequencyFormat': frequencyFormat?.name.toString(),
-      'goalChosenUnit': chosenUnit?.name.toString(),
+      'goalFrequencyFormat': frequencyFormat.name.toString(),
+      'goalChosenUnit': chosenUnit.name.toString(),
     };
   }
 
-  /// factory is used in a constructor when you don't necessarily
-  /// want a constructor to create a new instance of your class
-  factory Goal.fromMap(Map<String, dynamic> map) {
-    return Goal(
+  factory AmountGoal.fromMap(Map<String, dynamic> map) {
+    return AmountGoal(
       actionType: map["goalActionTypeName"].toString().toActionType(),
-      typeFormat: map["goalTypeFormat"].toString().toGoalTypeFormats()!,
+      startDate: DateTime.parse(map["goalStartDate"].toString()),
+      endDate: DateTime.parse(map["goalEndDate"].toString()),
+      frequencyFormat:
+          map["goalFrequencyFormat"].toString().toGoalFrequencyFormats()!,
+      chosenUnit: map["goalChosenUnit"].toString().toUnit()!,
+    );
+  }
+}
+
+class CheckmarkGoal {
+  ActionType actionType;
+  DateTime startDate;
+  DateTime endDate;
+  int daysPerWeek;
+
+  CheckmarkGoal(
+      {required this.actionType,
+      required this.startDate,
+      required this.endDate,
+      required this.daysPerWeek});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'goalActionTypeName': actionType.name,
+      'goalStartDate': startDate.toString(),
+      'goalEndDate': endDate.toString(),
+      'goalDaysPerWeek': daysPerWeek,
+    };
+  }
+
+  factory CheckmarkGoal.fromMap(Map<String, dynamic> map) {
+    return CheckmarkGoal(
+      actionType: map["goalActionTypeName"].toString().toActionType(),
       startDate: DateTime.parse(map["goalStartDate"].toString()),
       endDate: DateTime.parse(map["goalEndDate"].toString()),
       daysPerWeek: map["goalDaysPerWeek"],
-      frequencyFormat:
-          map["goalFrequencyFormat"].toString().toGoalFrequencyFormats(),
-      chosenUnit: map["goalChosenUnit"].toString().toUnit(),
     );
   }
 }
@@ -50,12 +71,13 @@ class Goal {
 enum GoalTypeFormats { checkMark, typing }
 
 extension GoalTypeFormatsExtension on String {
-  GoalTypeFormats? toGoalTypeFormats() => this != "null" ? GoalTypeFormats.values.byName(this) : null;
+  GoalTypeFormats? toGoalTypeFormats() =>
+      this != "null" ? GoalTypeFormats.values.byName(this) : null;
 }
 
 enum GoalFrequencyFormats { perDay, perWeek, inTotal }
 
 extension GoalFrequencyFormatsExtension on String {
-  GoalFrequencyFormats? toGoalFrequencyFormats() => this != "null" ?
-      GoalFrequencyFormats.values.byName(this) : null;
+  GoalFrequencyFormats? toGoalFrequencyFormats() =>
+      this != "null" ? GoalFrequencyFormats.values.byName(this) : null;
 }

@@ -13,9 +13,7 @@ import '../../models/activity.dart';
 import '../../shared/widgets/activity_card.dart';
 
 class AddGoalPage extends StatefulWidget {
-  const AddGoalPage({super.key, required this.onGoalAdd});
-
-  final Function(Goal goal) onGoalAdd;
+  const AddGoalPage({super.key});
 
   @override
   State<AddGoalPage> createState() => _AddGoalPageState();
@@ -119,6 +117,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           } else
                             setState(() {
                               _selectedFormat = GoalTypeFormats.typing;
+                              _selectedUnit = _selectedActionType!.possibleUnits![0];
                             });
                         },
                       )
@@ -310,6 +309,16 @@ class _AddGoalPageState extends State<AddGoalPage> {
             ))
       ];
 
+  final DataBaseService _databaseService = DataBaseService();
+
+  Future<void> _addAmountGoal(AmountGoal goal) async {
+    _databaseService.addAmountGoal(goal);
+  }
+
+  Future<void> _addCheckmarkGoal(CheckmarkGoal goal) async {
+    _databaseService.addCheckmarkGoal(goal);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -357,14 +366,20 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 _currentStepIndex += 1;
               });
             } else {
-              widget.onGoalAdd(Goal(
-                  actionType: _selectedActionType!,
-                  typeFormat: _selectedFormat!,
-                  startDate: _selectedStartDate,
-                  endDate: _selectedStartDate,
-                  daysPerWeek: _selectedDaysPerWeek,
-                  frequencyFormat: GoalFrequencyFormats.inTotal,
-                  chosenUnit: _selectedUnit));
+              if (_selectedFormat == GoalTypeFormats.typing) {
+                _addAmountGoal(AmountGoal(
+                    actionType: _selectedActionType!,
+                    startDate: _selectedStartDate,
+                    endDate: _selectedEndDate,
+                    frequencyFormat: GoalFrequencyFormats.inTotal,
+                    chosenUnit: _selectedUnit!));
+              } else if (_selectedFormat == GoalTypeFormats.checkMark) {
+                _addCheckmarkGoal(CheckmarkGoal(
+                    actionType: _selectedActionType!,
+                    startDate: _selectedStartDate,
+                    endDate: _selectedEndDate,
+                    daysPerWeek: _selectedDaysPerWeek));
+              }
               Navigator.pop(context);
             }
           },

@@ -5,10 +5,11 @@ import 'package:productivity_app/widgets/MyThemeButton.dart';
 import '../../../models/goal.dart';
 
 class ShowGoalsWidget extends StatelessWidget {
-  const ShowGoalsWidget({super.key, required this.goals, required this.onGoalAdd});
+  const ShowGoalsWidget(
+      {super.key, required this.amountGoals, required this.checkmarkGoals});
 
-  final List<Goal> goals;
-  final Function(Goal goal) onGoalAdd;
+  final List<AmountGoal> amountGoals;
+  final List<CheckmarkGoal> checkmarkGoals;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ShowGoalsWidget extends StatelessWidget {
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Colors.grey[100]),
-      child: goals.isEmpty
+      child: amountGoals.isEmpty && checkmarkGoals.isEmpty
           ? Column(
               children: [
                 Text("Du har ikke sat et mål endnu"),
@@ -27,7 +28,7 @@ class ShowGoalsWidget extends StatelessWidget {
                 MyThemeButton(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddGoalPage(onGoalAdd: onGoalAdd,)));
+                        MaterialPageRoute(builder: (context) => AddGoalPage()));
                   },
                   labelText: "Angiv mål!",
                 )
