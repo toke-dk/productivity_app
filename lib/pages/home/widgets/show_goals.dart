@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
+import 'package:productivity_app/widgets/display_activity_type.dart';
 
 import '../../../models/goal.dart';
 
@@ -34,7 +36,59 @@ class ShowGoalsWidget extends StatelessWidget {
                 )
               ],
             )
-          : Text("Should desplay goal here"),
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: List.generate(checkmarkGoals.length, (index) {
+                    CheckmarkGoal currentGoal = checkmarkGoals[index];
+                    return Column(
+                      children: [Text(currentGoal.actionType.name)],
+                    );
+                  }),
+                ),
+                Column(
+                  children: List.generate(amountGoals.length, (index) {
+                    AmountGoal currentGoal = amountGoals[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DisplayActionType(
+                          actionType: currentGoal.actionType,
+                          axisDirection: Axis.horizontal,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          currentGoal.frequencyFormat ==
+                                  GoalFrequencyFormats.inTotal
+                              ? "Totalt mål"
+                              : currentGoal.frequencyFormat ==
+                                      GoalFrequencyFormats.perWeek
+                                  ? "Dagens mål"
+                                  : currentGoal.frequencyFormat ==
+                                          GoalFrequencyFormats.perDay
+                                      ? "Dagens mål"
+                                      : "FEJL!!",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        SizedBox(height: 10,),
+                        LinearPercentIndicator(
+                          barRadius: Radius.circular(20),
+                          percent: 0.4,
+                          progressColor: Theme.of(context).colorScheme.primary,
+                          lineHeight: 15,
+                          animation: true,
+                          animationDuration: 1000,
+                          leading: Text("40%"),
+                        )
+                      ],
+                    );
+                  }),
+                ),
+              ],
+            ),
     );
   }
 }

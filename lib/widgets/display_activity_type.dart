@@ -34,7 +34,6 @@ class DisplayActionType extends StatelessWidget {
         ? Transform.scale(
             scale: dense ? 0.8 : 1,
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: childrenToDisplay),
           )
         : Transform.scale(
