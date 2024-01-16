@@ -32,7 +32,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
   int _selectedDaysPerWeek = 7;
 
-  int? _selectedTotalAmount;
+  double? _selectedTotalAmount;
 
   Units? _selectedUnit;
 
@@ -117,7 +117,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                           } else
                             setState(() {
                               _selectedFormat = GoalTypeFormats.typing;
-                              _selectedUnit = _selectedActionType!.possibleUnits![0];
+                              _selectedUnit =
+                                  _selectedActionType!.possibleUnits![0];
                             });
                         },
                       )
@@ -227,7 +228,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                                   child: TextField(
                                     onChanged: (String newVal) => setState(() {
                                       _selectedTotalAmount = newVal != ""
-                                          ? int.parse(newVal)
+                                          ? double.parse(newVal)
                                           : null;
                                     }),
                                     inputFormatters: [
@@ -372,7 +373,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     startDate: _selectedStartDate,
                     endDate: _selectedEndDate,
                     frequencyFormat: GoalFrequencyFormats.inTotal,
-                    chosenUnit: _selectedUnit!));
+                    chosenUnit: _selectedUnit!,
+                    amountGoal: _selectedTotalAmount!));
               } else if (_selectedFormat == GoalTypeFormats.checkMark) {
                 _addCheckmarkGoal(CheckmarkGoal(
                     actionType: _selectedActionType!,

@@ -7,13 +7,15 @@ class AmountGoal {
   DateTime endDate;
   GoalFrequencyFormats frequencyFormat;
   Units chosenUnit;
+  double amountGoal;
 
   AmountGoal(
       {required this.actionType,
       required this.startDate,
       required this.endDate,
       required this.frequencyFormat,
-      required this.chosenUnit});
+      required this.chosenUnit,
+      required this.amountGoal});
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,6 +24,7 @@ class AmountGoal {
       'goalEndDate': endDate.toString(),
       'goalFrequencyFormat': frequencyFormat.name.toString(),
       'goalChosenUnit': chosenUnit.name.toString(),
+      'amountGoal': amountGoal
     };
   }
 
@@ -33,6 +36,7 @@ class AmountGoal {
       frequencyFormat:
           map["goalFrequencyFormat"].toString().toGoalFrequencyFormats()!,
       chosenUnit: map["goalChosenUnit"].toString().toUnit()!,
+      amountGoal: map["amountGoal"],
     );
   }
 }

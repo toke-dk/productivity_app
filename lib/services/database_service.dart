@@ -28,15 +28,19 @@ class DataBaseService {
   static const String tableAmountGoalName = "amountGoals";
   static const String tableCheckmarkGoalName = "checkmarkGoals";
   static const String columnGoalId = "id";
-
   static const String columnGoalActionTypeName = "goalActionTypeName";
   static const String columnGoalStartDate = "goalStartDate";
   static const String columnGoalEndDate = "goalEndDate";
+
+  // CheckmarkGoal
   static const String columnGoalDaysPerWeek = "goalDaysPerWeek";
+
+  // AmountGoal
+  static const String columnGoalAmountGoal = "amountGoal";
   static const String columnGoalFrequencyFormat = "goalFrequencyFormat";
   static const String columnGoalChosenUnit = "goalChosenUnit";
 
-  // Singleton pattern
+  /// Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
 
   factory DataBaseService() => _dataBaseService;
@@ -76,7 +80,8 @@ class DataBaseService {
         $columnGoalStartDate TEXT,
         $columnGoalEndDate TEXT,
         $columnGoalFrequencyFormat TEXT,
-        $columnGoalChosenUnit TEXT
+        $columnGoalChosenUnit TEXT,
+        $columnGoalAmountGoal, INTEGER
         )""");
 
     await db.execute("""
