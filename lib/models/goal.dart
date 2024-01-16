@@ -1,5 +1,6 @@
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/unit.dart';
+import 'package:productivity_app/shared/string_extensions.dart';
 
 class AmountGoal {
   ActionType actionType;
@@ -74,14 +75,4 @@ class CheckmarkGoal {
 
 enum GoalTypeFormats { checkMark, typing }
 
-extension GoalTypeFormatsExtension on String {
-  GoalTypeFormats? toGoalTypeFormats() =>
-      this != "null" ? GoalTypeFormats.values.byName(this) : null;
-}
-
 enum GoalFrequencyFormats { perDay, perWeek, inTotal }
-
-extension GoalFrequencyFormatsExtension on String {
-  GoalFrequencyFormats? toGoalFrequencyFormats() =>
-      this != "null" ? GoalFrequencyFormats.values.byName(this) : null;
-}

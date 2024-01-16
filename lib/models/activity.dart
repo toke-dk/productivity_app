@@ -1,13 +1,7 @@
-import 'dart:collection';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart';
-import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/unit.dart';
-import 'package:productivity_app/shared/allActionTypes.dart';
-import 'package:provider/provider.dart';
+import 'package:productivity_app/shared/string_extensions.dart';
 
 class Activity {
   double amount;
@@ -106,11 +100,6 @@ class ActivityProvider extends ChangeNotifier {
 
 
 /// The [ActionType] class describes what type of activities is done
-
-extension ActionTypeStringExtension on String {
-  ActionType toActionType() =>
-      kAllActionTypes.firstWhere((element) => element.name == this);
-}
 
 class ActionType {
   String name;
