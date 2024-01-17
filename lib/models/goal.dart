@@ -30,7 +30,7 @@ class AmountGoal {
       'goalFrequencyFormat': frequencyFormat.name.toString(),
       'goalChosenUnit': chosenUnit.name.toString(),
       'amountGoal': amountGoal,
-      'doneAmountActivities': doneAmountActivities,
+      'doneAmountActivities': doneAmountActivities.toString(),
     };
   }
 
