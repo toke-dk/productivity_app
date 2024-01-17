@@ -48,7 +48,7 @@ class DataBaseService {
 
   DataBaseService._internal();
 
-  late Database _db;
+  Database? _db;
 
   Future<void> initDatabase() async {
     final path = join(await getDatabasesPath(), _databaseName);
@@ -97,53 +97,53 @@ class DataBaseService {
   }
 
   Future<void> addActivity(Activity activity) async {
-    await _db.insert(tableActivityName, activity.toMap());
+    await _db!.insert(tableActivityName, activity.toMap());
   }
 
   Future<void> deleteAllActivities() async {
-    await _db.rawDelete("DELETE FROM $tableActivityName");
+    await _db!.rawDelete("DELETE FROM $tableActivityName");
   }
 
   Future<List<Activity>> getActivities() async {
-    final List<Map<String, dynamic>> maps = await _db.query(tableActivityName);
+    final List<Map<String, dynamic>> maps = await _db!.query(tableActivityName);
     return List.generate(maps.length, (index) => Activity.fromMap(maps[index]));
   }
 
   /// Task
 
   Future<void> deleteTasksTable() async {
-    await _db.execute("DROP TABLE $tableTaskName");
+    await _db!.execute("DROP TABLE $tableTaskName");
   }
 
   Future<void> deleteAllTasks() async {
-    await _db.rawDelete("DELETE FROM $tableTaskName");
+    await _db!.rawDelete("DELETE FROM $tableTaskName");
   }
 
   Future<void> addTask(Task task) async {
-    await _db.insert(tableTaskName, task.toMap());
+    await _db!.insert(tableTaskName, task.toMap());
   }
 
   Future<List<Task>> getTasks() async {
-    final List<Map<String, dynamic>> maps = await _db.query(tableTaskName);
+    final List<Map<String, dynamic>> maps = await _db!.query(tableTaskName);
     return List.generate(maps.length, (index) => Task.fromMap(maps[index]));
   }
 
   /// Goal
   Future<void> addAmountGoal(AmountGoal goal) async {
-    await _db.insert(tableAmountGoalName, goal.toMap());
+    await _db!.insert(tableAmountGoalName, goal.toMap());
   }
 
   Future<List<AmountGoal>> getAmountGoals() async {
-    final List<Map<String, dynamic>> maps = await _db.query(tableAmountGoalName);
+    final List<Map<String, dynamic>> maps = await _db?.query(tableAmountGoalName) ?? [];
     return List.generate(maps.length, (index) => AmountGoal.fromMap(maps[index]));
   }
 
   Future<void> addCheckmarkGoal(CheckmarkGoal goal) async {
-    await _db.insert(tableCheckmarkGoalName, goal.toMap());
+    await _db!.insert(tableCheckmarkGoalName, goal.toMap());
   }
 
   Future<List<CheckmarkGoal>> getCheckmarkGoal() async {
-    final List<Map<String, dynamic>> maps = await _db.query(tableCheckmarkGoalName);
+    final List<Map<String, dynamic>> maps = await _db?.query(tableCheckmarkGoalName) ?? [];
     return List.generate(maps.length, (index) => CheckmarkGoal.fromMap(maps[index]));
   }
 }
