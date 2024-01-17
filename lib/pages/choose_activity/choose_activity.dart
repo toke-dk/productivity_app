@@ -34,7 +34,9 @@ class ChooseActivityScreen extends StatelessWidget {
                     onActivityComplete: onActivityComplete,
                   )
                 : AddActivityAmount(
-                    onActivityComplete: onActivityComplete, actionType: Provider.of<ActivityProvider>(context).getCurrentActionType!,
+              onComplete: () => debugPrint("should do something here maybe"),
+                    actionType: Provider.of<ActivityProvider>(context)
+                        .getCurrentActionType!,
                   )));
   }
 

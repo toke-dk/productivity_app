@@ -12,12 +12,10 @@ import '../../models/unit.dart';
 class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount(
       {super.key,
-      this.onActivityComplete,
       required this.actionType,
       this.onComplete,
       this.unit});
 
-  final Function({Activity? activity, Task? task})? onActivityComplete;
   final ActionType actionType;
   final Units? unit;
   final Function()? onComplete;
