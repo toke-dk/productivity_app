@@ -25,8 +25,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final DataBaseService _databaseService = DataBaseService();
 
-  late List<Activity> completedActivities;
-
   @override
   void initState() {
     print("init");
