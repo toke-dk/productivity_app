@@ -11,14 +11,11 @@ import '../../models/unit.dart';
 
 class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount(
-      {super.key,
-      required this.actionType,
-      this.onComplete,
-      this.unit});
+      {super.key, required this.actionType, this.onComplete, this.unit});
 
   final ActionType actionType;
   final Units? unit;
-  final Function()? onComplete;
+  final Function(double amount)? onComplete;
 
   @override
   State<AddActivityAmount> createState() => _AddActivityAmountState();
@@ -29,6 +26,12 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
   bool isStringEmpty(String val) {
     return val == "";
+  }
+
+  Function()? _onNextPress() {
+    return widget.onComplete != null
+        ? widget.onComplete!(double.parse(typedString.replaceAll(",", ".")))
+        : {};
   }
 
   @override
@@ -47,7 +50,8 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
             flex: 1,
           ),
           Text(
-            widget.unit?.shortStringName ?? widget.actionType.possibleUnits![0].textForUnitMeasure,
+            widget.unit?.shortStringName ??
+                widget.actionType.possibleUnits![0].textForUnitMeasure,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(
@@ -111,9 +115,8 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
             flex: 2,
           ),
           MyNumberBoard(
-              onNextButtonPressed: !isStringEmpty(typedString)
-                  ? widget.onComplete ?? () {}
-                  : null,
+              onNextButtonPressed:
+                  !isStringEmpty(typedString) ? _onNextPress : null,
               changeTypedString: (String newString) {
                 setState(() {
                   typedString = newString;

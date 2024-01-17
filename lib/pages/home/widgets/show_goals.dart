@@ -10,10 +10,15 @@ import '../../../models/goal.dart';
 
 class ShowGoalsWidget extends StatelessWidget {
   const ShowGoalsWidget(
-      {super.key, required this.amountGoals, required this.checkmarkGoals});
+      {super.key,
+      required this.amountGoals,
+      required this.checkmarkGoals,
+      required this.onAmountGoalActivityAdded});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
+  final Function(AmountGoal goal, DoneAmountActivity activity)
+      onAmountGoalActivityAdded;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +103,15 @@ class ShowGoalsWidget extends StatelessWidget {
                             onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AddActivityAmount(actionType: _currentGoal.actionType,))),
+                                    builder: (context) => AddActivityAmount(
+                                      onComplete: (amount) =>
+                                          onAmountGoalActivityAdded(
+                                              _currentGoal,
+                                              DoneAmountActivity(
+                                                  date: DateTime.now(),
+                                                  amount: amount)),
+                                          actionType: _currentGoal.actionType,
+                                        ))),
                           ),
                         ),
                         Text(
