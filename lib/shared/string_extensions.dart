@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:productivity_app/models/unit.dart';
 
 import '../models/activity.dart';
@@ -15,4 +17,8 @@ extension MyStringExtensions on String {
   ActionType toActionType() =>
       kAllActionTypes.firstWhere((element) => element.name == this);
 
+  DoneAmountActivity toAmountActivity() {
+    Map<String, dynamic> map = Map<String, dynamic>.from(json.decode(this));
+    return DoneAmountActivity(date: map["date"], amount: map["amount"]);
+  }
 }

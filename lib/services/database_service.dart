@@ -39,6 +39,7 @@ class DataBaseService {
   static const String columnGoalAmountGoal = "amountGoal";
   static const String columnGoalFrequencyFormat = "goalFrequencyFormat";
   static const String columnGoalChosenUnit = "goalChosenUnit";
+  static const String columnGoalCompletedActivities = "doneAmountActivities";
 
   /// Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
@@ -81,7 +82,8 @@ class DataBaseService {
         $columnGoalEndDate TEXT,
         $columnGoalFrequencyFormat TEXT,
         $columnGoalChosenUnit TEXT,
-        $columnGoalAmountGoal, INTEGER
+        $columnGoalAmountGoal, INTEGER,
+        $columnGoalCompletedActivities, TEXT
         )""");
 
     await db.execute("""

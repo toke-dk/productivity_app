@@ -15,6 +15,7 @@ class ShowGoalsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(amountGoals.isNotEmpty ? amountGoals[0].doneAmountActivities : "no");
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20),

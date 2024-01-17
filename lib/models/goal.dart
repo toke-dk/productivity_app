@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/shared/string_extensions.dart';
@@ -9,6 +11,7 @@ class AmountGoal {
   GoalFrequencyFormats frequencyFormat;
   Units chosenUnit;
   double amountGoal;
+  List<DoneAmountActivity> doneAmountActivities;
 
   AmountGoal(
       {required this.actionType,
@@ -16,7 +19,8 @@ class AmountGoal {
       required this.endDate,
       required this.frequencyFormat,
       required this.chosenUnit,
-      required this.amountGoal});
+      required this.amountGoal,
+      this.doneAmountActivities = const <DoneAmountActivity>[]});
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,11 +29,16 @@ class AmountGoal {
       'goalEndDate': endDate.toString(),
       'goalFrequencyFormat': frequencyFormat.name.toString(),
       'goalChosenUnit': chosenUnit.name.toString(),
-      'amountGoal': amountGoal
+      'amountGoal': amountGoal,
+      'doneAmountActivities': doneAmountActivities,
     };
   }
 
   factory AmountGoal.fromMap(Map<String, dynamic> map) {
+    /// TODO this is the problem
+    // print(
+    //     "hiii: ${(json.decode(map["doneAmountActivities"].toString()) as List)
+    //     .map((e) => DoneAmountActivity(date: DateTime.now(), amount: 2)).toList().runtimeType}");
     return AmountGoal(
       actionType: map["goalActionTypeName"].toString().toActionType(),
       startDate: DateTime.parse(map["goalStartDate"].toString()),
@@ -38,7 +47,23 @@ class AmountGoal {
           map["goalFrequencyFormat"].toString().toGoalFrequencyFormats()!,
       chosenUnit: map["goalChosenUnit"].toString().toUnit()!,
       amountGoal: map["amountGoal"],
+      doneAmountActivities: (json
+          .decode(map["doneAmountActivities"].toString()) as List)
+          .map((a) => DoneAmountActivity(date: DateTime.now(), amount: 2))
+          .toList(),
     );
+  }
+}
+
+class DoneAmountActivity {
+  DateTime date;
+  double amount;
+
+  DoneAmountActivity({required this.date, required this.amount});
+
+  @override
+  String toString() {
+    return "CompletedActivity{date: $date, amount: $amount}";
   }
 }
 

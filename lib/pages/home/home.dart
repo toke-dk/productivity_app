@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: FutureBuilder(
                     future: Future(() async =>
                         [await _getAmountGoals(), await _getCheckmarkGoals()]),
-                    builder: (context, snapshot) {
+                    builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return ShowGoalsWidget(
                           amountGoals: snapshot.data![0] as List<AmountGoal>,
@@ -150,6 +150,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               snapshot.data![1] as List<CheckmarkGoal>,
                         );
                       } else if (snapshot.hasError) {
+                        print(snapshot.error);
+                        print(snapshot.stackTrace.toString());
                         return Text(snapshot.error.toString());
                       } else
                         return Center(child: CircularProgressIndicator());
