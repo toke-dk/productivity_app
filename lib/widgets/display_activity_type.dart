@@ -6,11 +6,12 @@ class DisplayActionType extends StatelessWidget {
       {super.key,
       required this.actionType,
       this.axisDirection = Axis.horizontal,
-      this.dense = false});
+      this.dense = false, this.mainAxisAlignment = MainAxisAlignment.center});
 
   final ActionType actionType;
   final Axis axisDirection;
   final bool dense;
+  final MainAxisAlignment mainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +35,13 @@ class DisplayActionType extends StatelessWidget {
         ? Transform.scale(
             scale: dense ? 0.8 : 1,
             child: Row(
+              mainAxisAlignment: mainAxisAlignment,
                 children: childrenToDisplay),
           )
         : Transform.scale(
             scale: dense ? 0.8 : 1,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: mainAxisAlignment,
               children: childrenToDisplay,
             ),
           );

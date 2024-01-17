@@ -11,12 +11,12 @@ import 'package:provider/provider.dart';
 
 class ActivityReceipt extends StatelessWidget {
   ActivityReceipt(
-      {super.key, this.activity, required this.onActivityComplete, this.task});
+      {super.key, this.activity, this.onActivityComplete, this.task});
 
   final Activity? activity;
   final Task? task;
 
-  final Function({Activity? activity, Task? task}) onActivityComplete;
+  final Function({Activity? activity, Task? task})? onActivityComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -136,10 +136,10 @@ class ActivityReceipt extends StatelessWidget {
             const Spacer(),
             MyThemeButton(
               onTap: () {
-                if (task != null) {
-                  onActivityComplete(task: task);
-                } else {
-                  onActivityComplete(activity: activity);
+                if (task != null && onActivityComplete != null) {
+                  onActivityComplete!(task: task);
+                } else if (activity != null && onActivityComplete != null) {
+                  onActivityComplete!(activity: activity);
                 }
                 Navigator.popUntil(context, (route) => route.isFirst);
               },

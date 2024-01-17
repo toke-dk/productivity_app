@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
+import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
@@ -59,6 +60,7 @@ class ShowGoalsWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DisplayActionType(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           actionType: _currentGoal.actionType,
                           axisDirection: Axis.horizontal,
                         ),
@@ -91,7 +93,13 @@ class ShowGoalsWidget extends StatelessWidget {
                           animationDuration: 1000,
                           leading: Text(
                               "${_amountDone / _currentGoal.amountGoal * 100}%"),
-                          trailing: Icon(Icons.add_circle_outlined),
+                          trailing: IconButton(
+                            icon: Icon(Icons.add_circle_outlined),
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddActivityAmount(actionType: _currentGoal.actionType,))),
+                          ),
                         ),
                         Text(
                           "$_amountDone / ${_currentGoal.amountGoal} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit : 'gange'} ",

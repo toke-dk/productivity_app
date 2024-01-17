@@ -3,15 +3,24 @@ import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
+import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/unit.dart';
 
 class AddActivityAmount extends StatefulWidget {
-  const AddActivityAmount({super.key, required this.onActivityComplete});
+  const AddActivityAmount(
+      {super.key,
+      this.onActivityComplete,
+      required this.actionType,
+      this.onComplete,
+      this.unit});
 
-  final Function({Activity? activity, Task? task}) onActivityComplete;
+  final Function({Activity? activity, Task? task})? onActivityComplete;
+  final ActionType actionType;
+  final Units? unit;
+  final Function()? onComplete;
 
   @override
   State<AddActivityAmount> createState() => _AddActivityAmountState();
@@ -26,9 +35,6 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
   @override
   Widget build(BuildContext context) {
-    final ActionType actionType =
-        Provider.of<ActivityProvider>(context).getCurrentActionType!;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tilføj aktivitet"),
@@ -38,12 +44,12 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           const SizedBox(
             height: 15,
           ),
-          DisplayActionType(actionType: actionType),
+          DisplayActionType(actionType: widget.actionType),
           const Spacer(
             flex: 1,
           ),
           Text(
-            actionType.possibleUnits![0].textForUnitMeasure,
+            widget.unit?.shortStringName ?? widget.actionType.possibleUnits![0].textForUnitMeasure,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(
@@ -61,7 +67,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
               Row(
                 children: [
                   Text(
-                    actionType.possibleUnits![0].stringName,
+                    widget.actionType.possibleUnits![0].stringName,
                     style: const TextStyle(color: Colors.transparent),
                   ),
                   !isStringEmpty(typedString)
@@ -78,11 +84,11 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                   const SizedBox(
                     width: 5,
                   ),
-                  actionType.possibleUnits![0] != Units.unitLess
+                  widget.actionType.possibleUnits![0] != Units.unitLess
                       ? Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           child: Text(
-                              actionType.possibleUnits![0].stringName),
+                              widget.actionType.possibleUnits![0].stringName),
                         )
                       : const SizedBox(),
                 ],
@@ -108,19 +114,7 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           ),
           MyNumberBoard(
               onNextButtonPressed: !isStringEmpty(typedString)
-                  ? () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ActivityReceipt(
-                                activity: Activity(
-                                    amount: double.parse(
-                                        typedString.replaceAll(",", ".")),
-                                    actionType: actionType,
-
-                                    //// TODO: Make this right
-                                    chosenUnit:
-                                        actionType.possibleUnits![0], dateCompleted: DateTime.now()), onActivityComplete: widget.onActivityComplete,
-                              )))
+                  ? widget.onComplete ?? () {}
                   : null,
               changeTypedString: (String newString) {
                 setState(() {
