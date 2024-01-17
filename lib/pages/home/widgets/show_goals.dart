@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
@@ -50,44 +51,74 @@ class ShowGoalsWidget extends StatelessWidget {
                 ),
                 Column(
                   children: List.generate(amountGoals.length, (index) {
-                    AmountGoal currentGoal = amountGoals[index];
+                    AmountGoal _currentGoal = amountGoals[index];
+                    double _amountDone =
+                        _currentGoal.doneAmountActivities.totalAmountDone;
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DisplayActionType(
-                          actionType: currentGoal.actionType,
+                          actionType: _currentGoal.actionType,
                           axisDirection: Axis.horizontal,
                         ),
                         SizedBox(
                           height: 20,
                         ),
                         Text(
-                          currentGoal.frequencyFormat ==
+                          _currentGoal.frequencyFormat ==
                                   GoalFrequencyFormats.inTotal
                               ? "Totalt mål"
-                              : currentGoal.frequencyFormat ==
+                              : _currentGoal.frequencyFormat ==
                                       GoalFrequencyFormats.perWeek
                                   ? "Dagens mål"
-                                  : currentGoal.frequencyFormat ==
+                                  : _currentGoal.frequencyFormat ==
                                           GoalFrequencyFormats.perDay
                                       ? "Dagens mål"
                                       : "FEJL!!",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         LinearPercentIndicator(
                           barRadius: Radius.circular(20),
-                          percent: 0.4,
+                          percent:
+                              _currentGoal.doneAmountActivities.totalAmountDone,
                           progressColor: Theme.of(context).colorScheme.primary,
                           lineHeight: 15,
                           animation: true,
                           animationDuration: 1000,
-                          leading: Text("40%"),
-                        )
+                          leading: Text(
+                              "${_amountDone / _currentGoal.amountGoal * 100}%"),
+                          trailing: Icon(Icons.add_circle_outlined),
+                        ),
+                        Text(
+                          "$_amountDone / ${_currentGoal.amountGoal} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit : 'gange'} ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(color: Colors.grey[700]),
+                        ),
                       ],
                     );
                   }),
                 ),
+                Divider(
+                  height: 60,
+                  thickness: 2,
+                ),
+                Center(
+                  child: MyThemeButton(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddGoalPage()));
+                    },
+                    labelText: "Tilføj et mål mere",
+                  ),
+                )
               ],
             ),
     );

@@ -47,10 +47,10 @@ class AmountGoal {
           map["goalFrequencyFormat"].toString().toGoalFrequencyFormats()!,
       chosenUnit: map["goalChosenUnit"].toString().toUnit()!,
       amountGoal: map["amountGoal"],
-      doneAmountActivities: (json
-          .decode(map["doneAmountActivities"].toString()) as List)
-          .map((a) => DoneAmountActivity(date: DateTime.now(), amount: 2))
-          .toList(),
+      doneAmountActivities:
+          (json.decode(map["doneAmountActivities"].toString()) as List)
+              .map((a) => DoneAmountActivity(date: DateTime.now(), amount: 2))
+              .toList(),
     );
   }
 }
@@ -65,6 +65,12 @@ class DoneAmountActivity {
   String toString() {
     return "CompletedActivity{date: $date, amount: $amount}";
   }
+}
+
+extension DoneAmountActivityExtension on List<DoneAmountActivity> {
+  double get totalAmountDone => this.isNotEmpty
+      ? this.map((e) => e.amount).reduce((value, element) => value + element)
+      : 0;
 }
 
 class CheckmarkGoal {
