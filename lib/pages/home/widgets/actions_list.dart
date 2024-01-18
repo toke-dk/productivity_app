@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:productivity_app/models/unit.dart';
-import 'package:productivity_app/shared/date_time_extension.dart';
+import 'package:productivity_app/shared/extensions/date_time_extension.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 import '../../../models/activity.dart';

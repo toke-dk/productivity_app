@@ -4,7 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
-import 'package:productivity_app/shared/date_time_extension.dart';
+import 'package:productivity_app/shared/extensions/date_time_extension.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 

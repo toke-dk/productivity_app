@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:productivity_app/models/unit.dart';
 
-import '../models/activity.dart';
-import '../models/goal.dart';
-import 'allActionTypes.dart';
+import '../../models/activity.dart';
+import '../../models/goal.dart';
+import '../allActionTypes.dart';
 
 
 extension MyStringExtensions on String {

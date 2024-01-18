@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/unit.dart';
-import 'package:productivity_app/shared/string_extensions.dart';
+import 'package:productivity_app/shared/extensions/string_extensions.dart';
 
 class Activity {
   double amount;

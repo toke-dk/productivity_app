@@ -7,7 +7,7 @@ import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
-import 'package:productivity_app/shared/date_time_extension.dart';
+import 'package:productivity_app/shared/extensions/date_time_extension.dart';
 
 import '../../models/activity.dart';
 import '../../shared/widgets/activity_card.dart';

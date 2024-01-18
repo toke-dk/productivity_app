@@ -1,5 +1,5 @@
 import 'package:productivity_app/models/activity.dart';
-import 'package:productivity_app/shared/string_extensions.dart';
+import 'package:productivity_app/shared/extensions/string_extensions.dart';
 
 class Task {
   ActionType actionType;
