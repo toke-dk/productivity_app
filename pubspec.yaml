@@ -46,6 +46,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.2.3
   percent_indicator: ^4.2.3
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:

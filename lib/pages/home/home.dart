@@ -63,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _addDoneAmountActivity(
       {required AmountGoal goal, required DoneAmountActivity doneAmount}) async {
-    print("doing");
     _databaseService.addDoneAmountActivity(goal, doneAmount);
   }
 

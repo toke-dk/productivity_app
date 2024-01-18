@@ -39,7 +39,7 @@ class DataBaseService {
   static const String columnGoalAmountGoal = "amountGoal";
   static const String columnGoalFrequencyFormat = "goalFrequencyFormat";
   static const String columnGoalChosenUnit = "goalChosenUnit";
-  static const String columnGoalCompletedActivities = "doneAmountActivities";
+  static const String columnGoalDoneAmountActivities = "doneAmountActivities";
 
   /// Singleton pattern
   static final DataBaseService _dataBaseService = DataBaseService._internal();
@@ -76,14 +76,14 @@ class DataBaseService {
 
     await db.execute("""
         CREATE TABLE $tableAmountGoalName(
-        $columnGoalId INTEGER PRIMARY KEY, 
+        $columnGoalId TEXT PRIMARY KEY, 
         $columnGoalActionTypeName TEXT, 
         $columnGoalStartDate TEXT,
         $columnGoalEndDate TEXT,
         $columnGoalFrequencyFormat TEXT,
         $columnGoalChosenUnit TEXT,
         $columnGoalAmountGoal, INTEGER,
-        $columnGoalCompletedActivities, TEXT
+        $columnGoalDoneAmountActivities, TEXT
         )""");
 
     await db.execute("""
@@ -133,17 +133,21 @@ class DataBaseService {
     await _db!.insert(tableAmountGoalName, goal.toMap());
   }
 
-  Future<void> addDoneAmountActivity(AmountGoal goal, DoneAmountActivity activity) async {
+  Future<void> addDoneAmountActivity(
+      AmountGoal goal, DoneAmountActivity activity) async {
     //adds the done amount activity
     goal.addDoneAmountActivity(activity);
 
     // TODO: it should be the right args
-    await _db!.update(tableAmountGoalName, goal.toMap(), where: "$columnGoalId = ?", whereArgs: [0]);
+    await _db!.update(tableAmountGoalName, goal.toMap(),
+        where: "$columnGoalId = ?", whereArgs: [goal.id]);
   }
 
   Future<List<AmountGoal>> getAmountGoals() async {
-    final List<Map<String, dynamic>> maps = await _db?.query(tableAmountGoalName) ?? [];
-    return List.generate(maps.length, (index) => AmountGoal.fromMap(maps[index]));
+    final List<Map<String, dynamic>> maps =
+        await _db?.query(tableAmountGoalName) ?? [];
+    return List.generate(
+        maps.length, (index) => AmountGoal.fromMap(maps[index]));
   }
 
   Future<void> addCheckmarkGoal(CheckmarkGoal goal) async {
@@ -151,7 +155,9 @@ class DataBaseService {
   }
 
   Future<List<CheckmarkGoal>> getCheckmarkGoal() async {
-    final List<Map<String, dynamic>> maps = await _db?.query(tableCheckmarkGoalName) ?? [];
-    return List.generate(maps.length, (index) => CheckmarkGoal.fromMap(maps[index]));
+    final List<Map<String, dynamic>> maps =
+        await _db?.query(tableCheckmarkGoalName) ?? [];
+    return List.generate(
+        maps.length, (index) => CheckmarkGoal.fromMap(maps[index]));
   }
 }

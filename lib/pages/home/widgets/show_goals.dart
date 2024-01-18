@@ -22,7 +22,6 @@ class ShowGoalsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(amountGoals.isNotEmpty ? amountGoals[0].doneAmountActivities : "no");
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20),
@@ -60,6 +59,7 @@ class ShowGoalsWidget extends StatelessWidget {
                     AmountGoal _currentGoal = amountGoals[index];
                     double _amountDone =
                         _currentGoal.doneAmountActivities.totalAmountDone;
+                    double _percent = (_amountDone / _currentGoal.amountGoal);
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,26 +90,25 @@ class ShowGoalsWidget extends StatelessWidget {
                         ),
                         LinearPercentIndicator(
                           barRadius: Radius.circular(20),
-                          percent:
-                              _currentGoal.doneAmountActivities.totalAmountDone,
+                          percent: _percent,
                           progressColor: Theme.of(context).colorScheme.primary,
                           lineHeight: 15,
                           animation: true,
                           animationDuration: 1000,
-                          leading: Text(
-                              "${_amountDone / _currentGoal.amountGoal * 100}%"),
+                          leading:
+                              Text("${(_percent * 100).toStringAsFixed(1)}%"),
                           trailing: IconButton(
                             icon: Icon(Icons.add_circle_outlined),
                             onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddActivityAmount(
-                                      onComplete: (amount) =>
-                                          onAmountGoalActivityAdded(
-                                              _currentGoal,
-                                              DoneAmountActivity(
-                                                  date: DateTime.now(),
-                                                  amount: amount)),
+                                          onComplete: (amount) =>
+                                              onAmountGoalActivityAdded(
+                                                  _currentGoal,
+                                                  DoneAmountActivity(
+                                                      date: DateTime.now(),
+                                                      amount: amount)),
                                           actionType: _currentGoal.actionType,
                                         ))),
                           ),
@@ -121,6 +120,11 @@ class ShowGoalsWidget extends StatelessWidget {
                               .labelMedium!
                               .copyWith(color: Colors.grey[700]),
                         ),
+                        index != amountGoals.length - 1
+                            ? Divider(
+                                height: 20,
+                              )
+                            : SizedBox(),
                       ],
                     );
                   }),
