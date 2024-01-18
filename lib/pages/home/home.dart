@@ -62,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _addDoneAmountActivity(
-      {required AmountGoal goal, required DoneAmountActivity doneAmount}) async {
+      {required AmountGoal goal,
+      required DoneAmountActivity doneAmount}) async {
     _databaseService.addDoneAmountActivity(goal, doneAmount);
   }
 
@@ -97,24 +98,24 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(title: Text(widget.title), actions: [
           Foundation.kDebugMode
               ? IconButton(
-              onPressed: () async {
-                await _databaseService.addActivity(Activity(
-                    amount: 42,
-                    actionType: kAllActionTypes[0],
-                    chosenUnit: Units.kilometer,
-                    dateCompleted: DateTime.now()));
-                setState(() {});
-              },
-              icon: const Icon(Icons.add_task))
+                  onPressed: () async {
+                    await _databaseService.addActivity(Activity(
+                        amount: 42,
+                        actionType: kAllActionTypes[0],
+                        chosenUnit: Units.kilometer,
+                        dateCompleted: DateTime.now()));
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.add_task))
               : SizedBox(),
           Foundation.kDebugMode
               ? IconButton(
-              onPressed: () async {
-                await _databaseService.deleteAllActivities();
-                await _databaseService.deleteAllTasks();
-                setState(() {});
-              },
-              icon: const Icon(Icons.delete))
+                  onPressed: () async {
+                    await _databaseService.deleteAllActivities();
+                    await _databaseService.deleteAllTasks();
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.delete))
               : SizedBox()
         ]),
 
@@ -123,10 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               FutureBuilder(
-                future: Future(() async =>
-                    makeActionTypeCounts(
-                        activities: await _getActivities(),
-                        tasks: await _getTasks())),
+                future: Future(() async => makeActionTypeCounts(
+                    activities: await _getActivities(),
+                    tasks: await _getTasks())),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
@@ -142,18 +142,19 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 child: FutureBuilder(
                     future: Future(() async =>
-                    [await _getAmountGoals(), await _getCheckmarkGoals()]),
+                        [await _getAmountGoals(), await _getCheckmarkGoals()]),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return ShowGoalsWidget(
                           amountGoals: snapshot.data![0] as List<AmountGoal>,
                           checkmarkGoals:
-                          snapshot.data![1] as List<CheckmarkGoal>,
+                              snapshot.data![1] as List<CheckmarkGoal>,
                           onAmountGoalActivityAdded: (goal, amount) {
-                            _addDoneAmountActivity(goal: goal, doneAmount: amount);
+                            _addDoneAmountActivity(
+                                goal: goal, doneAmount: amount);
                             Navigator.pop(context);
                           },
                         );
@@ -167,21 +168,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               FutureBuilder(
                   future: Future(
-                          () async =>
-                      [
-                        await _getActivities(),
-                        await _getTasks()
-                      ]),
+                      () async => [await _getActivities(), await _getTasks()]),
                   builder: (context, snapshot) {
                     return snapshot.hasData
                         ? Column(
-                      children: [
-                        ActionsLog(
-                          activities: snapshot.data![0] as List<Activity>,
-                          tasks: snapshot.data![1] as List<Task>,
-                        ),
-                      ],
-                    )
+                            children: [
+                              ActionsLog(
+                                activities: snapshot.data![0] as List<Activity>,
+                                tasks: snapshot.data![1] as List<Task>,
+                              ),
+                            ],
+                          )
                         : Center(child: const CircularProgressIndicator());
                   }),
               IconButton(

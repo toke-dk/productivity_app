@@ -39,7 +39,8 @@ class AmountGoal {
       'goalChosenUnit': chosenUnit.name.toString(),
       'amountGoal': amountGoal,
       //TODO: maybe change this
-      'doneAmountActivities': doneAmountActivities.map((e) => e.encodeToJson()).toList().toString(),
+      'doneAmountActivities':
+          doneAmountActivities.map((e) => e.encodeToJson()).toList().toString(),
     };
   }
 
