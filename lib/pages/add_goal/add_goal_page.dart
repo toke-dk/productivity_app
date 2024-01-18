@@ -312,6 +312,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
   final DataBaseService _databaseService = DataBaseService();
 
+  /// TODO: These should come from the home page
   Future<void> _addAmountGoal(AmountGoal goal) async {
     _databaseService.addAmountGoal(goal);
   }

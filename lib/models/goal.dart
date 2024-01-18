@@ -88,19 +88,23 @@ extension DoneAmountActivityExtension on List<DoneAmountActivity> {
 }
 
 class CheckmarkGoal {
+  String id;
   ActionType actionType;
   DateTime startDate;
   DateTime endDate;
   int daysPerWeek;
 
   CheckmarkGoal(
-      {required this.actionType,
+      {String? id,
+      required this.actionType,
       required this.startDate,
       required this.endDate,
-      required this.daysPerWeek});
+      required this.daysPerWeek})
+      : id = id ?? Uuid().v1();
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'goalActionTypeName': actionType.name,
       'goalStartDate': startDate.toString(),
       'goalEndDate': endDate.toString(),
@@ -110,6 +114,7 @@ class CheckmarkGoal {
 
   factory CheckmarkGoal.fromMap(Map<String, dynamic> map) {
     return CheckmarkGoal(
+      id: map["id"].toString(),
       actionType: map["goalActionTypeName"].toString().toActionType(),
       startDate: DateTime.parse(map["goalStartDate"].toString()),
       endDate: DateTime.parse(map["goalEndDate"].toString()),

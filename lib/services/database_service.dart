@@ -88,7 +88,7 @@ class DataBaseService {
 
     await db.execute("""
         CREATE TABLE $tableCheckmarkGoalName(
-        $columnGoalId INTEGER PRIMARY KEY, 
+        $columnGoalId TEXT PRIMARY KEY, 
         $columnGoalActionTypeName TEXT, 
         $columnGoalStartDate TEXT,
         $columnGoalEndDate TEXT,
@@ -129,8 +129,15 @@ class DataBaseService {
   }
 
   /// Goal
+
+  // Amount Goal
   Future<void> deleteAllAmountGoals() async {
     await _db!.rawDelete("DELETE FROM $tableAmountGoalName");
+  }
+
+  Future<void> deleteAmountGoal(AmountGoal goal) async {
+    await _db!.delete(tableAmountGoalName,
+        where: "${columnGoalId} = ?", whereArgs: [goal.id]);
   }
 
   Future<void> addAmountGoal(AmountGoal goal) async {
@@ -152,6 +159,14 @@ class DataBaseService {
         await _db?.query(tableAmountGoalName) ?? [];
     return List.generate(
         maps.length, (index) => AmountGoal.fromMap(maps[index]));
+  }
+
+  // Checkmark Goal
+
+  Future<void> deleteCheckmarkGoal(CheckmarkGoal goal) async {
+    print(goal.id);
+    await _db!.delete(tableCheckmarkGoalName,
+        where: "id = ?", whereArgs: [goal.id]);
   }
 
   Future<void> deleteAllCheckMarkGoals() async {

@@ -151,12 +151,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return ShowGoalsWidget(
+                          onAmountGoalDelete: (AmountGoal goal) {
+                            setState(() {
+                              _databaseService.deleteAmountGoal(goal);
+                            });
+                          },
+                          onCheckmarkGoalDelete: (CheckmarkGoal goal) {
+                            print("delete");
+                            setState(() {
+                              _databaseService.deleteCheckmarkGoal(goal);
+                            });
+                          },
                           amountGoals: snapshot.data![0] as List<AmountGoal>,
                           checkmarkGoals:
                               snapshot.data![1] as List<CheckmarkGoal>,
                           onAmountGoalActivityAdded: (goal, amount) {
-                            _addDoneAmountActivity(
-                                goal: goal, doneAmount: amount);
+                            setState(() {
+                              _addDoneAmountActivity(
+                                  goal: goal, doneAmount: amount);
+                            });
                             Navigator.pop(context);
                           },
                         );

@@ -16,12 +16,17 @@ class ShowGoalsWidget extends StatelessWidget {
       {super.key,
       required this.amountGoals,
       required this.checkmarkGoals,
-      required this.onAmountGoalActivityAdded});
+      required this.onAmountGoalActivityAdded,
+      this.onAmountGoalDelete,
+      this.onCheckmarkGoalDelete});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
+
+  final Function(AmountGoal goal)? onAmountGoalDelete;
+  final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -47,23 +52,25 @@ class ShowGoalsWidget extends StatelessWidget {
                 )
               : SizedBox(),
           amountGoals.isEmpty && checkmarkGoals.isEmpty
-              ? Column(
-                  children: [
-                    Text("Du har ikke sat et mål endnu"),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    MyThemeButton(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddGoalPage()));
-                      },
-                      labelText: "Angiv mål!",
-                    ),
-                  ],
-                )
+              ? Center(
+                child: Column(
+                    children: [
+                      Text("Du har ikke sat et mål endnu"),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      MyThemeButton(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddGoalPage()));
+                        },
+                        labelText: "Angiv mål!",
+                      ),
+                    ],
+                  ),
+              )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,7 +86,11 @@ class ShowGoalsWidget extends StatelessWidget {
                                   actionType: currentGoal.actionType,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                 ),
-                                _GoalMenuOptions()
+                                _GoalMenuOptions(
+                                  onDelete: () => onCheckmarkGoalDelete != null
+                                      ? onCheckmarkGoalDelete!(currentGoal)
+                                      : null,
+                                )
                               ],
                             ),
                             OutlinedButton(
@@ -161,7 +172,11 @@ class ShowGoalsWidget extends StatelessWidget {
                                   actionType: _currentGoal.actionType,
                                   axisDirection: Axis.horizontal,
                                 ),
-                                _GoalMenuOptions()
+                                _GoalMenuOptions(
+                                  onDelete: () => onAmountGoalDelete != null
+                                      ? onAmountGoalDelete!(_currentGoal)
+                                      : null,
+                                )
                               ],
                             ),
                             SizedBox(
@@ -332,8 +347,8 @@ class _GoalMenuOptions extends StatelessWidget {
                                   child: Text("Anuller")),
                               FilledButton(
                                   onPressed: () {
-                                    onDelete;
-                                    Navigator.pop(context);
+                                    onDelete != null ? onDelete!() : null;
+                                    onDelete != null ? Navigator.pop(context) : null;
                                   },
                                   child: Text("Slet"))
                             ],
