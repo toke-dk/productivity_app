@@ -22,6 +22,8 @@ class AmountGoal {
       required this.amountGoal,
       this.doneAmountActivities = const <DoneAmountActivity>[]});
 
+  void addDoneAmountActivity(DoneAmountActivity activity) => doneAmountActivities.add(activity);
+
   Map<String, dynamic> toMap() {
     return {
       'goalActionTypeName': actionType.name,

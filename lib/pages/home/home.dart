@@ -63,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _addDoneAmountActivity(
       {required AmountGoal goal, required DoneAmountActivity doneAmount}) async {
-    print("amount: ${doneAmount.amount}");
+    print("doing");
+    _databaseService.addDoneAmountActivity(goal, doneAmount);
   }
 
   Future<void> launchFeedBackForm() async {
@@ -154,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           snapshot.data![1] as List<CheckmarkGoal>,
                           onAmountGoalActivityAdded: (goal, amount) {
                             _addDoneAmountActivity(goal: goal, doneAmount: amount);
+                            Navigator.pop(context);
                           },
                         );
                       } else if (snapshot.hasError) {

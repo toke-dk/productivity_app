@@ -133,6 +133,14 @@ class DataBaseService {
     await _db!.insert(tableAmountGoalName, goal.toMap());
   }
 
+  Future<void> addDoneAmountActivity(AmountGoal goal, DoneAmountActivity activity) async {
+    //adds the done amount activity
+    goal.addDoneAmountActivity(activity);
+
+    // TODO: it should be the right args
+    await _db!.update(tableAmountGoalName, goal.toMap(), where: "$columnGoalId = ?", whereArgs: [0]);
+  }
+
   Future<List<AmountGoal>> getAmountGoals() async {
     final List<Map<String, dynamic>> maps = await _db?.query(tableAmountGoalName) ?? [];
     return List.generate(maps.length, (index) => AmountGoal.fromMap(maps[index]));
