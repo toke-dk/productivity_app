@@ -115,7 +115,7 @@ class ShowGoalsWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "$_amountDone / ${_currentGoal.amountGoal} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit : 'gange'} ",
+                          "$_amountDone / ${_currentGoal.amountGoal} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} ",
                           style: Theme.of(context)
                               .textTheme
                               .labelMedium!
