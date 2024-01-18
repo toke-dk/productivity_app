@@ -192,10 +192,8 @@ class ShowGoalsWidget extends StatelessWidget {
                               "(${_currentGoal.daysUntilEndDateFromNow} d)",
                               style: _labelTextStyle,
                             ),
-
-                            /// TODO: should display how many amounts are left
                             Text(
-                              "${_amountDone.myDoubleToString} / ${_currentGoal.amountGoal.myDoubleToString} $_displayUnitString ",
+                              "${_amountDone.myDoubleToString}/${_currentGoal.amountGoal.myDoubleToString} $_displayUnitString ",
                               style: _labelTextStyle,
                             ),
                           ],

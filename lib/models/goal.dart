@@ -31,7 +31,6 @@ class AmountGoal {
 
   int get daysUntilEndDateFromNow => endDate.difference(DateTime.now()).inDays;
 
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
