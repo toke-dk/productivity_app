@@ -5,6 +5,7 @@ import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/shared/extensions/date_time_extension.dart';
+import 'package:productivity_app/shared/extensions/double_extension.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
@@ -125,17 +126,17 @@ class ShowGoalsWidget extends StatelessWidget {
                                     animation: true,
                                     animationDuration: 1000,
                                     leading: Text(
-                                        "${(_percentForToday * 100).toStringAsFixed(_percentForToday * 100 % 1 == 0 ? 0 : 1)}%"),
+                                        "${(_percentForToday * 100).myDoubleToString}%"),
                                   ),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                          "${_amountLeftToday.toStringAsFixed(_amountLeftToday % 1 == 0 ? 0 : 1)} $_displayUnitString tilbage"),
+                                          "${_amountLeftToday.myDoubleToString} $_displayUnitString tilbage"),
                                       Text(
-                                        "${_doneActivitiesToday.totalAmountDone.toStringAsFixed(_doneActivitiesToday.totalAmountDone % 1 == 0 ? 0 : 1)}"
-                                        "/${_goalForToday.toStringAsFixed(_goalForToday % 1 == 0 ? 0 : 1)} $_displayUnitString",
+                                        "${_doneActivitiesToday.totalAmountDone.myDoubleToString}"
+                                        "/${_goalForToday.myDoubleToString} $_displayUnitString",
                                         style: _labelTextStyle,
                                       ),
                                     ],
@@ -194,7 +195,7 @@ class ShowGoalsWidget extends StatelessWidget {
 
                             /// TODO: should display how many amounts are left
                             Text(
-                              "${_amountDone.toStringAsFixed(_amountDone % 1 == 0 ? 0 : 1)} / ${_currentGoal.amountGoal.toStringAsFixed(_currentGoal.amountGoal % 1 == 0 ? 0 : 1)} $_displayUnitString ",
+                              "${_amountDone.myDoubleToString} / ${_currentGoal.amountGoal.myDoubleToString} $_displayUnitString ",
                               style: _labelTextStyle,
                             ),
                           ],
