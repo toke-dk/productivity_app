@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
@@ -90,13 +91,13 @@ class ShowGoalsWidget extends StatelessWidget {
                         ),
                         LinearPercentIndicator(
                           barRadius: Radius.circular(20),
-                          percent: _percent,
+                          percent: _percent > 1 ? 1 : _percent,
                           progressColor: Theme.of(context).colorScheme.primary,
                           lineHeight: 15,
                           animation: true,
                           animationDuration: 1000,
-                          leading:
-                              Text("${(_percent * 100).toStringAsFixed(1)}%"),
+                          leading: Text(
+                              "${(_percent * 100).toStringAsFixed((_percent * 100) % 1 == 0 ? 0 : 1)}%"),
                           trailing: IconButton(
                             icon: Icon(Icons.add_circle_outlined),
                             onPressed: () => Navigator.push(
@@ -113,12 +114,25 @@ class ShowGoalsWidget extends StatelessWidget {
                                         ))),
                           ),
                         ),
-                        Text(
-                          "$_amountDone / ${_currentGoal.amountGoal} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(color: Colors.grey[700]),
+                        Row(
+                          children: [
+                            Text(
+                              "Slut: ${DateFormat("DD/MM/yyyy").format(_currentGoal.endDate)} "
+                              "(${_currentGoal.endDate.difference(_currentGoal.startDate).inDays} d)",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(color: Colors.grey[700]),
+                            ),
+                            Text(
+                              "${_amountDone.toStringAsFixed(_amountDone % 1 == 0 ? 0 : 1)} / ${_currentGoal.amountGoal.toStringAsFixed(_currentGoal.amountGoal % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(color: Colors.grey[700]),
+                            ),
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         ),
                         index != amountGoals.length - 1
                             ? Divider(
