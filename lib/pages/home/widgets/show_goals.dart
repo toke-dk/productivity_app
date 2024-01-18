@@ -90,6 +90,11 @@ class ShowGoalsWidget extends StatelessWidget {
                         .labelMedium!
                         .copyWith(color: Colors.grey[700]);
 
+                    String _displayUnitString =
+                        _currentGoal.chosenUnit != Units.unitLess
+                            ? _currentGoal.chosenUnit.shortStringName
+                            : 'gange';
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -101,10 +106,6 @@ class ShowGoalsWidget extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
-
-                        /// TODO: make a widget that shows how far you are in
-                        /// your goal for the day if you have a total goal
-                        /// calcs: (_amount left/_days left)
                         _currentGoal.frequencyFormat ==
                                 GoalFrequencyFormats.inTotal
                             ? Column(
@@ -131,10 +132,10 @@ class ShowGoalsWidget extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                          "${_amountLeftToday.toStringAsFixed(_amountLeftToday % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} tilbage"),
+                                          "${_amountLeftToday.toStringAsFixed(_amountLeftToday % 1 == 0 ? 0 : 1)} $_displayUnitString tilbage"),
                                       Text(
                                         "${_doneActivitiesToday.totalAmountDone.toStringAsFixed(_doneActivitiesToday.totalAmountDone % 1 == 0 ? 0 : 1)}"
-                                        "/${_goalForToday.toStringAsFixed(_goalForToday % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'}",
+                                        "/${_goalForToday.toStringAsFixed(_goalForToday % 1 == 0 ? 0 : 1)} $_displayUnitString",
                                         style: _labelTextStyle,
                                       ),
                                     ],
@@ -193,7 +194,7 @@ class ShowGoalsWidget extends StatelessWidget {
 
                             /// TODO: should display how many amounts are left
                             Text(
-                              "${_amountDone.toStringAsFixed(_amountDone % 1 == 0 ? 0 : 1)} / ${_currentGoal.amountGoal.toStringAsFixed(_currentGoal.amountGoal % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} ",
+                              "${_amountDone.toStringAsFixed(_amountDone % 1 == 0 ? 0 : 1)} / ${_currentGoal.amountGoal.toStringAsFixed(_currentGoal.amountGoal % 1 == 0 ? 0 : 1)} $_displayUnitString ",
                               style: _labelTextStyle,
                             ),
                           ],
