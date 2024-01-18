@@ -72,9 +72,15 @@ class ShowGoalsWidget extends StatelessWidget {
                         CheckmarkGoal currentGoal = checkmarkGoals[index];
                         return Column(
                           children: [
-                            DisplayActionType(
-                              actionType: currentGoal.actionType,
-                              mainAxisAlignment: MainAxisAlignment.start,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                DisplayActionType(
+                                  actionType: currentGoal.actionType,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                ),
+                                _GoalMenuOptions()
+                              ],
                             ),
                             OutlinedButton(
                               onPressed: () {},
@@ -147,10 +153,16 @@ class ShowGoalsWidget extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            DisplayActionType(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              actionType: _currentGoal.actionType,
-                              axisDirection: Axis.horizontal,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                DisplayActionType(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  actionType: _currentGoal.actionType,
+                                  axisDirection: Axis.horizontal,
+                                ),
+                                _GoalMenuOptions()
+                              ],
                             ),
                             SizedBox(
                               height: 20,
@@ -286,5 +298,50 @@ class ShowGoalsWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _GoalMenuOptions extends StatelessWidget {
+  const _GoalMenuOptions({super.key, this.onDelete, this.onEdit});
+
+  final Function()? onDelete;
+  final Function()? onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        itemBuilder: (context) => [
+              PopupMenuItem(
+                onTap: onEdit,
+                child: ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text("Rediger"),
+                ),
+              ),
+              PopupMenuItem(
+                  onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text("Du er i gang med at slette et mål!"),
+                            content:
+                                Text(" Når du først har slettet et mål kan det "
+                                    "ikke gendannes"),
+                            actions: [
+                              OutlinedButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text("Anuller")),
+                              FilledButton(
+                                  onPressed: () {
+                                    onDelete;
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Slet"))
+                            ],
+                          )),
+                  child: ListTile(
+                    leading: Icon(Icons.delete),
+                    title: Text("Slet"),
+                  )),
+            ]);
   }
 }
