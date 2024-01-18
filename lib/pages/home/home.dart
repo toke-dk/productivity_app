@@ -113,6 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () async {
                     await _databaseService.deleteAllActivities();
                     await _databaseService.deleteAllTasks();
+                    await _databaseService.deleteAllAmountGoals();
+                    await _databaseService.deleteAllCheckMarkGoals();
                     setState(() {});
                   },
                   icon: const Icon(Icons.delete))

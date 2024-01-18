@@ -4,6 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
+import 'package:productivity_app/shared/date_time_extension.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
@@ -60,7 +61,34 @@ class ShowGoalsWidget extends StatelessWidget {
                     AmountGoal _currentGoal = amountGoals[index];
                     double _amountDone =
                         _currentGoal.doneAmountActivities.totalAmountDone;
-                    double _percent = (_amountDone / _currentGoal.amountGoal);
+                    double _percent = _amountDone / _currentGoal.amountGoal;
+
+                    List<DoneAmountActivity> _doneActivitiesToday = _currentGoal
+                        .doneAmountActivities
+                        .where((element) =>
+                            element.date.isSameDate(DateTime.now()))
+                        .toList();
+
+                    List<DoneAmountActivity> _doneActivitiesInPast =
+                        _currentGoal.doneAmountActivities
+                            .where((element) =>
+                                DateTime.now().difference(element.date).inDays >
+                                0)
+                            .toList();
+
+                    double _goalForToday = (_currentGoal.amountGoal -
+                            _doneActivitiesInPast.totalAmountDone) /
+                        (_currentGoal.daysUntilEndDateFromNow + 1);
+                    double _percentForToday =
+                        _doneActivitiesToday.totalAmountDone / _goalForToday;
+
+                    double _amountLeftToday =
+                        _goalForToday - _doneActivitiesToday.totalAmountDone;
+
+                    TextStyle _labelTextStyle = Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(color: Colors.grey[700]);
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,21 +101,62 @@ class ShowGoalsWidget extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
+
+                        /// TODO: make a widget that shows how far you are in
+                        /// your goal for the day if you have a total goal
+                        /// calcs: (_amount left/_days left)
+                        _currentGoal.frequencyFormat ==
+                                GoalFrequencyFormats.inTotal
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Dagens mål",
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  LinearPercentIndicator(
+                                    barRadius: Radius.circular(20),
+                                    percent: _percentForToday,
+                                    progressColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    lineHeight: 8,
+                                    animation: true,
+                                    animationDuration: 1000,
+                                    leading: Text(
+                                        "${(_percentForToday * 100).toStringAsFixed(_percentForToday * 100 % 1 == 0 ? 0 : 1)}%"),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          "${_amountLeftToday.toStringAsFixed(_amountLeftToday % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} tilbage"),
+                                      Text(
+                                        "${_doneActivitiesToday.totalAmountDone.toStringAsFixed(_doneActivitiesToday.totalAmountDone % 1 == 0 ? 0 : 1)}"
+                                        "/${_goalForToday.toStringAsFixed(_goalForToday % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'}",
+                                        style: _labelTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              )
+                            : SizedBox(),
                         Text(
                           _currentGoal.frequencyFormat ==
                                   GoalFrequencyFormats.inTotal
                               ? "Totalt mål"
                               : _currentGoal.frequencyFormat ==
                                       GoalFrequencyFormats.perWeek
-                                  ? "Dagens mål"
+                                  ? "Ugens mål"
                                   : _currentGoal.frequencyFormat ==
                                           GoalFrequencyFormats.perDay
                                       ? "Dagens mål"
                                       : "FEJL!!",
                           style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),
                         LinearPercentIndicator(
                           barRadius: Radius.circular(20),
@@ -118,18 +187,14 @@ class ShowGoalsWidget extends StatelessWidget {
                           children: [
                             Text(
                               "Slut: ${DateFormat("DD/MM/yyyy").format(_currentGoal.endDate)} "
-                              "(${_currentGoal.endDate.difference(_currentGoal.startDate).inDays} d)",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(color: Colors.grey[700]),
+                              "(${_currentGoal.daysUntilEndDateFromNow} d)",
+                              style: _labelTextStyle,
                             ),
+
+                            /// TODO: should display how many amounts are left
                             Text(
                               "${_amountDone.toStringAsFixed(_amountDone % 1 == 0 ? 0 : 1)} / ${_currentGoal.amountGoal.toStringAsFixed(_currentGoal.amountGoal % 1 == 0 ? 0 : 1)} ${_currentGoal.chosenUnit != Units.unitLess ? _currentGoal.chosenUnit.shortStringName : 'gange'} ",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(color: Colors.grey[700]),
+                              style: _labelTextStyle,
                             ),
                           ],
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

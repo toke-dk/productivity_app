@@ -29,6 +29,9 @@ class AmountGoal {
   void addDoneAmountActivity(DoneAmountActivity activity) =>
       doneAmountActivities.add(activity);
 
+  int get daysUntilEndDateFromNow => endDate.difference(DateTime.now()).inDays;
+
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

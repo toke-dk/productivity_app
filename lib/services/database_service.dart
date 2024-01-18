@@ -129,6 +129,10 @@ class DataBaseService {
   }
 
   /// Goal
+  Future<void> deleteAllAmountGoals() async {
+    await _db!.rawDelete("DELETE FROM $tableAmountGoalName");
+  }
+
   Future<void> addAmountGoal(AmountGoal goal) async {
     await _db!.insert(tableAmountGoalName, goal.toMap());
   }
@@ -148,6 +152,10 @@ class DataBaseService {
         await _db?.query(tableAmountGoalName) ?? [];
     return List.generate(
         maps.length, (index) => AmountGoal.fromMap(maps[index]));
+  }
+
+  Future<void> deleteAllCheckMarkGoals() async {
+    await _db!.rawDelete("DELETE FROM $tableCheckmarkGoalName");
   }
 
   Future<void> addCheckmarkGoal(CheckmarkGoal goal) async {
