@@ -96,19 +96,31 @@ class ShowGoalsWidget extends StatelessWidget {
                                 )
                               ],
                             ),
-                            OutlinedButton(
-                              onPressed: () => onCheckMarkGoalDoneDateAdd(currentGoal, DateTime.now()),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.add_circle_outline),
-                                  SizedBox(
-                                    width: 5,
+                            currentGoal.isDateDone(DateTime.now())
+                                ? FilledButton(
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.check),
+                                        SizedBox(width: 5,),
+                                        Text("Målet er udført!"),
+                                      ],
+                                      mainAxisSize: MainAxisSize.min,
+                                    ),)
+                                : OutlinedButton(
+                                    onPressed: () => onCheckMarkGoalDoneDateAdd(
+                                        currentGoal, DateTime.now()),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.add_circle_outline),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text("Udfør!"),
+                                      ],
+                                      mainAxisSize: MainAxisSize.min,
+                                    ),
                                   ),
-                                  Text("Udfør!"),
-                                ],
-                                mainAxisSize: MainAxisSize.min,
-                              ),
-                            ),
                             SizedBox(
                               height: 10,
                             ),
