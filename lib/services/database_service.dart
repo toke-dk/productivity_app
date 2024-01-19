@@ -187,7 +187,7 @@ class DataBaseService {
 
   Future<void> addDoneDateToCheckmarkGoal(
       CheckmarkGoal goal, DateTime date) async {
-    if (!goal.doneDates.containsDate(date)) {
+    if (!goal.isDateDone(date)) {
       goal.addDoneDate(date);
       await _db!.update(tableCheckmarkGoalName, goal.toMap(),
           where: "$columnGoalId = ?", whereArgs: [goal.id]);

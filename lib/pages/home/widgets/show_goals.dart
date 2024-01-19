@@ -26,7 +26,7 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
 
-  final Function(CheckmarkGoal goal) onCheckMarkGoalDoneDateAdd;
+  final Function(CheckmarkGoal goal, DateTime date) onCheckMarkGoalDoneDateAdd;
 
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
@@ -97,7 +97,7 @@ class ShowGoalsWidget extends StatelessWidget {
                               ],
                             ),
                             OutlinedButton(
-                              onPressed: () => onCheckMarkGoalDoneDateAdd(currentGoal),
+                              onPressed: () => onCheckMarkGoalDoneDateAdd(currentGoal, DateTime.now()),
                               child: Row(
                                 children: [
                                   Icon(Icons.add_circle_outline),

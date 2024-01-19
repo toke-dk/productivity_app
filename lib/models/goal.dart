@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/unit.dart';
+import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/string_extensions.dart';
 import 'package:uuid/uuid.dart';
 
@@ -128,6 +129,8 @@ class CheckmarkGoal {
           .toList(),
     );
   }
+
+  bool isDateDone(DateTime date) => doneDates.containsDate(date);
 
   void addDoneDate(DateTime date) => doneDates.add(date);
 }
