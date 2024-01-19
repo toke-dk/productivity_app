@@ -18,12 +18,15 @@ class ShowGoalsWidget extends StatelessWidget {
       required this.checkmarkGoals,
       required this.onAmountGoalActivityAdded,
       this.onAmountGoalDelete,
-      this.onCheckmarkGoalDelete});
+      this.onCheckmarkGoalDelete,
+      required this.onCheckMarkGoalDoneDateAdd});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
+
+  final Function(CheckmarkGoal goal) onCheckMarkGoalDoneDateAdd;
 
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
@@ -53,7 +56,7 @@ class ShowGoalsWidget extends StatelessWidget {
               : SizedBox(),
           amountGoals.isEmpty && checkmarkGoals.isEmpty
               ? Center(
-                child: Column(
+                  child: Column(
                     children: [
                       Text("Du har ikke sat et mål endnu"),
                       SizedBox(
@@ -70,7 +73,7 @@ class ShowGoalsWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-              )
+                )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,7 +97,7 @@ class ShowGoalsWidget extends StatelessWidget {
                               ],
                             ),
                             OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () => onCheckMarkGoalDoneDateAdd(currentGoal),
                               child: Row(
                                 children: [
                                   Icon(Icons.add_circle_outline),
@@ -110,6 +113,7 @@ class ShowGoalsWidget extends StatelessWidget {
                               height: 10,
                             ),
                             Text("Ugens mål"),
+                            Text(currentGoal.doneDates.toString()),
                             Divider(
                               height: 60,
                               thickness: 2,
@@ -348,7 +352,9 @@ class _GoalMenuOptions extends StatelessWidget {
                               FilledButton(
                                   onPressed: () {
                                     onDelete != null ? onDelete!() : null;
-                                    onDelete != null ? Navigator.pop(context) : null;
+                                    onDelete != null
+                                        ? Navigator.pop(context)
+                                        : null;
                                   },
                                   child: Text("Slet"))
                             ],

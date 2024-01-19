@@ -172,6 +172,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                             Navigator.pop(context);
                           },
+                          onCheckMarkGoalDoneDateAdd: (CheckmarkGoal goal) {
+                            setState(() {
+                              _databaseService.addDoneDateToCheckmarkGoal(
+                                  goal, DateTime.now());
+                            });
+                          },
                         );
                       } else if (snapshot.hasError) {
                         print(snapshot.error);

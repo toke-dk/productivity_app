@@ -93,13 +93,15 @@ class CheckmarkGoal {
   DateTime startDate;
   DateTime endDate;
   int daysPerWeek;
+  List<DateTime> doneDates;
 
   CheckmarkGoal(
       {String? id,
       required this.actionType,
       required this.startDate,
       required this.endDate,
-      required this.daysPerWeek})
+      required this.daysPerWeek,
+      this.doneDates = const <DateTime>[]})
       : id = id ?? Uuid().v1();
 
   Map<String, dynamic> toMap() {
@@ -109,6 +111,8 @@ class CheckmarkGoal {
       'goalStartDate': startDate.toString(),
       'goalEndDate': endDate.toString(),
       'goalDaysPerWeek': daysPerWeek,
+      'doneDates':
+          doneDates.map((e) => json.encode(e.toString())).toList().toString(),
     };
   }
 
@@ -119,8 +123,13 @@ class CheckmarkGoal {
       startDate: DateTime.parse(map["goalStartDate"].toString()),
       endDate: DateTime.parse(map["goalEndDate"].toString()),
       daysPerWeek: map["goalDaysPerWeek"],
+      doneDates: (json.decode(map["doneDates"].toString()) as List)
+          .map((date) => DateTime.parse(date.toString()))
+          .toList(),
     );
   }
+
+  void addDoneDate(DateTime date) => doneDates.add(date);
 }
 
 enum GoalTypeFormats { checkMark, typing }

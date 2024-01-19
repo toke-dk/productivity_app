@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
+import 'package:productivity_app/shared/extensions/date_time_extension.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
@@ -34,6 +35,7 @@ class DataBaseService {
 
   // CheckmarkGoal
   static const String columnGoalDaysPerWeek = "goalDaysPerWeek";
+  static const String columnDoneDates = "doneDates";
 
   // AmountGoal
   static const String columnGoalAmountGoal = "amountGoal";
@@ -92,7 +94,8 @@ class DataBaseService {
         $columnGoalActionTypeName TEXT, 
         $columnGoalStartDate TEXT,
         $columnGoalEndDate TEXT,
-        $columnGoalDaysPerWeek INTEGER
+        $columnGoalDaysPerWeek INTEGER,
+        $columnDoneDates Text
         )""");
   }
 
@@ -146,10 +149,8 @@ class DataBaseService {
 
   Future<void> addDoneAmountActivity(
       AmountGoal goal, DoneAmountActivity activity) async {
-    //adds the done amount activity
     goal.addDoneAmountActivity(activity);
 
-    // TODO: it should be the right args
     await _db!.update(tableAmountGoalName, goal.toMap(),
         where: "$columnGoalId = ?", whereArgs: [goal.id]);
   }
@@ -165,8 +166,8 @@ class DataBaseService {
 
   Future<void> deleteCheckmarkGoal(CheckmarkGoal goal) async {
     print(goal.id);
-    await _db!.delete(tableCheckmarkGoalName,
-        where: "id = ?", whereArgs: [goal.id]);
+    await _db!
+        .delete(tableCheckmarkGoalName, where: "id = ?", whereArgs: [goal.id]);
   }
 
   Future<void> deleteAllCheckMarkGoals() async {
@@ -182,5 +183,14 @@ class DataBaseService {
         await _db?.query(tableCheckmarkGoalName) ?? [];
     return List.generate(
         maps.length, (index) => CheckmarkGoal.fromMap(maps[index]));
+  }
+
+  Future<void> addDoneDateToCheckmarkGoal(
+      CheckmarkGoal goal, DateTime date) async {
+    if (!goal.doneDates.any((e) => e.isSameDate(date))) {
+      goal.addDoneDate(date);
+      await _db!.update(tableCheckmarkGoalName, goal.toMap(),
+          where: "$columnGoalId = ?", whereArgs: [goal.id]);
+    }
   }
 }
