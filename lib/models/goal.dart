@@ -133,6 +133,9 @@ class CheckmarkGoal {
   bool isDateDone(DateTime date) => doneDates.containsDate(date);
 
   void addDoneDate(DateTime date) => doneDates.add(date);
+
+  void removeDoneDate(DateTime date) =>
+      doneDates.removeWhere((d) => d.isSameDate(date));
 }
 
 enum GoalTypeFormats { checkMark, typing }

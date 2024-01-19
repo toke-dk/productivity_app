@@ -172,9 +172,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                             Navigator.pop(context);
                           },
-                          onCheckMarkGoalDoneDateAdd: (CheckmarkGoal goal, DateTime date) {
+                          onCheckMarkGoalDoneDateAdd:
+                              (CheckmarkGoal goal, DateTime date) {
                             setState(() {
                               _databaseService.addDoneDateToCheckmarkGoal(
+                                  goal, date);
+                            });
+                          },
+                          onCheckmarkGoalDoneDateDelete:
+                              (CheckmarkGoal goal, DateTime date) {
+                            setState(() {
+                              _databaseService.removeDoneDateFromCheckmarkGoal(
                                   goal, date);
                             });
                           },

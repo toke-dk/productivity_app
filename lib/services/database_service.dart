@@ -193,4 +193,14 @@ class DataBaseService {
           where: "$columnGoalId = ?", whereArgs: [goal.id]);
     }
   }
+
+  Future<void> removeDoneDateFromCheckmarkGoal(
+      CheckmarkGoal goal, DateTime date) async {
+    if(goal.isDateDone(date)){
+      goal.removeDoneDate(date);
+      await _db!.update(tableCheckmarkGoalName, goal.toMap(),
+          where: "$columnGoalId = ?", whereArgs: [goal.id]);
+    }
+
+  }
 }

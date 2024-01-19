@@ -19,7 +19,8 @@ class ShowGoalsWidget extends StatelessWidget {
       required this.onAmountGoalActivityAdded,
       this.onAmountGoalDelete,
       this.onCheckmarkGoalDelete,
-      required this.onCheckMarkGoalDoneDateAdd});
+      required this.onCheckMarkGoalDoneDateAdd,
+      required this.onCheckmarkGoalDoneDateDelete});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
@@ -27,12 +28,17 @@ class ShowGoalsWidget extends StatelessWidget {
       onAmountGoalActivityAdded;
 
   final Function(CheckmarkGoal goal, DateTime date) onCheckMarkGoalDoneDateAdd;
+  final Function(CheckmarkGoal goal, DateTime date)
+      onCheckmarkGoalDoneDateDelete;
 
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime _currentDay = DateTime.now();
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20),
@@ -96,20 +102,25 @@ class ShowGoalsWidget extends StatelessWidget {
                                 )
                               ],
                             ),
-                            currentGoal.isDateDone(DateTime.now())
+                            currentGoal.isDateDone(_currentDay)
                                 ? FilledButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        onCheckmarkGoalDoneDateDelete(
+                                            currentGoal, _currentDay),
                                     child: Row(
                                       children: [
                                         Icon(Icons.check),
-                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Text("Målet er udført!"),
                                       ],
                                       mainAxisSize: MainAxisSize.min,
-                                    ),)
+                                    ),
+                                  )
                                 : OutlinedButton(
                                     onPressed: () => onCheckMarkGoalDoneDateAdd(
-                                        currentGoal, DateTime.now()),
+                                        currentGoal, _currentDay),
                                     child: Row(
                                       children: [
                                         Icon(Icons.add_circle_outline),
@@ -145,13 +156,13 @@ class ShowGoalsWidget extends StatelessWidget {
                             _currentGoal
                                 .doneAmountActivities
                                 .where((element) =>
-                                    element.date.isSameDate(DateTime.now()))
+                                    element.date.isSameDate(_currentDay))
                                 .toList();
 
                         List<DoneAmountActivity> _doneActivitiesInPast =
                             _currentGoal.doneAmountActivities
                                 .where((element) =>
-                                    DateTime.now()
+                                    _currentDay
                                         .difference(element.date)
                                         .inDays >
                                     0)
@@ -279,7 +290,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                                   onAmountGoalActivityAdded(
                                                       _currentGoal,
                                                       DoneAmountActivity(
-                                                          date: DateTime.now(),
+                                                          date: _currentDay,
                                                           amount: amount)),
                                               actionType:
                                                   _currentGoal.actionType,
