@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
-import 'package:productivity_app/shared/extensions/date_time_extension.dart';
+import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
@@ -187,7 +187,7 @@ class DataBaseService {
 
   Future<void> addDoneDateToCheckmarkGoal(
       CheckmarkGoal goal, DateTime date) async {
-    if (!goal.doneDates.any((e) => e.isSameDate(date))) {
+    if (!goal.doneDates.containsDate(date)) {
       goal.addDoneDate(date);
       await _db!.update(tableCheckmarkGoalName, goal.toMap(),
           where: "$columnGoalId = ?", whereArgs: [goal.id]);
