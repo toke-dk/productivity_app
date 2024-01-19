@@ -36,7 +36,6 @@ class ShowGoalsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     DateTime _currentDay = DateTime.now();
 
     return Container(
@@ -135,7 +134,12 @@ class ShowGoalsWidget extends StatelessWidget {
                             SizedBox(
                               height: 10,
                             ),
-                            Text("Ugens mål"),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Ugens mål",
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                )),
                             Text(currentGoal.doneDates.toString()),
                             Divider(
                               height: 60,
