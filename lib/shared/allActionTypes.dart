@@ -9,6 +9,10 @@ final List<ActionType> kAllActionTypes = [
       possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
       image: const Icon(Icons.directions_bike_outlined)),
   ActionType(
+      name: "Løb",
+      possibleUnits: [Units.kilometer, Units.hours, Units.minutes],
+      image: const Icon(Icons.directions_run)),
+  ActionType(
       name: "Armhævning",
       possibleUnits: [Units.unitLess],
       image: const Icon(Icons.fitness_center)),
@@ -21,9 +25,7 @@ final List<ActionType> kAllActionTypes = [
       possibleUnits: [Units.unitLess],
       image: const Icon(Icons.chair_alt)),
   ActionType(
-      asActivity: false,
-      name: "Ingen Slik",
-      image: const Icon(Icons.flag)),
+      asActivity: false, name: "Ingen Slik", image: const Icon(Icons.flag)),
   ActionType(
       asActivity: false,
       name: "Ingen Rød Kød",
