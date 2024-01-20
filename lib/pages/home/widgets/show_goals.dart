@@ -168,7 +168,7 @@ class ShowGoalsWidget extends StatelessWidget {
                             Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "Ugens mål",
+                                  "Ugens mål (${currentGoal.daysPerWeek})",
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 )),
                             WeekdaySelector(
@@ -281,7 +281,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Dagens mål",
+                                        "Dagens mål (${_goalForToday.myDoubleToString})",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyLarge,
@@ -325,7 +325,7 @@ class ShowGoalsWidget extends StatelessWidget {
                             Text(
                               _currentGoal.frequencyFormat ==
                                       GoalFrequencyFormats.inTotal
-                                  ? "Totalt mål"
+                                  ? "Totalt mål (${_currentGoal.amountGoal.myDoubleToString})"
                                   : _currentGoal.frequencyFormat ==
                                           GoalFrequencyFormats.perWeek
                                       ? "Ugens mål"
