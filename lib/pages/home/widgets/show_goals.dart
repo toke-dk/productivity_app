@@ -35,7 +35,8 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
 
-  List<bool?> makeValuesList(List<int> weekdays, DateTime today) {
+  List<bool?> makeValuesList(
+      List<int> weekdays, DateTime today, DateTime endDate) {
     List<bool?> listIfMondayFirst = List.generate(
         7,
         (index) =>
@@ -46,7 +47,7 @@ class ShowGoalsWidget extends StatelessWidget {
       ...listIfMondayFirst.sublist(0, listIfMondayFirst.length - 1)
     ];
 
-    print(listIfMondayFirst);
+    print(endDate.difference(today).inDays);
 
     return weekdaysWhereSundayFirst;
   }
@@ -54,6 +55,11 @@ class ShowGoalsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime _currentDay = DateTime.now();
+
+    TextStyle _labelTextStyle = Theme.of(context)
+        .textTheme
+        .labelMedium!
+        .copyWith(color: Colors.grey[700]);
 
     return Container(
       width: double.infinity,
@@ -162,7 +168,8 @@ class ShowGoalsWidget extends StatelessWidget {
                               values: makeValuesList(
                                   currentGoal.doneDaysOfWeekFromWeekNr(
                                       _currentDay.weekOfYear),
-                                  _currentDay),
+                                  _currentDay,
+                                  currentGoal.endDate),
                               elevation: 0,
                               shortWeekdays: [
                                 "S",
@@ -178,6 +185,19 @@ class ShowGoalsWidget extends StatelessWidget {
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                       width: 2)),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "${currentGoal.doneDaysOfWeekFromWeekNr(_currentDay.weekday).length}/${currentGoal.daysPerWeek} udførte",
+                                  style: _labelTextStyle,
+                                ),
+                                Text(
+                                  "${(currentGoal.endDate.difference(_currentDay).inDays / 7).floor()} uger tilbage",
+                                  style: _labelTextStyle,
+                                ),
+                              ],
                             ),
                             Divider(
                               height: 60,
@@ -219,11 +239,6 @@ class ShowGoalsWidget extends StatelessWidget {
 
                         double _amountLeftToday = _goalForToday -
                             _doneActivitiesToday.totalAmountDone;
-
-                        TextStyle _labelTextStyle = Theme.of(context)
-                            .textTheme
-                            .labelMedium!
-                            .copyWith(color: Colors.grey[700]);
 
                         String _displayUnitString =
                             _currentGoal.chosenUnit != Units.unitLess
@@ -342,7 +357,7 @@ class ShowGoalsWidget extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  "Slut: ${DateFormat("DD/MM/yyyy").format(_currentGoal.endDate)} "
+                                  "Slut: ${DateFormat("dd/MM/yyyy").format(_currentGoal.endDate)} "
                                   "(${_currentGoal.daysUntilEndDateFromNow} d)",
                                   style: _labelTextStyle,
                                 ),
