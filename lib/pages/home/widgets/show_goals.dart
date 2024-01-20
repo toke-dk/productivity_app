@@ -165,8 +165,9 @@ class ShowGoalsWidget extends StatelessWidget {
                               disabledShape: CircleBorder(
                                   side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)),
                               disabledFillColor: Theme.of(context).colorScheme.surface,
-                              disabledTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                              disabledTextStyle: Theme.of(context).textTheme.bodyMedium,
                               elevation: 0,
+                              shortWeekdays: ["S","M","T","O","T","F","L"],
                             ),
                             Divider(
                               height: 60,
