@@ -141,6 +141,10 @@ class ShowGoalsWidget extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 )),
                             Text(currentGoal.doneDates.toString()),
+                            Text(currentGoal
+                                .doneDaysOfWeekFromWeekNr(
+                                    _currentDay.weekOfYear)
+                                .toString()),
                             Divider(
                               height: 60,
                               thickness: 2,

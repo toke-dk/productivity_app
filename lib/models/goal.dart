@@ -134,6 +134,14 @@ class CheckmarkGoal {
 
   void addDoneDate(DateTime date) => doneDates.add(date);
 
+  List<int?> doneDaysOfWeekFromWeekNr(int weekOfYear) {
+    final List<int> _listToReturn = [];
+    doneDates.forEach((e) {
+      if (e.weekOfYear == weekOfYear) _listToReturn.add(e.weekday);
+    });
+    return _listToReturn;
+  }
+
   void removeDoneDate(DateTime date) =>
       doneDates.removeWhere((d) => d.isSameDate(date));
 }
