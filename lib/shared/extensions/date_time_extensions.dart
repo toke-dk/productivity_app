@@ -9,6 +9,8 @@ extension DateExtension on DateTime {
     ((difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
     return weekNumber;
   }
+
+  DateTime get onlyYearMonthDay => DateTime(this.year, this.month, this.day);
 }
 
 extension ListDateExtension on List<DateTime> {

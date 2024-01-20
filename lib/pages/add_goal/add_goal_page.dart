@@ -371,16 +371,16 @@ class _AddGoalPageState extends State<AddGoalPage> {
               if (_selectedFormat == GoalTypeFormats.typing) {
                 _addAmountGoal(AmountGoal(
                     actionType: _selectedActionType!,
-                    startDate: _selectedStartDate,
-                    endDate: _selectedEndDate,
+                    startDate: _selectedStartDate.onlyYearMonthDay,
+                    endDate: _selectedEndDate.onlyYearMonthDay,
                     frequencyFormat: GoalFrequencyFormats.inTotal,
                     chosenUnit: _selectedUnit!,
                     amountGoal: _selectedTotalAmount!));
               } else if (_selectedFormat == GoalTypeFormats.checkMark) {
                 _addCheckmarkGoal(CheckmarkGoal(
                     actionType: _selectedActionType!,
-                    startDate: _selectedStartDate,
-                    endDate: _selectedEndDate,
+                    startDate: _selectedStartDate.onlyYearMonthDay,
+                    endDate: _selectedEndDate.onlyYearMonthDay,
                     daysPerWeek: _selectedDaysPerWeek));
               }
               Navigator.pop(context);

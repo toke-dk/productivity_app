@@ -6,6 +6,7 @@ import 'package:productivity_app/pages/home/widgets/show_goals.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
+import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 
@@ -162,9 +163,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               _databaseService.deleteCheckmarkGoal(goal);
                             });
                           },
-                          amountGoals: snapshot.data![0] as List<AmountGoal>,
+                          amountGoals: (snapshot.data![0] as List<AmountGoal>).activeGoalsFromToday,
                           checkmarkGoals:
-                              snapshot.data![1] as List<CheckmarkGoal>,
+                              (snapshot.data![1] as List<CheckmarkGoal>).activeGoalsFromToday,
                           onAmountGoalActivityAdded: (goal, amount) {
                             setState(() {
                               _addDoneAmountActivity(
