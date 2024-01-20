@@ -8,6 +8,7 @@ import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/double_extension.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
 import '../../../models/goal.dart';
 
@@ -33,6 +34,14 @@ class ShowGoalsWidget extends StatelessWidget {
 
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
+
+  List<bool> makeValuesList(List<int> weekdays, DateTime today) {
+    List<int?> weekdaysWhereSundayFirst =
+        weekdays.map((day) => (day % 7 + 1)).toList();
+
+    return List.generate(
+        7, (index) => weekdaysWhereSundayFirst.contains(index + 1));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,11 +149,15 @@ class ShowGoalsWidget extends StatelessWidget {
                                   "Ugens mål",
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 )),
-                            Text(currentGoal.doneDates.toString()),
-                            Text(currentGoal
-                                .doneDaysOfWeekFromWeekNr(
-                                    _currentDay.weekOfYear)
-                                .toString()),
+                            WeekdaySelector(
+                              onChanged: (newDate) {},
+                              values: makeValuesList(
+                                  currentGoal.doneDaysOfWeekFromWeekNr(
+                                      _currentDay.weekOfYear),
+                                  _currentDay),
+                              disabledShape: CircleBorder(
+                                  side: BorderSide(color: Colors.red)),
+                            ),
                             Divider(
                               height: 60,
                               thickness: 2,
