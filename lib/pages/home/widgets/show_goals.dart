@@ -51,8 +51,6 @@ class ShowGoalsWidget extends StatelessWidget {
       ...listIfMondayFirst.sublist(0, listIfMondayFirst.length - 1)
     ];
 
-    print(endDate.difference(today).inDays);
-
     return weekdaysWhereSundayFirst;
   }
 
@@ -200,7 +198,7 @@ class ShowGoalsWidget extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "${currentGoal.doneDaysOfWeekFromWeekNr(_currentDay.weekday).length}/${currentGoal.daysPerWeek} udførte",
+                                  "${currentGoal.doneDaysOfWeekFromWeekNr(_currentDay.weekOfYear).length}/${currentGoal.daysPerWeek} udførte",
                                   style: _labelTextStyle,
                                 ),
                                 Text(
