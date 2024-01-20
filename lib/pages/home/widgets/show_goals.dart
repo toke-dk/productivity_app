@@ -36,18 +36,19 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
 
   List<bool?> makeValuesList(List<int> weekdays, DateTime today) {
-    List<int?> weekdaysWhereSundayFirst =
-        weekdays.map((day) => (day % 7 + 1)).toList();
-
-    List<bool?> listToReturn = List.generate(
+    List<bool?> listIfMondayFirst = List.generate(
         7,
-        (index) => index + 1 == (today.weekday % 7 + 1) &&
-                !weekdays.contains(today.weekday)
-            ? null
-            : weekdaysWhereSundayFirst.contains(index + 1));
+        (index) =>
+            today.weekday >= index + 1 ? weekdays.contains(index + 1) : null);
 
-    print(listToReturn);
-    return listToReturn;
+    List<bool?> weekdaysWhereSundayFirst = [
+      listIfMondayFirst.last,
+      ...listIfMondayFirst.sublist(0, listIfMondayFirst.length - 1)
+    ];
+
+    print(listIfMondayFirst);
+
+    return weekdaysWhereSundayFirst;
   }
 
   @override
@@ -162,12 +163,21 @@ class ShowGoalsWidget extends StatelessWidget {
                                   currentGoal.doneDaysOfWeekFromWeekNr(
                                       _currentDay.weekOfYear),
                                   _currentDay),
-                              disabledShape: CircleBorder(
-                                  side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)),
-                              disabledFillColor: Theme.of(context).colorScheme.surface,
-                              disabledTextStyle: Theme.of(context).textTheme.bodyMedium,
                               elevation: 0,
-                              shortWeekdays: ["S","M","T","O","T","F","L"],
+                              shortWeekdays: [
+                                "S",
+                                "M",
+                                "T",
+                                "O",
+                                "T",
+                                "F",
+                                "L"
+                              ],
+                              shape: CircleBorder(
+                                  side: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      width: 2)),
                             ),
                             Divider(
                               height: 60,
