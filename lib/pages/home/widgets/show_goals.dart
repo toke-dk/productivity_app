@@ -35,12 +35,19 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
 
-  List<bool> makeValuesList(List<int> weekdays, DateTime today) {
+  List<bool?> makeValuesList(List<int> weekdays, DateTime today) {
     List<int?> weekdaysWhereSundayFirst =
         weekdays.map((day) => (day % 7 + 1)).toList();
 
-    return List.generate(
-        7, (index) => weekdaysWhereSundayFirst.contains(index + 1));
+    List<bool?> listToReturn = List.generate(
+        7,
+        (index) => index + 1 == (today.weekday % 7 + 1) &&
+                !weekdays.contains(today.weekday)
+            ? null
+            : weekdaysWhereSundayFirst.contains(index + 1));
+
+    print(listToReturn);
+    return listToReturn;
   }
 
   @override
@@ -150,13 +157,16 @@ class ShowGoalsWidget extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 )),
                             WeekdaySelector(
-                              onChanged: (newDate) {},
+                              onChanged: (newDate) => null,
                               values: makeValuesList(
                                   currentGoal.doneDaysOfWeekFromWeekNr(
                                       _currentDay.weekOfYear),
                                   _currentDay),
                               disabledShape: CircleBorder(
-                                  side: BorderSide(color: Colors.red)),
+                                  side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)),
+                              disabledFillColor: Theme.of(context).colorScheme.surface,
+                              disabledTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                              elevation: 0,
                             ),
                             Divider(
                               height: 60,
