@@ -30,7 +30,7 @@ class AmountGoal {
   void addDoneAmountActivity(DoneAmountActivity activity) =>
       doneAmountActivities.add(activity);
 
-  int get daysUntilEndDateFromNow => endDate.difference(DateTime.now()).inDays;
+  int get daysUntilEndDateFromNow => endDate.difference(DateTime.now().onlyYearMonthDay).inDays;
 
   Map<String, dynamic> toMap() {
     return {
@@ -133,6 +133,9 @@ class CheckmarkGoal {
   bool isDateDone(DateTime date) => doneDates.containsDate(date);
 
   void addDoneDate(DateTime date) => doneDates.add(date);
+
+  int get weeksUntilEndDateFromNow => (endDate.difference(DateTime.now().onlyYearMonthDay).inDays/7).floor();
+
 
   List<int> doneDaysOfWeekFromWeekNr(int weekOfYear) {
     final List<int> _listToReturn = [];

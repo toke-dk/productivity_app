@@ -194,7 +194,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                   style: _labelTextStyle,
                                 ),
                                 Text(
-                                  "${(currentGoal.endDate.difference(_currentDay).inDays / 7).floor()} uger tilbage",
+                                  "${currentGoal.weeksUntilEndDateFromNow} uger tilbage",
                                   style: _labelTextStyle,
                                 ),
                               ],
