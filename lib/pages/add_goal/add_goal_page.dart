@@ -13,7 +13,13 @@ import '../../models/activity.dart';
 import '../../shared/widgets/activity_card.dart';
 
 class AddGoalPage extends StatefulWidget {
-  const AddGoalPage({super.key});
+  const AddGoalPage(
+      {super.key,
+      required this.onCheckMarkGoalAdd,
+      required this.onAmountGoalAdd});
+
+  final Function(CheckmarkGoal checkmarkGoal) onCheckMarkGoalAdd;
+  final Function(AmountGoal amountGoal) onAmountGoalAdd;
 
   @override
   State<AddGoalPage> createState() => _AddGoalPageState();
@@ -310,17 +316,6 @@ class _AddGoalPageState extends State<AddGoalPage> {
             ))
       ];
 
-  final DataBaseService _databaseService = DataBaseService();
-
-  /// TODO: These should come from the home page
-  Future<void> _addAmountGoal(AmountGoal goal) async {
-    _databaseService.addAmountGoal(goal);
-  }
-
-  Future<void> _addCheckmarkGoal(CheckmarkGoal goal) async {
-    _databaseService.addCheckmarkGoal(goal);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -369,7 +364,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
               });
             } else {
               if (_selectedFormat == GoalTypeFormats.typing) {
-                _addAmountGoal(AmountGoal(
+                widget.onAmountGoalAdd(AmountGoal(
                     actionType: _selectedActionType!,
                     startDate: _selectedStartDate.onlyYearMonthDay,
                     endDate: _selectedEndDate.onlyYearMonthDay,
@@ -377,7 +372,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     chosenUnit: _selectedUnit!,
                     amountGoal: _selectedTotalAmount!));
               } else if (_selectedFormat == GoalTypeFormats.checkMark) {
-                _addCheckmarkGoal(CheckmarkGoal(
+                widget.onCheckMarkGoalAdd(CheckmarkGoal(
                     actionType: _selectedActionType!,
                     startDate: _selectedStartDate.onlyYearMonthDay,
                     endDate: _selectedEndDate.onlyYearMonthDay,

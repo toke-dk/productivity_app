@@ -21,7 +21,9 @@ class ShowGoalsWidget extends StatelessWidget {
       this.onAmountGoalDelete,
       this.onCheckmarkGoalDelete,
       required this.onCheckMarkGoalDoneDateAdd,
-      required this.onCheckmarkGoalDoneDateDelete});
+      required this.onCheckmarkGoalDoneDateDelete,
+      required this.onCheckMarkGoalAdd,
+      required this.onAmountGoalAdd});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
@@ -34,6 +36,8 @@ class ShowGoalsWidget extends StatelessWidget {
 
   final Function(AmountGoal goal)? onAmountGoalDelete;
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
+  final Function(CheckmarkGoal checkmarkGoal) onCheckMarkGoalAdd;
+  final Function(AmountGoal amountGoal) onAmountGoalAdd;
 
   List<bool?> makeValuesList(
       List<int> weekdays, DateTime today, DateTime endDate) {
@@ -95,7 +99,13 @@ class ShowGoalsWidget extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddGoalPage()));
+                                  builder: (context) => AddGoalPage(
+                                        onCheckMarkGoalAdd: (CheckmarkGoal
+                                                checkmarkGoal) =>
+                                            onCheckMarkGoalAdd(checkmarkGoal),
+                                        onAmountGoalAdd: (AmountGoal goal) =>
+                                            onAmountGoalAdd(goal),
+                                      )));
                         },
                         labelText: "Angiv mål!",
                       ),
@@ -387,7 +397,14 @@ class ShowGoalsWidget extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddGoalPage()));
+                                  builder: (context) => AddGoalPage(
+                                        onCheckMarkGoalAdd: (CheckmarkGoal
+                                                checkmarkGoal) =>
+                                            onCheckMarkGoalAdd(checkmarkGoal),
+                                        onAmountGoalAdd:
+                                            (AmountGoal amountGoal) =>
+                                                onAmountGoalAdd(amountGoal),
+                                      )));
                         },
                         labelText: "Tilføj et mål mere",
                       ),
