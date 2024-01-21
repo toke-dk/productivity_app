@@ -129,6 +129,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                   onDelete: () => onCheckmarkGoalDelete != null
                                       ? onCheckmarkGoalDelete!(currentGoal)
                                       : null,
+                                  onLogPress: () => debugPrint("Show logs"),
                                 )
                               ],
                             ),
@@ -416,15 +417,24 @@ class ShowGoalsWidget extends StatelessWidget {
 }
 
 class _GoalMenuOptions extends StatelessWidget {
-  const _GoalMenuOptions({super.key, this.onDelete, this.onEdit});
+  const _GoalMenuOptions({super.key, this.onDelete, this.onEdit, this.onLogPress});
 
   final Function()? onDelete;
   final Function()? onEdit;
+  final Function()? onLogPress;
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
         itemBuilder: (context) => [
+              PopupMenuItem(
+                  child: ListTile(
+                leading: Icon(
+                  Icons.history,
+                ),
+                title: Text("Logbog"),
+                onTap: () => onLogPress,
+              )),
               PopupMenuItem(
                 onTap: onEdit,
                 child: ListTile(
