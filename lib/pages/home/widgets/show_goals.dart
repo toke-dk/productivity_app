@@ -292,7 +292,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                       ),
                                       LinearPercentIndicator(
                                         barRadius: Radius.circular(20),
-                                        percent: _percentForToday,
+                                        percent: _percentForToday <= 1 ? _percentForToday : 1,
                                         progressColor: Theme.of(context)
                                             .colorScheme
                                             .primary,
