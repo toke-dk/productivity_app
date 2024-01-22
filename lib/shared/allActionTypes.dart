@@ -25,11 +25,16 @@ final List<ActionType> kAllActionTypes = [
       possibleUnits: [Units.unitLess],
       image: const Icon(Icons.chair_alt)),
   ActionType(
-      asActivity: false, name: "Ingen Slik", image: const Icon(Icons.flag)),
+      asActivity: false,
+      name: "Ingen Slik",
+      image: const Icon(Icons.health_and_safety)),
   ActionType(
       asActivity: false,
       name: "Ingen Rød Kød",
       image: const Icon(Icons.no_food)),
+  ActionType(name: "Vinterbad", image: Icon(Icons.water), asActivity: false),
+  ActionType(
+      name: "Fod øvelser", image: Icon(Icons.snowshoeing), asActivity: false),
   ActionType(
       asActivity: false,
       name: "Vegetar",
