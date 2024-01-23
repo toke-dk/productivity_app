@@ -23,12 +23,14 @@ class ShowGoalsWidget extends StatelessWidget {
       required this.onCheckMarkGoalDoneDateAdd,
       required this.onCheckmarkGoalDoneDateDelete,
       required this.onCheckMarkGoalAdd,
-      required this.onAmountGoalAdd});
+      required this.onAmountGoalAdd, required this.onAmountActionsLog});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
+
+  final Function(AmountGoal goal) onAmountActionsLog;
 
   final Function(CheckmarkGoal goal, DateTime date) onCheckMarkGoalDoneDateAdd;
   final Function(CheckmarkGoal goal, DateTime date)
@@ -266,6 +268,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                   axisDirection: Axis.horizontal,
                                 ),
                                 _GoalMenuOptions(
+                                  onLogPress: () => onAmountActionsLog(_currentGoal),
                                   onDelete: () => onAmountGoalDelete != null
                                       ? onAmountGoalDelete!(_currentGoal)
                                       : null,
@@ -433,7 +436,7 @@ class _GoalMenuOptions extends StatelessWidget {
                   Icons.history,
                 ),
                 title: Text("Logbog"),
-                onTap: () => onLogPress,
+                onTap: onLogPress != null ? () => onLogPress!() : null,
               )),
               PopupMenuItem(
                 onTap: onEdit,

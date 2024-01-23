@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
+import 'package:productivity_app/pages/actions_log_page.dart';
 import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
 import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
@@ -198,6 +199,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             setState(() {
                               _databaseService.addAmountGoal(amountGoal);
                             });
+                          },
+                          onAmountActionsLog: (AmountGoal goal) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ActionsLogPage(
+                                          goal: goal,
+                                        )));
                           },
                         );
                       } else if (snapshot.hasError) {

@@ -30,7 +30,19 @@ class AmountGoal {
   void addDoneAmountActivity(DoneAmountActivity activity) =>
       doneAmountActivities.add(activity);
 
-  int get daysUntilEndDateFromNow => endDate.difference(DateTime.now().onlyYearMonthDay).inDays;
+  int get daysUntilEndDateFromNow =>
+      endDate.difference(DateTime.now().onlyYearMonthDay).inDays;
+
+  int daysUntilEndDateFromDate(DateTime date) =>
+      endDate.difference(date.onlyYearMonthDay).inDays;
+
+  List<DoneAmountActivity> doneActivitiesBeforeDate(DateTime date) =>
+      doneAmountActivities
+          .where((element) => date.onlyYearMonthDay.difference(element.date.onlyYearMonthDay).inDays >= 0)
+          .toList();
+
+  double percentOfTotalAmountFromDate(DateTime date) =>
+      (this.doneActivitiesBeforeDate(date).totalAmountDone);
 
   Map<String, dynamic> toMap() {
     return {
@@ -134,8 +146,8 @@ class CheckmarkGoal {
 
   void addDoneDate(DateTime date) => doneDates.add(date);
 
-  int get weeksUntilEndDateFromNow => (endDate.difference(DateTime.now().onlyYearMonthDay).inDays/7).floor();
-
+  int get weeksUntilEndDateFromNow =>
+      (endDate.difference(DateTime.now().onlyYearMonthDay).inDays / 7).floor();
 
   List<int> doneDaysOfWeekFromWeekNr(int weekOfYear) {
     final List<int> _listToReturn = [];
