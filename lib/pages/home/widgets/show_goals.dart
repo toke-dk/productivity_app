@@ -222,6 +222,8 @@ class ShowGoalsWidget extends StatelessWidget {
                     Column(
                       children: List.generate(amountGoals.length, (index) {
                         AmountGoal _currentGoal = amountGoals[index];
+
+                        ///TODO: make theese a method in the goal class
                         double _amountDone =
                             _currentGoal.doneAmountActivities.totalAmountDone;
                         double _percent = _amountDone / _currentGoal.amountGoal;

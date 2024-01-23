@@ -38,11 +38,10 @@ class AmountGoal {
 
   List<DoneAmountActivity> doneActivitiesBeforeDate(DateTime date) =>
       doneAmountActivities
-          .where((element) => date.onlyYearMonthDay.difference(element.date.onlyYearMonthDay).inDays >= 0)
+          .where((activityDate) => activityDate.date.isBefore(date) || activityDate.date.isAtSameMomentAs(date))
           .toList();
 
-  double percentOfTotalAmountFromDate(DateTime date) =>
-      (this.doneActivitiesBeforeDate(date).totalAmountDone);
+  double percentOfTotalAmountFromDate(DateTime date) => doneActivitiesBeforeDate(date).totalAmountDone/amountGoal;
 
   Map<String, dynamic> toMap() {
     return {

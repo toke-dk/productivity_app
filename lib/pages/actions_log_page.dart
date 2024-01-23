@@ -6,8 +6,7 @@ import 'package:productivity_app/shared/extensions/double_extension.dart';
 import '../models/goal.dart';
 
 class ActionsLogPage extends StatelessWidget {
-  const ActionsLogPage(
-      {super.key, required this.goal});
+  const ActionsLogPage({super.key, required this.goal});
 
   final AmountGoal goal;
 
@@ -17,7 +16,8 @@ class ActionsLogPage extends StatelessWidget {
       appBar: AppBar(title: Text("Logbog")),
       body: Column(
         children: List.generate(goal.doneAmountActivities.length, (index) {
-          DoneAmountActivity _currentActivity = goal.doneAmountActivities[index];
+          DoneAmountActivity _currentActivity =
+              goal.doneAmountActivities[index];
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -33,30 +33,38 @@ class ActionsLogPage extends StatelessWidget {
                           child: Text(
                               DateFormat("dd").format(_currentActivity.date)),
                         ),
+                        Text(DateFormat("MMM").format(_currentActivity.date)),
                       ],
                     ),
-                    SizedBox(width: 30,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${_currentActivity.amount.myDoubleToString} ${goal.chosenUnit.shortStringName}",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(goal.percentOfTotalAmountFromDate(_currentActivity.date).toString()),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'kl. ${DateFormat("hh:mm").format(_currentActivity.date)}',
-                          style: Theme.of(context).textTheme.labelMedium,
-                        )
-                      ],
+                    SizedBox(
+                      width: 30,
                     ),
-                    Spacer(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${_currentActivity.amount.myDoubleToString} ${goal.chosenUnit.shortStringName}",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Divider(),
+                          Text("Total",style: Theme.of(context).textTheme.titleMedium,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  "${goal.doneActivitiesBeforeDate(_currentActivity.date).totalAmountDone.myDoubleToString}/${goal.amountGoal.myDoubleToString}"),
+                              Text("${(goal.percentOfTotalAmountFromDate(_currentActivity.date)*100).myDoubleToString}%")
+                            ],
+                          ),
+                          Divider(),
+                          Text(
+                            'kl. ${DateFormat("hh:mm").format(_currentActivity.date)}',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          )
+                        ],
+                      ),
+                    ),
                     PopupMenuButton(
                         itemBuilder: (context) =>
                             [PopupMenuItem(child: Text("Edit"))]),
