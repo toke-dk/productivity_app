@@ -23,7 +23,8 @@ class ShowGoalsWidget extends StatelessWidget {
       required this.onCheckMarkGoalDoneDateAdd,
       required this.onCheckmarkGoalDoneDateDelete,
       required this.onCheckMarkGoalAdd,
-      required this.onAmountGoalAdd, required this.onAmountActionsLog});
+      required this.onAmountGoalAdd,
+      required this.onAmountActionsLog});
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
@@ -225,6 +226,9 @@ class ShowGoalsWidget extends StatelessWidget {
                             _currentGoal.doneAmountActivities.totalAmountDone;
                         double _percent = _amountDone / _currentGoal.amountGoal;
 
+                        double _totalAmountLeft =
+                            _currentGoal.amountGoal - _amountDone;
+
                         List<DoneAmountActivity> _doneActivitiesToday =
                             _currentGoal
                                 .doneAmountActivities
@@ -268,7 +272,8 @@ class ShowGoalsWidget extends StatelessWidget {
                                   axisDirection: Axis.horizontal,
                                 ),
                                 _GoalMenuOptions(
-                                  onLogPress: () => onAmountActionsLog(_currentGoal),
+                                  onLogPress: () =>
+                                      onAmountActionsLog(_currentGoal),
                                   onDelete: () => onAmountGoalDelete != null
                                       ? onAmountGoalDelete!(_currentGoal)
                                       : null,
@@ -295,7 +300,9 @@ class ShowGoalsWidget extends StatelessWidget {
                                       ),
                                       LinearPercentIndicator(
                                         barRadius: Radius.circular(20),
-                                        percent: _percentForToday <= 1 ? _percentForToday : 1,
+                                        percent: _percentForToday <= 1
+                                            ? _percentForToday
+                                            : 1,
                                         progressColor: Theme.of(context)
                                             .colorScheme
                                             .primary,
@@ -310,7 +317,9 @@ class ShowGoalsWidget extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${_amountLeftToday.myDoubleToString} $_displayUnitString tilbage",
+                                            _amountLeftToday > 0
+                                                ? "${_amountLeftToday.myDoubleToString} $_displayUnitString tilbage"
+                                                : "Fuldført!",
                                             style: _labelTextStyle,
                                           ),
                                           Text(
@@ -329,7 +338,7 @@ class ShowGoalsWidget extends StatelessWidget {
                             Text(
                               _currentGoal.frequencyFormat ==
                                       GoalFrequencyFormats.inTotal
-                                  ? "Totalt mål (${_currentGoal.amountGoal.myDoubleToString})"
+                                  ? "Totalt mål (${_totalAmountLeft > 0 ? _currentGoal.amountGoal.myDoubleToString : 'Fuldført!'})"
                                   : _currentGoal.frequencyFormat ==
                                           GoalFrequencyFormats.perWeek
                                       ? "Ugens mål"
@@ -420,7 +429,8 @@ class ShowGoalsWidget extends StatelessWidget {
 }
 
 class _GoalMenuOptions extends StatelessWidget {
-  const _GoalMenuOptions({super.key, this.onDelete, this.onEdit, this.onLogPress});
+  const _GoalMenuOptions(
+      {super.key, this.onDelete, this.onEdit, this.onLogPress});
 
   final Function()? onDelete;
   final Function()? onEdit;
