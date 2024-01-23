@@ -81,9 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<ActionType> allActionTypes = kAllActionTypes;
 
     return Scaffold(
-        floatingActionButton: AddActivitiesFAB(
-          onActivityComplete: _onActivityComplete,
-        ),
+        // floatingActionButton: AddActivitiesFAB(
+        //   onActivityComplete: _onActivityComplete,
+        // ),
         drawer: Drawer(
           child: ListView(
             children: [
@@ -126,23 +126,23 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              FutureBuilder(
-                future: Future(() async => makeActionTypeCounts(
-                    activities: await _getActivities(),
-                    tasks: await _getTasks())),
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (snapshot.hasData) {
-                    return ShowTodayOverview(
-                      actionTypeCounts: snapshot.data!,
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
+              // FutureBuilder(
+              //   future: Future(() async => makeActionTypeCounts(
+              //       activities: await _getActivities(),
+              //       tasks: await _getTasks())),
+              //   builder:
+              //       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              //     if (snapshot.hasData) {
+              //       return ShowTodayOverview(
+              //         actionTypeCounts: snapshot.data!,
+              //       );
+              //     } else {
+              //       return const Center(
+              //         child: CircularProgressIndicator(),
+              //       );
+              //     }
+              //   },
+              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -208,21 +208,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         return Center(child: CircularProgressIndicator());
                     }),
               ),
-              FutureBuilder(
-                  future: Future(
-                      () async => [await _getActivities(), await _getTasks()]),
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? Column(
-                            children: [
-                              ActionsLog(
-                                activities: snapshot.data![0] as List<Activity>,
-                                tasks: snapshot.data![1] as List<Task>,
-                              ),
-                            ],
-                          )
-                        : Center(child: const CircularProgressIndicator());
-                  }),
+              // FutureBuilder(
+              //     future: Future(
+              //         () async => [await _getActivities(), await _getTasks()]),
+              //     builder: (context, snapshot) {
+              //       return snapshot.hasData
+              //           ? Column(
+              //               children: [
+              //                 ActionsLog(
+              //                   activities: snapshot.data![0] as List<Activity>,
+              //                   tasks: snapshot.data![1] as List<Task>,
+              //                 ),
+              //               ],
+              //             )
+              //           : Center(child: const CircularProgressIndicator());
+              //     }),
               IconButton(
                   onPressed: () => setState(() {}),
                   icon: const Icon(Icons.refresh)),
