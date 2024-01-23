@@ -36,7 +36,5 @@ final List<ActionType> kAllActionTypes = [
   ActionType(
       name: "Fod øvelser", image: Icon(Icons.snowshoeing), asActivity: false),
   ActionType(
-      asActivity: false,
-      name: "Vegetar",
-      image: const Icon(Icons.breakfast_dining)),
+      name: "Ryd op", image: Icon(Icons.dry_cleaning), asActivity: false),
 ];
