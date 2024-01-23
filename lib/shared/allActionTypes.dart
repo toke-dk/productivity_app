@@ -23,7 +23,7 @@ final List<ActionType> kAllActionTypes = [
   ActionType(
       name: "Squats",
       possibleUnits: [Units.unitLess],
-      image: const Icon(Icons.chair_alt)),
+      image: const Icon(Icons.snowboarding)),
   ActionType(
       asActivity: false,
       name: "Ingen Slik",
