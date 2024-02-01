@@ -60,7 +60,7 @@ class ActionsLogPage extends StatelessWidget {
                             ),
                             Divider(),
                             Text(
-                              'kl. ${DateFormat("hh:mm").format(_currentActivity.date)}',
+                              'kl. ${DateFormat("HH:mm").format(_currentActivity.date)}',
                               style: Theme.of(context).textTheme.labelMedium,
                             )
                           ],
