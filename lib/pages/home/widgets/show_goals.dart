@@ -240,11 +240,9 @@ class ShowGoalsWidget extends StatelessWidget {
 
                         List<DoneAmountActivity> _doneActivitiesInPast =
                             _currentGoal.doneAmountActivities
-                                .where((element) =>
-                                    _currentDay
-                                        .difference(element.date)
-                                        .inDays >
-                                    0)
+                                .where((element) => element
+                                    .date.onlyYearMonthDay
+                                    .isBefore(_currentDay.onlyYearMonthDay))
                                 .toList();
 
                         double _goalForToday = (_currentGoal.amountGoal -

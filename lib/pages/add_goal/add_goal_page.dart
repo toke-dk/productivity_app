@@ -322,73 +322,75 @@ class _AddGoalPageState extends State<AddGoalPage> {
       appBar: AppBar(
         title: Text("Tilføj mål"),
       ),
-      body: Stepper(
-          controlsBuilder: (BuildContext context, ControlsDetails details) =>
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    children: [
-                      TextButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  !nextButtonDisabled()
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context).disabledColor),
-                              foregroundColor: MaterialStatePropertyAll(
-                                  Theme.of(context).colorScheme.onPrimary)),
-                          onPressed: !nextButtonDisabled()
-                              ? details.onStepContinue
-                              : null,
-                          child: Text(_steps().length - 1 != details.currentStep
-                              ? "Fortsæt"
-                              : "Tilføj mål")),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      TextButton(
-                          onPressed: details.currentStep != 0
-                              ? details.onStepCancel
-                              : null,
-                          child: Text("Tilbage")),
-                    ],
+      body: SingleChildScrollView(
+        child: Stepper(
+            controlsBuilder: (BuildContext context, ControlsDetails details) =>
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: [
+                        TextButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll(
+                                    !nextButtonDisabled()
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Theme.of(context).disabledColor),
+                                foregroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context).colorScheme.onPrimary)),
+                            onPressed: !nextButtonDisabled()
+                                ? details.onStepContinue
+                                : null,
+                            child: Text(_steps().length - 1 != details.currentStep
+                                ? "Fortsæt"
+                                : "Tilføj mål")),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        TextButton(
+                            onPressed: details.currentStep != 0
+                                ? details.onStepCancel
+                                : null,
+                            child: Text("Tilbage")),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-          currentStep: _currentStepIndex,
-          onStepContinue: () {
-            if (_currentStepIndex < _steps().length - 1) {
-              setState(() {
-                _currentStepIndex += 1;
-              });
-            } else {
-              if (_selectedFormat == GoalTypeFormats.typing) {
-                widget.onAmountGoalAdd(AmountGoal(
-                    actionType: _selectedActionType!,
-                    startDate: _selectedStartDate.onlyYearMonthDay,
-                    endDate: _selectedEndDate.onlyYearMonthDay,
-                    frequencyFormat: GoalFrequencyFormats.inTotal,
-                    chosenUnit: _selectedUnit!,
-                    amountGoal: _selectedTotalAmount!));
-              } else if (_selectedFormat == GoalTypeFormats.checkMark) {
-                widget.onCheckMarkGoalAdd(CheckmarkGoal(
-                    actionType: _selectedActionType!,
-                    startDate: _selectedStartDate.onlyYearMonthDay,
-                    endDate: _selectedEndDate.onlyYearMonthDay,
-                    daysPerWeek: _selectedDaysPerWeek));
+            currentStep: _currentStepIndex,
+            onStepContinue: () {
+              if (_currentStepIndex < _steps().length - 1) {
+                setState(() {
+                  _currentStepIndex += 1;
+                });
+              } else {
+                if (_selectedFormat == GoalTypeFormats.typing) {
+                  widget.onAmountGoalAdd(AmountGoal(
+                      actionType: _selectedActionType!,
+                      startDate: _selectedStartDate.onlyYearMonthDay,
+                      endDate: _selectedEndDate.onlyYearMonthDay,
+                      frequencyFormat: GoalFrequencyFormats.inTotal,
+                      chosenUnit: _selectedUnit!,
+                      amountGoal: _selectedTotalAmount!));
+                } else if (_selectedFormat == GoalTypeFormats.checkMark) {
+                  widget.onCheckMarkGoalAdd(CheckmarkGoal(
+                      actionType: _selectedActionType!,
+                      startDate: _selectedStartDate.onlyYearMonthDay,
+                      endDate: _selectedEndDate.onlyYearMonthDay,
+                      daysPerWeek: _selectedDaysPerWeek));
+                }
+                Navigator.pop(context);
               }
-              Navigator.pop(context);
-            }
-          },
-          onStepCancel: () {
-            if (_currentStepIndex > 0) {
-              setState(() {
-                _currentStepIndex -= 1;
-              });
-            }
-          },
-          steps: _steps()),
+            },
+            onStepCancel: () {
+              if (_currentStepIndex > 0) {
+                setState(() {
+                  _currentStepIndex -= 1;
+                });
+              }
+            },
+            steps: _steps()),
+      ),
     );
   }
 }
