@@ -30,8 +30,11 @@ class ShowGoalsWidget extends StatelessWidget {
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
 
-  List<AmountGoal> get activeAmountGoalsToday => amountGoals.activeGoalsFromToday;
-  List<CheckmarkGoal> get activeCheckmarkGoalsToday => checkmarkGoals.activeGoalsFromToday;
+  List<AmountGoal> get activeAmountGoalsToday =>
+      amountGoals.activeGoalsFromToday;
+
+  List<CheckmarkGoal> get activeCheckmarkGoalsToday =>
+      checkmarkGoals.activeGoalsFromToday;
 
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
@@ -46,7 +49,6 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
   final Function(CheckmarkGoal checkmarkGoal) onCheckMarkGoalAdd;
   final Function(AmountGoal amountGoal) onAmountGoalAdd;
-
 
   List<bool?> makeValuesList(
       List<int> weekdays, DateTime today, DateTime endDate) {
@@ -75,7 +77,8 @@ class ShowGoalsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        activeAmountGoalsToday.isNotEmpty || activeCheckmarkGoalsToday.isNotEmpty
+        activeAmountGoalsToday.isNotEmpty ||
+                activeCheckmarkGoalsToday.isNotEmpty
             ? Column(
                 children: [
                   Row(
@@ -145,8 +148,10 @@ class ShowGoalsWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    children: List.generate(activeCheckmarkGoalsToday.length, (index) {
-                      CheckmarkGoal currentGoal = activeCheckmarkGoalsToday[index];
+                    children: List.generate(activeCheckmarkGoalsToday.length,
+                        (index) {
+                      CheckmarkGoal currentGoal =
+                          activeCheckmarkGoalsToday[index];
                       return _GoalCard(
                         child: Column(
                           children: [
@@ -246,7 +251,8 @@ class ShowGoalsWidget extends StatelessWidget {
                     }),
                   ),
                   Column(
-                    children: List.generate(activeAmountGoalsToday.length, (index) {
+                    children:
+                        List.generate(activeAmountGoalsToday.length, (index) {
                       AmountGoal _currentGoal = activeAmountGoalsToday[index];
 
                       ///TODO: make theese a method in the goal class
