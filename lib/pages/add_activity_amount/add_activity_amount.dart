@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/activity_receipt.dart';
@@ -34,6 +35,9 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
         : {};
   }
 
+  final double widgetHeight = 38;
+  static const double textSize = 30;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,71 +53,64 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
           const Spacer(
             flex: 1,
           ),
-          Text(
-            widget.unit?.shortStringName ??
-                widget.actionType.possibleUnits![0].textForUnitMeasure,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Stack(
+            alignment: Alignment.center,
             children: [
-              /// Invisible icon so the space is even
-              const IconButton(
-                disabledColor: Colors.transparent,
-                onPressed: null,
-                icon: Icon(Icons.arrow_back),
-              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    widget.actionType.possibleUnits![0].stringName,
-                    style: const TextStyle(color: Colors.transparent),
-                  ),
                   !isStringEmpty(typedString)
-                      ? Text(
-                          typedString.toString(),
-                          style: const TextStyle(fontSize: 40),
+                      ? Container(
+                          height: widgetHeight,
+                          alignment: Alignment.center,
+                          child: Text(
+                            typedString.toString(),
+                            style: const TextStyle(fontSize: textSize),
+                          ),
                         )
                       : const SizedBox(),
                   Container(
-                    height: 40,
+                    height: widgetHeight,
                     width: 3,
                     color: Theme.of(context).primaryColor,
-                  ),
+                  )
+                      .animate(
+                        onPlay: (controller) => controller.repeat(),
+                      )
+                      .then(delay: 300.milliseconds)
+                      .fadeIn(duration: 150.milliseconds)
+                      .then(delay: 350.milliseconds)
+                      .fadeOut(duration: 150.milliseconds),
                   const SizedBox(
                     width: 5,
                   ),
                   widget.actionType.possibleUnits![0] != Units.unitLess
                       ? Container(
-                          margin: const EdgeInsets.only(bottom: 10),
+                          height: widgetHeight,
                           child: Text(
-                              widget.actionType.possibleUnits![0].stringName),
+                            widget.actionType.possibleUnits![0].shortStringName,
+                            style: const TextStyle(
+                              fontSize: textSize,
+                            ),
+                          ),
                         )
                       : const SizedBox(),
                 ],
               ),
-              !isStringEmpty(typedString)
-                  ? IconButton(
-                      onPressed: () {
-                        setState(() {
-                          typedString =
-                              typedString.substring(0, typedString.length - 1);
-                        });
-                      },
-                      icon: const Icon(Icons.arrow_back))
-                  : const IconButton(
-                      disabledColor: Colors.transparent,
-                      onPressed: null,
-                      icon: Icon(Icons.arrow_back),
-                    )
+              Positioned(
+                right: 0,
+                child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        typedString =
+                            typedString.substring(0, typedString.length - 1);
+                      });
+                    },
+                    icon: const Icon(Icons.backspace)),
+              ).animate(target: !isStringEmpty(typedString) ? 0 : 1,).scaleXY(end: 0, curve: Curves.easeOutExpo)
             ],
           ),
-          const Spacer(
-            flex: 2,
-          ),
+          Spacer(),
           MyNumberBoard(
               onNextButtonPressed:
                   !isStringEmpty(typedString) ? _onNextPress : null,
