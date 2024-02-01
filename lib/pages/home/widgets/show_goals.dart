@@ -379,7 +379,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                               : SizedBox(),
                                           Text(
                                             _amountLeftToday > 0
-                                                ? "$_displayUnitString tilbage"
+                                                ? " $_displayUnitString tilbage"
                                                 : "Fuldført!",
                                             style: _labelTextStyle,
                                           ),
