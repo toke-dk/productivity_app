@@ -66,60 +66,84 @@ class ShowGoalsWidget extends StatelessWidget {
         .labelMedium!
         .copyWith(color: Colors.grey[700]);
 
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Colors.grey[100]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          amountGoals.isNotEmpty || checkmarkGoals.isNotEmpty
-              ? Column(
-                  children: [
-                    Text(
-                      "Dine Mål",
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    )
-                  ],
-                )
-              : SizedBox(),
-          amountGoals.isEmpty && checkmarkGoals.isEmpty
-              ? Center(
-                  child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        amountGoals.isNotEmpty || checkmarkGoals.isNotEmpty
+            ? Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Du har ikke sat et mål endnu"),
-                      SizedBox(
-                        height: 20,
+                      Text(
+                        "Dine Mål",
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
-                      MyThemeButton(
-                        onTap: () {
+                      TextButton(
+                        onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddGoalPage(
-                                        onCheckMarkGoalAdd: (CheckmarkGoal
-                                                checkmarkGoal) =>
-                                            onCheckMarkGoalAdd(checkmarkGoal),
-                                        onAmountGoalAdd: (AmountGoal goal) =>
-                                            onAmountGoalAdd(goal),
-                                      )));
+                                    onCheckMarkGoalAdd:
+                                        (CheckmarkGoal checkmarkGoal) =>
+                                        onCheckMarkGoalAdd(checkmarkGoal),
+                                    onAmountGoalAdd:
+                                        (AmountGoal amountGoal) =>
+                                        onAmountGoalAdd(amountGoal),
+                                  )));
                         },
-                        labelText: "Angiv mål!",
-                      ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.add),
+                            SizedBox(width: 5,),
+                            Text("Tilføj et mål mere"),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  SizedBox(
+                    height: 20,
+                  )
+                ],
+              )
+            : SizedBox(),
+        amountGoals.isEmpty && checkmarkGoals.isEmpty
+            ? Center(
+                child: Column(
                   children: [
-                    Column(
-                      children: List.generate(checkmarkGoals.length, (index) {
-                        CheckmarkGoal currentGoal = checkmarkGoals[index];
-                        return Column(
+                    Text("Du har ikke sat et mål endnu"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MyThemeButton(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddGoalPage(
+                                      onCheckMarkGoalAdd:
+                                          (CheckmarkGoal checkmarkGoal) =>
+                                              onCheckMarkGoalAdd(checkmarkGoal),
+                                      onAmountGoalAdd: (AmountGoal goal) =>
+                                          onAmountGoalAdd(goal),
+                                    )));
+                      },
+                      labelText: "Angiv mål!",
+                    ),
+                  ],
+                ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: List.generate(checkmarkGoals.length, (index) {
+                      CheckmarkGoal currentGoal = checkmarkGoals[index];
+                      return _GoalCard(
+                        child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,11 +167,11 @@ class ShowGoalsWidget extends StatelessWidget {
                                             currentGoal, _currentDay),
                                     child: Row(
                                       children: [
-                                        Icon(Icons.check),
+                                        Icon(Icons.check_circle),
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text("Målet er udført!"),
+                                        Text("Udført!"),
                                       ],
                                       mainAxisSize: MainAxisSize.min,
                                     ),
@@ -161,7 +185,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text("Udfør!"),
+                                        Text("Udfør"),
                                       ],
                                       mainAxisSize: MainAxisSize.min,
                                     ),
@@ -211,56 +235,54 @@ class ShowGoalsWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Divider(
-                              height: 60,
-                              thickness: 2,
-                            ),
                           ],
-                        );
-                      }),
-                    ),
-                    Column(
-                      children: List.generate(amountGoals.length, (index) {
-                        AmountGoal _currentGoal = amountGoals[index];
+                        ),
+                      );
+                    }),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    children: List.generate(amountGoals.length, (index) {
+                      AmountGoal _currentGoal = amountGoals[index];
 
-                        ///TODO: make theese a method in the goal class
-                        double _amountDone =
-                            _currentGoal.doneAmountActivities.totalAmountDone;
-                        double _percent = _amountDone / _currentGoal.amountGoal;
+                      ///TODO: make theese a method in the goal class
+                      double _amountDone =
+                          _currentGoal.doneAmountActivities.totalAmountDone;
+                      double _percent = _amountDone / _currentGoal.amountGoal;
 
-                        double _totalAmountLeft =
-                            _currentGoal.amountGoal - _amountDone;
+                      double _totalAmountLeft =
+                          _currentGoal.amountGoal - _amountDone;
 
-                        List<DoneAmountActivity> _doneActivitiesToday =
-                            _currentGoal
-                                .doneAmountActivities
-                                .where((element) =>
-                                    element.date.isSameDate(_currentDay))
-                                .toList();
+                      List<DoneAmountActivity> _doneActivitiesToday =
+                          _currentGoal.doneAmountActivities
+                              .where((element) =>
+                                  element.date.isSameDate(_currentDay))
+                              .toList();
 
-                        List<DoneAmountActivity> _doneActivitiesInPast =
-                            _currentGoal.doneAmountActivities
-                                .where((element) => element
-                                    .date.onlyYearMonthDay
-                                    .isBefore(_currentDay.onlyYearMonthDay))
-                                .toList();
+                      List<DoneAmountActivity> _doneActivitiesInPast =
+                          _currentGoal.doneAmountActivities
+                              .where((element) => element.date.onlyYearMonthDay
+                                  .isBefore(_currentDay.onlyYearMonthDay))
+                              .toList();
 
-                        double _goalForToday = (_currentGoal.amountGoal -
-                                _doneActivitiesInPast.totalAmountDone) /
-                            (_currentGoal.daysUntilEndDateFromNow + 1);
-                        double _percentForToday =
-                            _doneActivitiesToday.totalAmountDone /
-                                _goalForToday;
+                      double _goalForToday = (_currentGoal.amountGoal -
+                              _doneActivitiesInPast.totalAmountDone) /
+                          (_currentGoal.daysUntilEndDateFromNow + 1);
+                      double _percentForToday =
+                          _doneActivitiesToday.totalAmountDone / _goalForToday;
 
-                        double _amountLeftToday = _goalForToday -
-                            _doneActivitiesToday.totalAmountDone;
+                      double _amountLeftToday =
+                          _goalForToday - _doneActivitiesToday.totalAmountDone;
 
-                        String _displayUnitString =
-                            _currentGoal.chosenUnit != Units.unitLess
-                                ? _currentGoal.chosenUnit.shortStringName
-                                : 'gange';
+                      String _displayUnitString =
+                          _currentGoal.chosenUnit != Units.unitLess
+                              ? _currentGoal.chosenUnit.shortStringName
+                              : 'gange';
 
-                        return Column(
+                      return _GoalCard(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
@@ -394,36 +416,17 @@ class ShowGoalsWidget extends StatelessWidget {
                                     height: 20,
                                   )
                                 : SizedBox(),
-                            Divider(
-                              height: 60,
-                              thickness: 2,
-                            ),
                           ],
-                        );
-                      }),
-                    ),
-                    Center(
-                      child: MyThemeButton(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddGoalPage(
-                                        onCheckMarkGoalAdd: (CheckmarkGoal
-                                                checkmarkGoal) =>
-                                            onCheckMarkGoalAdd(checkmarkGoal),
-                                        onAmountGoalAdd:
-                                            (AmountGoal amountGoal) =>
-                                                onAmountGoalAdd(amountGoal),
-                                      )));
-                        },
-                        labelText: "Tilføj et mål mere",
-                      ),
-                    )
-                  ],
-                ),
-        ],
-      ),
+                        ),
+                      );
+                    }),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+      ],
     );
   }
 }
@@ -482,5 +485,21 @@ class _GoalMenuOptions extends StatelessWidget {
                     title: Text("Slet"),
                   )),
             ]);
+  }
+}
+
+class _GoalCard extends StatelessWidget {
+  const _GoalCard({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: child,
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+    );
   }
 }
