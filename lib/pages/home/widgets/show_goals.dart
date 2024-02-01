@@ -294,12 +294,29 @@ class ShowGoalsWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 DisplayActionType(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   actionType: _currentGoal.actionType,
                                   axisDirection: Axis.horizontal,
+                                ),
+                                Spacer(),
+                                TextButton.icon(
+                                  label: Text("Tilføj"),
+                                  icon: Icon(Icons.add_circle_outlined, size: 25,),
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddActivityAmount(
+                                            onComplete: (amount) =>
+                                                onAmountGoalActivityAdded(
+                                                    _currentGoal,
+                                                    DoneAmountActivity(
+                                                        date: _currentDay,
+                                                        amount: amount)),
+                                            actionType:
+                                            _currentGoal.actionType,
+                                          ))),
                                 ),
                                 _GoalMenuOptions(
                                   onLogPress: () =>
@@ -385,22 +402,6 @@ class ShowGoalsWidget extends StatelessWidget {
                               animationDuration: 1000,
                               leading: Text(
                                   "${(_percent * 100).toStringAsFixed((_percent * 100) % 1 == 0 ? 0 : 1)}%"),
-                              trailing: IconButton(
-                                icon: Icon(Icons.add_circle_outlined),
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AddActivityAmount(
-                                              onComplete: (amount) =>
-                                                  onAmountGoalActivityAdded(
-                                                      _currentGoal,
-                                                      DoneAmountActivity(
-                                                          date: _currentDay,
-                                                          amount: amount)),
-                                              actionType:
-                                                  _currentGoal.actionType,
-                                            ))),
-                              ),
                             ),
                             Row(
                               children: [
@@ -529,7 +530,7 @@ class _GoalCard extends StatelessWidget {
     return Container(
       child: child,
       margin: EdgeInsets.only(top: 16),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
           color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
     );
