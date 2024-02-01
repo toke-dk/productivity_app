@@ -1,4 +1,6 @@
+import 'package:animated_digit/animated_digit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
@@ -233,12 +235,19 @@ class ShowGoalsWidget extends StatelessWidget {
                                       width: 2)),
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                AnimatedDigitWidget(
+                                  value: currentGoal
+                                      .doneDaysOfWeekFromWeekNr(
+                                          _currentDay.weekOfYear)
+                                      .length,
+                                  textStyle: _labelTextStyle,
+                                ),
                                 Text(
-                                  "${currentGoal.doneDaysOfWeekFromWeekNr(_currentDay.weekOfYear).length}/${currentGoal.daysPerWeek} udførte",
+                                  "/${currentGoal.daysPerWeek} udførte",
                                   style: _labelTextStyle,
                                 ),
+                                Spacer(),
                                 Text(
                                   "${currentGoal.weeksUntilEndDateFromNow} uger tilbage",
                                   style: _labelTextStyle,
@@ -303,20 +312,24 @@ class ShowGoalsWidget extends StatelessWidget {
                                 Spacer(),
                                 TextButton.icon(
                                   label: Text("Tilføj"),
-                                  icon: Icon(Icons.add_circle_outlined, size: 25,),
+                                  icon: Icon(
+                                    Icons.add_circle_outlined,
+                                    size: 25,
+                                  ),
                                   onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AddActivityAmount(
-                                            onComplete: (amount) =>
-                                                onAmountGoalActivityAdded(
-                                                    _currentGoal,
-                                                    DoneAmountActivity(
-                                                        date: _currentDay,
-                                                        amount: amount)),
-                                            actionType:
-                                            _currentGoal.actionType,
-                                          ))),
+                                          builder: (context) =>
+                                              AddActivityAmount(
+                                                onComplete: (amount) =>
+                                                    onAmountGoalActivityAdded(
+                                                        _currentGoal,
+                                                        DoneAmountActivity(
+                                                            date: _currentDay,
+                                                            amount: amount)),
+                                                actionType:
+                                                    _currentGoal.actionType,
+                                              ))),
                                 ),
                                 _GoalMenuOptions(
                                   onLogPress: () =>
@@ -343,31 +356,41 @@ class ShowGoalsWidget extends StatelessWidget {
                                         height: 8,
                                       ),
                                       LinearPercentIndicator(
-                                        barRadius: Radius.circular(20),
-                                        percent: _percentForToday <= 1
-                                            ? _percentForToday
-                                            : 1,
-                                        progressColor: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        lineHeight: 14,
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        leading: Text(
-                                            "${(_percentForToday * 100).myDoubleToString}%"),
-                                      ),
+                                          barRadius: Radius.circular(20),
+                                          percent: _percentForToday <= 1
+                                              ? _percentForToday
+                                              : 1,
+                                          progressColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          lineHeight: 14,
+                                          animation: true,
+                                          animationDuration: 1000,
+                                          leading: _MyAnimatedPercent(
+                                              val: (_percentForToday * 100))),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
+                                          _amountLeftToday > 0
+                                              ? AnimatedDigitWidget(
+                                                  duration: 1500.milliseconds,
+                                                  value: _amountLeftToday,
+                                                  textStyle: _labelTextStyle,
+                                                )
+                                              : SizedBox(),
                                           Text(
                                             _amountLeftToday > 0
-                                                ? "${_amountLeftToday.myDoubleToString} $_displayUnitString tilbage"
+                                                ? "$_displayUnitString tilbage"
                                                 : "Fuldført!",
                                             style: _labelTextStyle,
                                           ),
+                                          Spacer(),
+                                          AnimatedDigitWidget(
+                                            value: _doneActivitiesToday
+                                                .totalAmountDone,
+                                            textStyle: _labelTextStyle,
+                                            duration: 1500.milliseconds,
+                                          ),
                                           Text(
-                                            "${_doneActivitiesToday.totalAmountDone.myDoubleToString}"
                                             "/${_goalForToday.myDoubleToString} $_displayUnitString",
                                             style: _labelTextStyle,
                                           ),
@@ -400,8 +423,9 @@ class ShowGoalsWidget extends StatelessWidget {
                               lineHeight: 11,
                               animation: true,
                               animationDuration: 1000,
-                              leading: Text(
-                                  "${(_percent * 100).toStringAsFixed((_percent * 100) % 1 == 0 ? 0 : 1)}%"),
+                              leading: _MyAnimatedPercent(
+                                val: _percent * 100,
+                              ),
                             ),
                             Row(
                               children: [
@@ -410,12 +434,17 @@ class ShowGoalsWidget extends StatelessWidget {
                                   "(${_currentGoal.daysUntilEndDateFromNow} d)",
                                   style: _labelTextStyle,
                                 ),
+                                Spacer(),
+                                AnimatedDigitWidget(
+                                  value: _amountDone,
+                                  textStyle: _labelTextStyle,
+                                  duration: 1500.milliseconds,
+                                ),
                                 Text(
-                                  "${_amountDone.myDoubleToString}/${_currentGoal.amountGoal.myDoubleToString} $_displayUnitString ",
+                                  "/${_currentGoal.amountGoal.myDoubleToString} $_displayUnitString ",
                                   style: _labelTextStyle,
                                 ),
                               ],
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             ),
                           ],
                         ),
@@ -533,6 +562,24 @@ class _GoalCard extends StatelessWidget {
       padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
           color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
+    );
+  }
+}
+
+class _MyAnimatedPercent extends StatelessWidget {
+  const _MyAnimatedPercent({super.key, required this.val, this.style});
+
+  final double val;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedDigitWidget(
+      duration: 1500.milliseconds,
+      value: val,
+      suffix: "%",
+      decimalSeparator: ",",
+      textStyle: style ?? Theme.of(context).textTheme.bodyMedium,
     );
   }
 }
