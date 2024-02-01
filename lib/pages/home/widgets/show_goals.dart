@@ -6,6 +6,7 @@ import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.d
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/double_extension.dart';
+import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
 import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:weekday_selector/weekday_selector.dart';
@@ -28,6 +29,10 @@ class ShowGoalsWidget extends StatelessWidget {
 
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
+
+  List<AmountGoal> get activeAmountGoalsToday => amountGoals.activeGoalsFromToday;
+  List<CheckmarkGoal> get activeCheckmarkGoalsToday => checkmarkGoals.activeGoalsFromToday;
+
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
 
@@ -41,6 +46,7 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
   final Function(CheckmarkGoal checkmarkGoal) onCheckMarkGoalAdd;
   final Function(AmountGoal amountGoal) onAmountGoalAdd;
+
 
   List<bool?> makeValuesList(
       List<int> weekdays, DateTime today, DateTime endDate) {
@@ -69,7 +75,7 @@ class ShowGoalsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        amountGoals.isNotEmpty || checkmarkGoals.isNotEmpty
+        activeAmountGoalsToday.isNotEmpty || activeCheckmarkGoalsToday.isNotEmpty
             ? Column(
                 children: [
                   Row(
@@ -85,32 +91,31 @@ class ShowGoalsWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddGoalPage(
-                                    onCheckMarkGoalAdd:
-                                        (CheckmarkGoal checkmarkGoal) =>
-                                        onCheckMarkGoalAdd(checkmarkGoal),
-                                    onAmountGoalAdd:
-                                        (AmountGoal amountGoal) =>
-                                        onAmountGoalAdd(amountGoal),
-                                  )));
+                                        onCheckMarkGoalAdd: (CheckmarkGoal
+                                                checkmarkGoal) =>
+                                            onCheckMarkGoalAdd(checkmarkGoal),
+                                        onAmountGoalAdd:
+                                            (AmountGoal amountGoal) =>
+                                                onAmountGoalAdd(amountGoal),
+                                      )));
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.add),
-                            SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Text("Tilføj et mål mere"),
                           ],
                         ),
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  )
                 ],
               )
             : SizedBox(),
-        amountGoals.isEmpty && checkmarkGoals.isEmpty
+        activeAmountGoalsToday.isEmpty && activeCheckmarkGoalsToday.isEmpty
             ? Center(
                 child: Column(
                   children: [
@@ -140,8 +145,8 @@ class ShowGoalsWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    children: List.generate(checkmarkGoals.length, (index) {
-                      CheckmarkGoal currentGoal = checkmarkGoals[index];
+                    children: List.generate(activeCheckmarkGoalsToday.length, (index) {
+                      CheckmarkGoal currentGoal = activeCheckmarkGoalsToday[index];
                       return _GoalCard(
                         child: Column(
                           children: [
@@ -240,12 +245,9 @@ class ShowGoalsWidget extends StatelessWidget {
                       );
                     }),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Column(
-                    children: List.generate(amountGoals.length, (index) {
-                      AmountGoal _currentGoal = amountGoals[index];
+                    children: List.generate(activeAmountGoalsToday.length, (index) {
+                      AmountGoal _currentGoal = activeAmountGoalsToday[index];
 
                       ///TODO: make theese a method in the goal class
                       double _amountDone =
@@ -302,9 +304,6 @@ class ShowGoalsWidget extends StatelessWidget {
                                 )
                               ],
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             _currentGoal.frequencyFormat ==
                                     GoalFrequencyFormats.inTotal
                                 ? Column(
@@ -318,7 +317,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                             .bodyLarge,
                                       ),
                                       SizedBox(
-                                        height: 15,
+                                        height: 8,
                                       ),
                                       LinearPercentIndicator(
                                         barRadius: Radius.circular(20),
@@ -352,7 +351,7 @@ class ShowGoalsWidget extends StatelessWidget {
                                         ],
                                       ),
                                       SizedBox(
-                                        height: 40,
+                                        height: 20,
                                       ),
                                     ],
                                   )
@@ -411,21 +410,47 @@ class ShowGoalsWidget extends StatelessWidget {
                               ],
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             ),
-                            index != amountGoals.length - 1
-                                ? Divider(
-                                    height: 20,
-                                  )
-                                : SizedBox(),
                           ],
                         ),
                       );
                     }),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
                 ],
               ),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Text(
+                  "Tidligere mål",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                TextButton(
+                  child: Text(
+                      "Se alle (${checkmarkGoals.previousGoalsFromToday.length + amountGoals.previousGoalsFromToday.length})"),
+                  onPressed: () {},
+                )
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  "Fremtidige mål",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                TextButton(
+                  child: Text(
+                      "Se alle (${checkmarkGoals.futureGoalsFromToday.length + amountGoals.futureGoalsFromToday.length})"),
+                  onPressed: () {},
+                )
+              ],
+            ),
+          ],
+        )
       ],
     );
   }
@@ -497,6 +522,7 @@ class _GoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: child,
+      margin: EdgeInsets.only(top: 16),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),

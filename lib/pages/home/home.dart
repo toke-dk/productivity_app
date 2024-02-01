@@ -164,11 +164,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               _databaseService.deleteCheckmarkGoal(goal);
                             });
                           },
-                          amountGoals: (snapshot.data![0] as List<AmountGoal>)
-                              .activeGoalsFromToday,
+                          amountGoals: (snapshot.data![0] as List<AmountGoal>),
                           checkmarkGoals:
-                              (snapshot.data![1] as List<CheckmarkGoal>)
-                                  .activeGoalsFromToday,
+                              (snapshot.data![1] as List<CheckmarkGoal>),
                           onAmountGoalActivityAdded: (goal, amount) {
                             setState(() {
                               _addDoneAmountActivity(
