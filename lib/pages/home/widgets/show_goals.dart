@@ -212,7 +212,18 @@ class ShowGoalsWidget extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 )),
                             WeekdaySelector(
-                              onChanged: (newDate) => null,
+                              onChanged: (newDate) {
+                                DateTime dateToAdd = _currentDay
+                                    .subtract(Duration(
+                                        days: _currentDay.weekday - newDate))
+                                    .onlyYearMonthDay;
+
+                                !currentGoal.doneDates.contains(dateToAdd)
+                                    ? onCheckMarkGoalDoneDateAdd(
+                                        currentGoal, dateToAdd)
+                                    : onCheckmarkGoalDoneDateDelete(
+                                        currentGoal, dateToAdd);
+                              },
                               values: makeValuesList(
                                   currentGoal.doneDaysOfWeekFromWeekNr(
                                       _currentDay.weekOfYear),
