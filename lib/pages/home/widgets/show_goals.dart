@@ -510,7 +510,12 @@ class _GoalMenuOptions extends StatelessWidget {
                   Icons.history,
                 ),
                 title: Text("Logbog"),
-                onTap: onLogPress != null ? () => onLogPress!() : null,
+                onTap: onLogPress != null
+                    ? () {
+                        Navigator.pop(context);
+                        onLogPress!();
+                      }
+                    : null,
               )),
               PopupMenuItem(
                 onTap: onEdit,
