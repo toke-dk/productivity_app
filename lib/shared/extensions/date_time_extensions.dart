@@ -3,10 +3,12 @@ extension DateExtension on DateTime {
     return year == other.year && month == other.month && day == other.day;
   }
 
+  bool get isToday => this.onlyYearMonthDay == DateTime.now().onlyYearMonthDay;
+
   int get weekOfYear {
     final startOfYear = DateTime(year, 1, 1);
     final weekNumber =
-    ((difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
+        ((difference(startOfYear).inDays + startOfYear.weekday) / 7).ceil();
     return weekNumber;
   }
 

@@ -204,9 +204,9 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                             ),
                             currentGoal.isDateDone(_currentDay)
                                 ? FilledButton(
-                                    onPressed: () =>
+                                    onPressed: _currentDay.isToday ? () =>
                                         widget.onCheckmarkGoalDoneDateDelete(
-                                            currentGoal, _currentDay),
+                                            currentGoal, _currentDay) : null,
                                     child: Row(
                                       children: [
                                         Icon(Icons.check_circle),
@@ -219,9 +219,9 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                                     ),
                                   )
                                 : OutlinedButton(
-                                    onPressed: () =>
+                                    onPressed: _currentDay.isToday ? () =>
                                         widget.onCheckMarkGoalDoneDateAdd(
-                                            currentGoal, _currentDay),
+                                            currentGoal, _currentDay) : null,
                                     child: Row(
                                       children: [
                                         Icon(Icons.add_circle_outline),
@@ -359,7 +359,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                                     Icons.add_circle_outlined,
                                     size: 25,
                                   ),
-                                  onPressed: () => Navigator.push(
+                                  onPressed: _currentDay.isToday ? () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
@@ -377,7 +377,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                                                     _currentGoal.endDate,
                                                 goalStartDate:
                                                     _currentGoal.startDate,
-                                              ))),
+                                              ))) : null,
                                 ),
                                 _GoalMenuOptions(
                                   onLogPress: () =>
