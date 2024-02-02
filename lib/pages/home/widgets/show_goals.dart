@@ -15,7 +15,7 @@ import 'package:weekday_selector/weekday_selector.dart';
 
 import '../../../models/goal.dart';
 
-class ShowGoalsWidget extends StatelessWidget {
+class ShowGoalsWidget extends StatefulWidget {
   const ShowGoalsWidget(
       {super.key,
       required this.amountGoals,
@@ -32,12 +32,6 @@ class ShowGoalsWidget extends StatelessWidget {
   final List<AmountGoal> amountGoals;
   final List<CheckmarkGoal> checkmarkGoals;
 
-  List<AmountGoal> get activeAmountGoalsToday =>
-      amountGoals.activeGoalsFromToday;
-
-  List<CheckmarkGoal> get activeCheckmarkGoalsToday =>
-      checkmarkGoals.activeGoalsFromToday;
-
   final Function(AmountGoal goal, DoneAmountActivity activity)
       onAmountGoalActivityAdded;
 
@@ -51,6 +45,17 @@ class ShowGoalsWidget extends StatelessWidget {
   final Function(CheckmarkGoal goal)? onCheckmarkGoalDelete;
   final Function(CheckmarkGoal checkmarkGoal) onCheckMarkGoalAdd;
   final Function(AmountGoal amountGoal) onAmountGoalAdd;
+
+  @override
+  State<ShowGoalsWidget> createState() => _ShowGoalsWidgetState();
+}
+
+class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
+  List<AmountGoal> get activeAmountGoalsSelectedDay =>
+      widget.amountGoals.activeGoalsFromDate(_currentDay);
+
+  List<CheckmarkGoal> get activeCheckmarkGoalsSelectedDay =>
+      widget.checkmarkGoals.activeGoalsFromDate(_currentDay);
 
   List<bool?> makeValuesList(
       List<int> weekdays, DateTime today, DateTime endDate) {
@@ -67,10 +72,10 @@ class ShowGoalsWidget extends StatelessWidget {
     return weekdaysWhereSundayFirst;
   }
 
+  DateTime _currentDay = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
-    DateTime _currentDay = DateTime.now();
-
     TextStyle _labelTextStyle = Theme.of(context)
         .textTheme
         .labelMedium!
@@ -79,8 +84,26 @@ class ShowGoalsWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        activeAmountGoalsToday.isNotEmpty ||
-                activeCheckmarkGoalsToday.isNotEmpty
+        Center(
+          child: _DayChanger(
+            date: _currentDay,
+            onPrevDate: (old) => setState(() {
+              _currentDay = _currentDay.subtract(Duration(days: 1));
+              print(_currentDay);
+            }),
+            onNextDate:
+                _currentDay.onlyYearMonthDay != DateTime.now().onlyYearMonthDay
+                    ? (old) {
+                        setState(() {
+                          _currentDay = _currentDay.add(Duration(days: 1));
+                          print(_currentDay);
+                        });
+                      }
+                    : null,
+          ),
+        ),
+        activeAmountGoalsSelectedDay.isNotEmpty ||
+                activeCheckmarkGoalsSelectedDay.isNotEmpty
             ? Column(
                 children: [
                   Row(
@@ -96,12 +119,13 @@ class ShowGoalsWidget extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AddGoalPage(
-                                        onCheckMarkGoalAdd: (CheckmarkGoal
-                                                checkmarkGoal) =>
-                                            onCheckMarkGoalAdd(checkmarkGoal),
+                                        onCheckMarkGoalAdd:
+                                            (CheckmarkGoal checkmarkGoal) =>
+                                                widget.onCheckMarkGoalAdd(
+                                                    checkmarkGoal),
                                         onAmountGoalAdd:
-                                            (AmountGoal amountGoal) =>
-                                                onAmountGoalAdd(amountGoal),
+                                            (AmountGoal amountGoal) => widget
+                                                .onAmountGoalAdd(amountGoal),
                                       )));
                         },
                         child: Row(
@@ -120,7 +144,8 @@ class ShowGoalsWidget extends StatelessWidget {
                 ],
               )
             : SizedBox(),
-        activeAmountGoalsToday.isEmpty && activeCheckmarkGoalsToday.isEmpty
+        activeAmountGoalsSelectedDay.isEmpty &&
+                activeCheckmarkGoalsSelectedDay.isEmpty
             ? Center(
                 child: Column(
                   children: [
@@ -136,9 +161,10 @@ class ShowGoalsWidget extends StatelessWidget {
                                 builder: (context) => AddGoalPage(
                                       onCheckMarkGoalAdd:
                                           (CheckmarkGoal checkmarkGoal) =>
-                                              onCheckMarkGoalAdd(checkmarkGoal),
+                                              widget.onCheckMarkGoalAdd(
+                                                  checkmarkGoal),
                                       onAmountGoalAdd: (AmountGoal goal) =>
-                                          onAmountGoalAdd(goal),
+                                          widget.onAmountGoalAdd(goal),
                                     )));
                       },
                       labelText: "Angiv mål!",
@@ -150,10 +176,10 @@ class ShowGoalsWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    children: List.generate(activeCheckmarkGoalsToday.length,
-                        (index) {
+                    children: List.generate(
+                        activeCheckmarkGoalsSelectedDay.length, (index) {
                       CheckmarkGoal currentGoal =
-                          activeCheckmarkGoalsToday[index];
+                          activeCheckmarkGoalsSelectedDay[index];
                       return _GoalCard(
                         child: Column(
                           children: [
@@ -165,9 +191,11 @@ class ShowGoalsWidget extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                 ),
                                 _GoalMenuOptions(
-                                  onDelete: () => onCheckmarkGoalDelete != null
-                                      ? onCheckmarkGoalDelete!(currentGoal)
-                                      : null,
+                                  onDelete: () =>
+                                      widget.onCheckmarkGoalDelete != null
+                                          ? widget.onCheckmarkGoalDelete!(
+                                              currentGoal)
+                                          : null,
                                   onLogPress: () => debugPrint("Show logs"),
                                 )
                               ],
@@ -175,7 +203,7 @@ class ShowGoalsWidget extends StatelessWidget {
                             currentGoal.isDateDone(_currentDay)
                                 ? FilledButton(
                                     onPressed: () =>
-                                        onCheckmarkGoalDoneDateDelete(
+                                        widget.onCheckmarkGoalDoneDateDelete(
                                             currentGoal, _currentDay),
                                     child: Row(
                                       children: [
@@ -189,8 +217,9 @@ class ShowGoalsWidget extends StatelessWidget {
                                     ),
                                   )
                                 : OutlinedButton(
-                                    onPressed: () => onCheckMarkGoalDoneDateAdd(
-                                        currentGoal, _currentDay),
+                                    onPressed: () =>
+                                        widget.onCheckMarkGoalDoneDateAdd(
+                                            currentGoal, _currentDay),
                                     child: Row(
                                       children: [
                                         Icon(Icons.add_circle_outline),
@@ -219,9 +248,9 @@ class ShowGoalsWidget extends StatelessWidget {
                                     .onlyYearMonthDay;
 
                                 !currentGoal.doneDates.contains(dateToAdd)
-                                    ? onCheckMarkGoalDoneDateAdd(
+                                    ? widget.onCheckMarkGoalDoneDateAdd(
                                         currentGoal, dateToAdd)
-                                    : onCheckmarkGoalDoneDateDelete(
+                                    : widget.onCheckmarkGoalDoneDateDelete(
                                         currentGoal, dateToAdd);
                               },
                               values: makeValuesList(
@@ -271,9 +300,10 @@ class ShowGoalsWidget extends StatelessWidget {
                     }),
                   ),
                   Column(
-                    children:
-                        List.generate(activeAmountGoalsToday.length, (index) {
-                      AmountGoal _currentGoal = activeAmountGoalsToday[index];
+                    children: List.generate(activeAmountGoalsSelectedDay.length,
+                        (index) {
+                      AmountGoal _currentGoal =
+                          activeAmountGoalsSelectedDay[index];
 
                       ///TODO: make theese a method in the goal class
                       double _amountDone =
@@ -334,9 +364,10 @@ class ShowGoalsWidget extends StatelessWidget {
                                               AddActivityAmount(
                                                 onComplete: (DoneAmountActivity
                                                         doneAmount) =>
-                                                    onAmountGoalActivityAdded(
-                                                        _currentGoal,
-                                                        doneAmount),
+                                                    widget
+                                                        .onAmountGoalActivityAdded(
+                                                            _currentGoal,
+                                                            doneAmount),
                                                 actionType:
                                                     _currentGoal.actionType,
                                                 date: _currentDay,
@@ -348,9 +379,10 @@ class ShowGoalsWidget extends StatelessWidget {
                                 ),
                                 _GoalMenuOptions(
                                   onLogPress: () =>
-                                      onAmountActionsLog(_currentGoal),
-                                  onDelete: () => onAmountGoalDelete != null
-                                      ? onAmountGoalDelete!(_currentGoal)
+                                      widget.onAmountActionsLog(_currentGoal),
+                                  onDelete: () => widget.onAmountGoalDelete !=
+                                          null
+                                      ? widget.onAmountGoalDelete!(_currentGoal)
                                       : null,
                                 )
                               ],
@@ -482,7 +514,7 @@ class ShowGoalsWidget extends StatelessWidget {
                 ),
                 TextButton(
                   child: Text(
-                      "Se alle (${checkmarkGoals.previousGoalsFromToday.length + amountGoals.previousGoalsFromToday.length})"),
+                      "Se alle (${widget.checkmarkGoals.previousGoalsFromToday.length + widget.amountGoals.previousGoalsFromToday.length})"),
                   onPressed: () {},
                 )
               ],
@@ -495,7 +527,7 @@ class ShowGoalsWidget extends StatelessWidget {
                 ),
                 TextButton(
                   child: Text(
-                      "Se alle (${checkmarkGoals.futureGoalsFromToday.length + amountGoals.futureGoalsFromToday.length})"),
+                      "Se alle (${widget.checkmarkGoals.futureGoalsFromToday.length + widget.amountGoals.futureGoalsFromToday.length})"),
                   onPressed: () {},
                 )
               ],
@@ -600,6 +632,36 @@ class _MyAnimatedPercent extends StatelessWidget {
       suffix: "%",
       decimalSeparator: ",",
       textStyle: style ?? Theme.of(context).textTheme.bodyMedium,
+    );
+  }
+}
+
+class _DayChanger extends StatelessWidget {
+  const _DayChanger(
+      {super.key,
+      required this.date,
+      required this.onPrevDate,
+      required this.onNextDate});
+
+  final DateTime date;
+  final Function(DateTime oldDate)? onPrevDate;
+  final Function(DateTime oldDate)? onNextDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+            onPressed: onPrevDate != null ? () => onPrevDate!(date) : null,
+            icon: Icon(Icons.keyboard_arrow_left)),
+        Text(date.onlyYearMonthDay == DateTime.now().onlyYearMonthDay
+            ? "i dag"
+            : DateFormat("EEE. dd. MMM. yyyy").format(date)),
+        IconButton(
+            onPressed: onNextDate != null ? () => onNextDate!(date) : null,
+            icon: Icon(Icons.keyboard_arrow_right)),
+      ],
     );
   }
 }

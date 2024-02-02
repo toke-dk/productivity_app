@@ -15,6 +15,15 @@ extension CheckMarkGoalsExtension on List<CheckmarkGoal> {
           nowOnlyYMD.isAtSameMomentAs(element.startDate))
           .toList();
 
+  List<CheckmarkGoal> activeGoalsFromDate(DateTime date) =>
+      this
+          .where((element) =>
+      date.isAfter(element.startDate) &&
+          date.isBefore(element.endDate) ||
+          date.isAtSameMomentAs(element.endDate) ||
+          date.isAtSameMomentAs(element.startDate))
+          .toList();
+
   List<CheckmarkGoal> get previousGoalsFromToday =>
       this.where((element) =>
           element.endDate.isBefore(nowOnlyYMD)).toList();
@@ -37,6 +46,15 @@ extension AmountGoalsExtension on List<AmountGoal> {
           nowOnlyYMD.isBefore(element.endDate) ||
           nowOnlyYMD.isAtSameMomentAs(element.endDate) ||
           nowOnlyYMD.isAtSameMomentAs(element.startDate))
+          .toList();
+
+  List<AmountGoal> activeGoalsFromDate(DateTime date) =>
+      this
+          .where((element) =>
+      date.isAfter(element.startDate) &&
+          date.isBefore(element.endDate) ||
+          date.isAtSameMomentAs(element.endDate) ||
+          date.isAtSameMomentAs(element.startDate))
           .toList();
 
   List<AmountGoal> get previousGoalsFromToday =>
