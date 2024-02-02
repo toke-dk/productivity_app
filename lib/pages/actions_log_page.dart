@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:productivity_app/models/unit.dart';
+import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/double_extension.dart';
 
 import '../models/goal.dart';
@@ -21,7 +22,6 @@ class ActionsLogPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
             children: groupedAmountByDate.entries.map((e) {
-
           /// Each grouped date
           List<DoneAmountActivity> _currentActivitiesForDate = e.value;
           DateTime _currentDate = e.key;
@@ -30,12 +30,14 @@ class ActionsLogPage extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ShowDateLabel(date: _currentDate),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: _ShowDateLabel(date: _currentDate),
+                  ),
                   Expanded(
                     child: Column(
                       children: List.generate(_currentActivitiesForDate.length,
                           (index) {
-                    
                         /// Each date
                         DoneAmountActivity _currentActivity =
                             _currentActivitiesForDate[index];
@@ -126,6 +128,8 @@ class _ShowDateLabel extends StatelessWidget {
       children: [
         Text(DateFormat("EEE").format(date)),
         CircleAvatar(
+          backgroundColor:
+              date == DateTime.now().onlyYearMonthDay ? null : Colors.white,
           child: Text(DateFormat("dd").format(date)),
         ),
         Text(DateFormat("MMM").format(date)),
