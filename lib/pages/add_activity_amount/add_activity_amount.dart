@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
@@ -12,17 +13,24 @@ import '../../models/unit.dart';
 
 class AddActivityAmount extends StatefulWidget {
   const AddActivityAmount(
-      {super.key, required this.actionType, this.onComplete, this.unit});
+      {super.key,
+      required this.actionType,
+      this.onComplete,
+      this.unit,
+      required this.date});
 
   final ActionType actionType;
   final Units? unit;
-  final Function(double amount)? onComplete;
+  final Function(DoneAmountActivity doneAmountActivity)? onComplete;
+  final DateTime date;
 
   @override
   State<AddActivityAmount> createState() => _AddActivityAmountState();
 }
 
 class _AddActivityAmountState extends State<AddActivityAmount> {
+  DateTime get dateToAdd => widget.date;
+
   String typedString = "";
 
   bool isStringEmpty(String val) {
@@ -31,7 +39,9 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
 
   Function()? _onNextPress() {
     return widget.onComplete != null
-        ? widget.onComplete!(double.parse(typedString.replaceAll(",", ".")))
+        ? widget.onComplete!(DoneAmountActivity(
+            date: dateToAdd,
+            amount: double.parse(typedString.replaceAll(",", "."))))
         : {};
   }
 
@@ -107,7 +117,11 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
                       });
                     },
                     icon: const Icon(Icons.backspace)),
-              ).animate(target: !isStringEmpty(typedString) ? 0 : 1,).scaleXY(end: 0, curve: Curves.easeOutExpo)
+              )
+                  .animate(
+                    target: !isStringEmpty(typedString) ? 0 : 1,
+                  )
+                  .scaleXY(end: 0, curve: Curves.easeOutExpo)
             ],
           ),
           Spacer(),

@@ -34,6 +34,7 @@ class ChooseActivityScreen extends StatelessWidget {
                     onActivityComplete: onActivityComplete,
                   )
                 : AddActivityAmount(
+              date: DateTime.now(),
               onComplete: (amount) => debugPrint("should do something here maybe"),
                     actionType: Provider.of<ActivityProvider>(context)
                         .getCurrentActionType!,

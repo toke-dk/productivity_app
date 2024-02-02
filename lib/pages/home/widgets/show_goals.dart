@@ -332,14 +332,14 @@ class ShowGoalsWidget extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               AddActivityAmount(
-                                                onComplete: (amount) =>
+                                                onComplete: (DoneAmountActivity
+                                                        doneAmount) =>
                                                     onAmountGoalActivityAdded(
                                                         _currentGoal,
-                                                        DoneAmountActivity(
-                                                            date: _currentDay,
-                                                            amount: amount)),
+                                                        doneAmount),
                                                 actionType:
                                                     _currentGoal.actionType,
+                                                date: _currentDay,
                                               ))),
                                 ),
                                 _GoalMenuOptions(
