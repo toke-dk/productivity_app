@@ -57,12 +57,14 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
   List<CheckmarkGoal> get activeCheckmarkGoalsSelectedDay =>
       widget.checkmarkGoals.activeGoalsFromDate(_currentDay);
 
+  /// TODO: fix so that you cannot press the days before startdate
   List<bool?> makeValuesList(
-      List<int> weekdays, DateTime today, DateTime endDate) {
-    List<bool?> listIfMondayFirst = List.generate(
-        7,
-        (index) =>
-            today.weekday >= index + 1 ? weekdays.contains(index + 1) : null);
+      List<int> weekdays, DateTime today, DateTime startDate) {
+    List<bool?> listIfMondayFirst = List.generate(7, (index) {
+      if (today.weekOfYear == startDate.weekOfYear &&
+          index + 1 < startDate.weekday) return null;
+      return today.weekday >= index + 1 ? weekdays.contains(index + 1) : null;
+    });
 
     List<bool?> weekdaysWhereSundayFirst = [
       listIfMondayFirst.last,
@@ -257,7 +259,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                                   currentGoal.doneDaysOfWeekFromWeekNr(
                                       _currentDay.weekOfYear),
                                   _currentDay,
-                                  currentGoal.endDate),
+                                  currentGoal.startDate),
                               elevation: 0,
                               shortWeekdays: [
                                 "S",
