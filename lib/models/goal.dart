@@ -97,6 +97,18 @@ extension DoneAmountActivityExtension on List<DoneAmountActivity> {
   double get totalAmountDone => this.isNotEmpty
       ? this.map((e) => e.amount).reduce((value, element) => value + element)
       : 0;
+
+  Map<DateTime, List<DoneAmountActivity>> get groupDoneAmountByDate {
+    Map<DateTime, List<DoneAmountActivity>> mapToReturn = {};
+    this.forEach((e) {
+      if (mapToReturn.containsKey(e.date.onlyYearMonthDay)) {
+        mapToReturn[e.date.onlyYearMonthDay]!.add(e);
+      } else {
+        mapToReturn[e.date.onlyYearMonthDay] = [e];
+      }
+    });
+    return mapToReturn;
+  }
 }
 
 class CheckmarkGoal {
