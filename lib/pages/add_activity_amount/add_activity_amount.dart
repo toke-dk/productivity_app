@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
@@ -17,20 +18,28 @@ class AddActivityAmount extends StatefulWidget {
       required this.actionType,
       this.onComplete,
       this.unit,
-      required this.date});
+      required this.date, required this.goalEndDate, required this.goalStartDate});
 
+  // TODO: I have to change this to just one perameter: goal
   final ActionType actionType;
   final Units? unit;
   final Function(DoneAmountActivity doneAmountActivity)? onComplete;
   final DateTime date;
+  final DateTime goalEndDate;
+  final DateTime goalStartDate;
 
   @override
   State<AddActivityAmount> createState() => _AddActivityAmountState();
 }
 
 class _AddActivityAmountState extends State<AddActivityAmount> {
-  DateTime get dateToAdd => widget.date;
+  late DateTime dateToAdd;
 
+  @override
+  void initState() {
+    dateToAdd = widget.date;
+    super.initState();
+  }
   String typedString = "";
 
   bool isStringEmpty(String val) {
@@ -57,7 +66,29 @@ class _AddActivityAmountState extends State<AddActivityAmount> {
       body: Column(
         children: [
           const SizedBox(
-            height: 15,
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  firstDate: widget.goalStartDate,
+                  lastDate: DateTime.now(),
+                  initialDate: dateToAdd);
+              if (pickedDate != null &&
+                  pickedDate != dateToAdd) {
+                setState(() {
+                  dateToAdd = pickedDate;
+                });
+              }
+            },
+            child: Text(
+              DateFormat("dd.MM.yyy").format(dateToAdd),
+              style: TextStyle(decoration: TextDecoration.underline),
+            ),
+          ),
+          SizedBox(
+            height: 20,
           ),
           DisplayActionType(actionType: widget.actionType),
           const Spacer(

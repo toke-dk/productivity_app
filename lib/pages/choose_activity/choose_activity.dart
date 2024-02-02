@@ -22,23 +22,11 @@ class ChooseActivityScreen extends StatelessWidget {
         .setCurrentActivity(actionType);
   }
 
-  Future onActionTypeTap(
+  onActionTypeTap(
       {required ActionType actionType, required BuildContext context}) {
     setCurrentActionType(actionType, context);
 
-    return Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => isTask
-                ? CompleteTaskPage(
-                    onActivityComplete: onActivityComplete,
-                  )
-                : AddActivityAmount(
-              date: DateTime.now(),
-              onComplete: (amount) => debugPrint("should do something here maybe"),
-                    actionType: Provider.of<ActivityProvider>(context)
-                        .getCurrentActionType!,
-                  )));
+    return debugPrint("should not be used!!!!");
   }
 
   @override

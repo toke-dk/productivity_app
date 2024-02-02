@@ -340,6 +340,10 @@ class ShowGoalsWidget extends StatelessWidget {
                                                 actionType:
                                                     _currentGoal.actionType,
                                                 date: _currentDay,
+                                                goalEndDate:
+                                                    _currentGoal.endDate,
+                                                goalStartDate:
+                                                    _currentGoal.startDate,
                                               ))),
                                 ),
                                 _GoalMenuOptions(
