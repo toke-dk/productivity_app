@@ -74,7 +74,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
     return weekdaysWhereSundayFirst;
   }
 
-  DateTime _currentDay = DateTime.now();
+  DateTime get _currentDay => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
