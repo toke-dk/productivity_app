@@ -86,24 +86,24 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: _DayChanger(
-            date: _currentDay,
-            onPrevDate: (old) => setState(() {
-              _currentDay = _currentDay.subtract(Duration(days: 1));
-              print(_currentDay);
-            }),
-            onNextDate:
-                _currentDay.onlyYearMonthDay != DateTime.now().onlyYearMonthDay
-                    ? (old) {
-                        setState(() {
-                          _currentDay = _currentDay.add(Duration(days: 1));
-                          print(_currentDay);
-                        });
-                      }
-                    : null,
-          ),
-        ),
+        // Center(
+        //   child: _DayChanger(
+        //     date: _currentDay,
+        //     onPrevDate: (old) => setState(() {
+        //       _currentDay = _currentDay.subtract(Duration(days: 1));
+        //       print(_currentDay);
+        //     }),
+        //     onNextDate:
+        //         _currentDay.onlyYearMonthDay != DateTime.now().onlyYearMonthDay
+        //             ? (old) {
+        //                 setState(() {
+        //                   _currentDay = _currentDay.add(Duration(days: 1));
+        //                   print(_currentDay);
+        //                 });
+        //               }
+        //             : null,
+        //   ),
+        // ),
         activeAmountGoalsSelectedDay.isNotEmpty ||
                 activeCheckmarkGoalsSelectedDay.isNotEmpty
             ? Column(
