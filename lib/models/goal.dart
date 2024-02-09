@@ -100,11 +100,12 @@ extension DoneAmountActivityExtension on List<DoneAmountActivity> {
 
   Map<DateTime, List<DoneAmountActivity>> get groupDoneAmountByDate {
     Map<DateTime, List<DoneAmountActivity>> mapToReturn = {};
-    this.forEach((e) {
-      if (mapToReturn.containsKey(e.date.onlyYearMonthDay)) {
-        mapToReturn[e.date.onlyYearMonthDay]!.add(e);
+    List<DoneAmountActivity> sortedDates = this..sort((DoneAmountActivity a, DoneAmountActivity b) => b.date.compareTo(a.date));
+    sortedDates.forEach((DoneAmountActivity activity) {
+      if (mapToReturn.containsKey(activity.date.onlyYearMonthDay)) {
+        mapToReturn[activity.date.onlyYearMonthDay]!.add(activity);
       } else {
-        mapToReturn[e.date.onlyYearMonthDay] = [e];
+        mapToReturn[activity.date.onlyYearMonthDay] = [activity];
       }
     });
     return mapToReturn;
