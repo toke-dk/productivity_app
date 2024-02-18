@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class PageTwoIntroScreen extends StatefulWidget {
   const PageTwoIntroScreen({super.key, required this.onCompletePress});
@@ -14,6 +15,8 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
   String nickNameVal = "";
   String firstNameVal = "";
   String lastNameVal = "";
+
+  final Duration animationDuration = 600.milliseconds;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +34,11 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
                     .textTheme
                     .titleLarge!
                     .copyWith(fontWeight: FontWeight.bold),
-              ),
+              ).animate().fadeIn(duration: animationDuration).moveX(begin: -10,duration: animationDuration),
               Text(
                 "Lad os komme i gang",
                 style: Theme.of(context).textTheme.titleMedium,
-              ),
+              ).animate(delay: 500.milliseconds).fadeIn(duration: animationDuration).moveX(begin: -10,duration: animationDuration),
               SizedBox(
                 height: 40,
               ),
@@ -47,7 +50,7 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
                         setState(() {
                           nickNameVal = newVal;
                         });
-                      })),
+                      }).animate(delay: animationDuration*1.3).fadeIn(duration: animationDuration)),
               SizedBox(
                 height: 40,
               ),
@@ -59,7 +62,7 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
                         setState(() {
                           firstNameVal = newVal;
                         });
-                      })),
+                      }).animate(delay: animationDuration*1.6).fadeIn(duration: animationDuration)),
               SizedBox(
                 height: 20,
               ),
@@ -71,7 +74,7 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
                         setState(() {
                           lastNameVal = newVal;
                         });
-                      })),
+                      }).animate(delay: animationDuration*1.9).fadeIn(duration: animationDuration)),
               Spacer(
                 flex: 8,
               ),

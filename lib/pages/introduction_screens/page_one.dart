@@ -51,7 +51,7 @@ class PageOneIntroScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
                 child: Text(
                         "Skab personlige vaner, opstil klare mål, og hold styr på dine fremskridt med lethed. Skab den bedste version af dig selv")
-                    .animate(delay: animationDuration)
+                    .animate(delay: animationDuration*1.5)
                     .moveX(begin: -20, duration: animationDuration)
                     .fadeIn(duration: animationDuration)),
             Spacer(
@@ -61,7 +61,7 @@ class PageOneIntroScreen extends StatelessWidget {
                 child: FilledButton(
                         onPressed: () => nextPagePressed(),
                         child: Text("Kom i gang!"))
-                    .animate(delay: 1900.milliseconds)
+                    .animate(delay: animationDuration*2)
                     .scaleXY(curve: Curves.easeOutCirc, duration: 1.seconds)),
             Spacer()
           ],
