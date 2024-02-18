@@ -14,7 +14,6 @@ import 'package:flutter/foundation.dart' as Foundation;
 
 import '../../models/activity.dart';
 import '../../models/unit.dart';
-import 'widgets/add_activity_fab.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title, required this.userData});
@@ -85,9 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<ActionType> allActionTypes = kAllActionTypes;
 
     return Scaffold(
-        // floatingActionButton: AddActivitiesFAB(
-        //   onActivityComplete: _onActivityComplete,
-        // ),
         drawer: Drawer(
           child: ListView(
             children: [
