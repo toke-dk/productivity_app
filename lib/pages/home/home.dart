@@ -3,6 +3,7 @@ import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/actions_log_page.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
+import 'package:productivity_app/pages/settings/settings_page.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -66,6 +67,21 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               DrawerHeader(child: Text("Menu")),
               ListTile(
+                leading: Icon(Icons.account_circle),
+                title: Text("Profil"),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SettingsPage(
+                              userData: widget.userData,
+                              onSave: (UserData newUserData) {
+                                Navigator.pop(context);
+                                print("should save");
+                              },
+                            ))),
+              ),
+              Divider(),
+              ListTile(
                 title: Text("Feedback"),
                 onTap: launchFeedBackForm,
                 leading: Icon(Icons.open_in_new),
@@ -73,24 +89,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        appBar: AppBar(title: Text("${widget.title}, ${widget.userData.nickName}"), actions: [
-          Foundation.kDebugMode
-              ? IconButton(
-                  onPressed: () async {
-                    setState(() {});
-                  },
-                  icon: const Icon(Icons.add_task))
-              : SizedBox(),
-          Foundation.kDebugMode
-              ? IconButton(
-                  onPressed: () async {
-                    await _databaseService.deleteAllAmountGoals();
-                    await _databaseService.deleteAllCheckMarkGoals();
-                    setState(() {});
-                  },
-                  icon: const Icon(Icons.delete))
-              : SizedBox()
-        ]),
+        appBar: AppBar(
+            title: Text("${widget.title}, ${widget.userData.nickName}"),
+            actions: [
+              Foundation.kDebugMode
+                  ? IconButton(
+                      onPressed: () async {
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.add_task))
+                  : SizedBox(),
+              Foundation.kDebugMode
+                  ? IconButton(
+                      onPressed: () async {
+                        await _databaseService.deleteAllAmountGoals();
+                        await _databaseService.deleteAllCheckMarkGoals();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.delete))
+                  : SizedBox()
+            ]),
 
         /// Main content
         body: SingleChildScrollView(

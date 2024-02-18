@@ -12,8 +12,8 @@ class UserData {
   String toJsonString() {
     Map<String, dynamic> data = {
       'nickName': nickName.toString(),
-      'firstName': firstName.toString(),
-      'lastName': lastName.toString(),
+      'firstName': firstName != null ? firstName.toString() : null,
+      'lastName': lastName != null ? lastName.toString() : null,
     };
     return jsonEncode(data);
   }
@@ -21,8 +21,8 @@ class UserData {
   factory UserData.fromJsonString(Map<String, dynamic> map) {
     return UserData(
       nickName: map["nickName"].toString(),
-      firstName: map["firstName"].toString(),
-      lastName: map["lastName"].toString(),
+      firstName: map["firstName"] != null ? map["firstName"].toString() : null,
+      lastName: map["lastName"] != null ? map["lastName"].toString() : null,
     );
   }
 }
