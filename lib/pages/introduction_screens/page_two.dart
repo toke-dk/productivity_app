@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 
-class PageTwoIntroScreen extends StatelessWidget {
+class PageTwoIntroScreen extends StatefulWidget {
   const PageTwoIntroScreen({super.key, required this.onCompletePress});
 
   final Function() onCompletePress;
+
+  @override
+  State<PageTwoIntroScreen> createState() => _PageTwoIntroScreenState();
+}
+
+class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
+  String nickNameVal = "";
+  String firstNameVal = "";
+  String lastNameVal = "";
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +40,37 @@ class PageTwoIntroScreen extends StatelessWidget {
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(text: "Kaldenavn *")),
+                  child: myTextField(
+                      text: "Kaldenavn *",
+                      onChanged: (String newVal) {
+                        setState(() {
+                          nickNameVal = newVal;
+                        });
+                      })),
               SizedBox(
                 height: 40,
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(text: "Fornavn (valgfri)")),
+                  child: myTextField(
+                      text: "Fornavn (valgfri)",
+                      onChanged: (String newVal) {
+                        setState(() {
+                          firstNameVal = newVal;
+                        });
+                      })),
               SizedBox(
                 height: 20,
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(text: "Efternavn (valgfri)")),
+                  child: myTextField(
+                      text: "Efternavn (valgfri)",
+                      onChanged: (String newVal) {
+                        setState(() {
+                          lastNameVal = newVal;
+                        });
+                      })),
               Spacer(
                 flex: 8,
               ),
@@ -51,7 +78,7 @@ class PageTwoIntroScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: FilledButton(
-                    onPressed: () => onCompletePress(),
+                    onPressed: nickNameVal != "" ? () => widget.onCompletePress() : null,
                     child: Text("Start Rejsen")),
               ),
               Spacer()
@@ -63,8 +90,10 @@ class PageTwoIntroScreen extends StatelessWidget {
   }
 }
 
-TextField myTextField({required String text}) {
+TextField myTextField(
+    {required String text, required Function(String newVal) onChanged}) {
   return TextField(
+    onChanged: (String newVal) => onChanged(newVal),
     textCapitalization: TextCapitalization.words,
     decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
