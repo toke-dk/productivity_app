@@ -30,7 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
     print("init");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _databaseService.initDatabase();
-      setState(() {});
     });
 
     super.initState();
