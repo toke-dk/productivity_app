@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/pages/report_page.dart';
 import 'package:productivity_app/shared/myThemedBoxShadow.dart';
-import 'package:productivity_app/widgets/display_activity_type.dart';
 import '../../../models/activity.dart';
 import 'distribution_bar.dart';
 

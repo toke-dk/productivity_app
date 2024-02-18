@@ -5,12 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/choose_activity/choose_activity.dart';
-import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 
 import '../../models/activity.dart';
-import '../../shared/widgets/activity_card.dart';
 
 class AddGoalPage extends StatefulWidget {
   const AddGoalPage(
