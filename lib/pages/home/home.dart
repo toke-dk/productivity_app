@@ -27,8 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    print("data: ${widget.userData}");
-    print("init");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _databaseService.initDatabase();
     });
@@ -131,7 +129,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                           },
                           onCheckmarkGoalDelete: (CheckmarkGoal goal) {
-                            print("delete");
                             setState(() {
                               _databaseService.deleteCheckmarkGoal(goal);
                             });
@@ -180,7 +177,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         );
                       } else if (snapshot.hasError) {
-                        print(snapshot.error);
                         print(snapshot.stackTrace.toString());
                         return Text(snapshot.error.toString());
                       } else

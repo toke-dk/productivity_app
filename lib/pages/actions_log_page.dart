@@ -16,7 +16,6 @@ class ActionsLogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(goal.doneAmountActivities.groupDoneAmountByDate);
     return Scaffold(
       appBar: AppBar(title: Text("Logbog")),
       body: SingleChildScrollView(

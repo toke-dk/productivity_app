@@ -27,7 +27,6 @@ class ShowTodayOverview extends StatelessWidget {
       child: actionTypeCounts.isNotEmpty
           ? InkWell(
             onTap: () {
-              print("tap");
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => ReportPage()));
               },

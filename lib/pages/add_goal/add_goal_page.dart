@@ -74,7 +74,6 @@ class _AddGoalPageState extends State<AddGoalPage> {
                   });
                 }
                 if (index == _selectedIndex) {
-                  print("same");
                   setState(() {
                     _selectedActionType = null;
                     _selectedIndex = null;

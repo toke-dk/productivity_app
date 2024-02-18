@@ -38,7 +38,6 @@ class UserDataStorage {
   static Future<UserData?> get getUserData async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString(_keyUser) == null) return null;
-    print(prefs.getString(_keyUser));
     return UserData.fromJsonString(jsonDecode(prefs.getString(_keyUser)!));
   }
 }

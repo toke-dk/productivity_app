@@ -50,7 +50,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _saveUserData(UserData userData) async {
     UserDataStorage.saveUserData(userData);
-    print(UserDataStorage.getUserData);
   }
 
   @override
@@ -81,11 +80,9 @@ class _MyAppState extends State<MyApp> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   final bool isFirstVisit = snapshot.data!;
-                  print(isFirstVisit);
                   return isFirstVisit
                       ? MyIntroScreens(
                           onIntroComplete: (nick, first, last) async {
-                            print("nick: $nick, first: $first, last: $last}");
                             _saveUserData(UserData(
                                 nickName: nick,
                                 firstName: first,
