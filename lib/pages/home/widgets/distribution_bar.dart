@@ -5,7 +5,7 @@ import '../../../models/activity.dart';
 import '../../../widgets/display_activity_type.dart';
 
 class _ShowActionTypeColors extends StatelessWidget {
-  const _ShowActionTypeColors({super.key, required this.typeCounts});
+  const _ShowActionTypeColors({required this.typeCounts});
 
   final Map<ActionType, int> typeCounts;
 

@@ -397,8 +397,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
 class _FormatBox extends StatelessWidget {
   const _FormatBox(
-      {super.key,
-      this.selected = false,
+      {this.selected = false,
       required this.format,
       required this.onTap});
 

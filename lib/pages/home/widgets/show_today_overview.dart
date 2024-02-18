@@ -58,7 +58,7 @@ class ShowTodayOverview extends StatelessWidget {
 }
 
 class _QuickStatsText extends StatelessWidget {
-  const _QuickStatsText({super.key, required this.amountOfTotalActions});
+  const _QuickStatsText({required this.amountOfTotalActions});
   final int amountOfTotalActions;
 
   @override

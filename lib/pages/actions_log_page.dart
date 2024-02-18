@@ -118,7 +118,7 @@ class ActionsLogPage extends StatelessWidget {
 }
 
 class _ShowDateLabel extends StatelessWidget {
-  const _ShowDateLabel({super.key, required this.date});
+  const _ShowDateLabel({required this.date});
 
   final DateTime date;
 

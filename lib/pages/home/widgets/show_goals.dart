@@ -542,7 +542,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
 
 class _GoalMenuOptions extends StatelessWidget {
   const _GoalMenuOptions(
-      {super.key, this.onDelete, this.onEdit, this.onLogPress});
+      {this.onDelete, this.onLogPress, this.onEdit});
 
   final Function()? onDelete;
   final Function()? onEdit;
@@ -603,7 +603,7 @@ class _GoalMenuOptions extends StatelessWidget {
 }
 
 class _GoalCard extends StatelessWidget {
-  const _GoalCard({super.key, required this.child});
+  const _GoalCard({required this.child});
 
   final Widget child;
 
@@ -620,7 +620,7 @@ class _GoalCard extends StatelessWidget {
 }
 
 class _MyAnimatedPercent extends StatelessWidget {
-  const _MyAnimatedPercent({super.key, required this.val, this.style});
+  const _MyAnimatedPercent({required this.val, this.style});
 
   final double val;
   final TextStyle? style;
@@ -639,8 +639,7 @@ class _MyAnimatedPercent extends StatelessWidget {
 
 class _DayChanger extends StatelessWidget {
   const _DayChanger(
-      {super.key,
-      required this.date,
+      {required this.date,
       required this.onPrevDate,
       required this.onNextDate});
 
