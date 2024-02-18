@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/goal.dart';
-import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/actions_log_page.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
@@ -175,22 +174,4 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ));
   }
-}
-
-Map<ActionType, int> makeActionTypeCounts(
-    {required List<Activity> activities, required List<Task> tasks}) {
-  final List<ActionType> actionTypes = activities
-      .map((e) => e.actionType)
-      .toList()
-    ..addAll(tasks.map((e) => e.actionType));
-
-  Map<ActionType, int> actionTypeCounter = {};
-
-  for (var actionType in actionTypes) {
-    actionTypeCounter[actionType] = !actionTypeCounter.containsKey(actionType)
-        ? (1)
-        : (actionTypeCounter[actionType]! + 1);
-  }
-
-  return actionTypeCounter;
 }

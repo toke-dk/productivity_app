@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/home/home.dart';
 import 'package:productivity_app/pages/introduction_screens/main_intro_screens.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -64,68 +62,63 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ActivityProvider())
-      ],
-      child: MaterialApp(
-        title: 'Productivity app',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
-          useMaterial3: true,
-        ),
-        home: FutureBuilder<bool>(
-            future: _isFirstVisit,
-            builder: (context, AsyncSnapshot<bool> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Scaffold(
-                      body: Center(child: const Text("Loading...")));
-                case ConnectionState.active:
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    final bool isFirstVisit = snapshot.data!;
-                    print(isFirstVisit);
-                    return isFirstVisit
-                        ? MyIntroScreens(
-                            onIntroComplete: (nick, first, last) async {
-                              print("nick: $nick, first: $first, last: $last}");
-                              _saveUserData(UserData(
-                                  nickName: nick,
-                                  firstName: first,
-                                  lastName: last));
-                              _setNotFirstVisit();
-                              Navigator.pop(context);
-                            },
-                          )
-                        : FutureBuilder<UserData?>(
-                            future: UserDataStorage.getUserData,
-                            builder:
-                                (context, AsyncSnapshot<UserData?> snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                case ConnectionState.waiting:
-                                  return Scaffold(
-                                      body: Center(
-                                          child: const Text("Loading...")));
-                                case ConnectionState.active:
-                                case ConnectionState.done:
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else
-                                    return MyHomePage(
-                                        title:
-                                            "${makeWelcomeMessage(DateTime.now())}",
-                                        userData: snapshot.data!);
-                              }
-                            });
-                  }
-              }
-            }),
+    return MaterialApp(
+      title: 'Productivity app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+        useMaterial3: true,
       ),
+      home: FutureBuilder<bool>(
+          future: _isFirstVisit,
+          builder: (context, AsyncSnapshot<bool> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                return Scaffold(
+                    body: Center(child: const Text("Loading...")));
+              case ConnectionState.active:
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final bool isFirstVisit = snapshot.data!;
+                  print(isFirstVisit);
+                  return isFirstVisit
+                      ? MyIntroScreens(
+                          onIntroComplete: (nick, first, last) async {
+                            print("nick: $nick, first: $first, last: $last}");
+                            _saveUserData(UserData(
+                                nickName: nick,
+                                firstName: first,
+                                lastName: last));
+                            _setNotFirstVisit();
+                            Navigator.pop(context);
+                          },
+                        )
+                      : FutureBuilder<UserData?>(
+                          future: UserDataStorage.getUserData,
+                          builder:
+                              (context, AsyncSnapshot<UserData?> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                              case ConnectionState.waiting:
+                                return Scaffold(
+                                    body: Center(
+                                        child: const Text("Loading...")));
+                              case ConnectionState.active:
+                              case ConnectionState.done:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else
+                                  return MyHomePage(
+                                      title:
+                                          "${makeWelcomeMessage(DateTime.now())}",
+                                      userData: snapshot.data!);
+                            }
+                          });
+                }
+            }
+          }),
     );
   }
 }
