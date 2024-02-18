@@ -106,17 +106,22 @@ class _MyAppState extends State<MyApp> {
                             future: UserDataStorage.getUserData,
                             builder:
                                 (context, AsyncSnapshot<UserData?> snapshot) {
-                              if (snapshot.connectionState ==
-                                      ConnectionState.active ||
-                                  snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                return MyHomePage(
-                                  title:
-                                      "${makeWelcomeMessage(DateTime.now())}",
-                                  userData: snapshot.data!,
-                                );
-                              } else
-                                return Text(snapshot.connectionState.name);
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                  return Scaffold(
+                                      body: Center(
+                                          child: const Text("Loading...")));
+                                case ConnectionState.active:
+                                case ConnectionState.done:
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else
+                                    return MyHomePage(
+                                        title:
+                                            "${makeWelcomeMessage(DateTime.now())}",
+                                        userData: snapshot.data!);
+                              }
                             });
                   }
               }
