@@ -86,9 +86,9 @@ class ActionsLogPage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  PopupMenuButton(
-                                      itemBuilder: (context) =>
-                                          [PopupMenuItem(child: Text("Edit"))]),
+                                  // PopupMenuButton(
+                                  //     itemBuilder: (context) =>
+                                  //         [PopupMenuItem(child: Text("Edit"))]),
                                 ],
                               ),
                               padding: EdgeInsets.all(10),

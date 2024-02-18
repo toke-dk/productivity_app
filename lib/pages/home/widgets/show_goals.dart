@@ -565,13 +565,13 @@ class _GoalMenuOptions extends StatelessWidget {
                       }
                     : null,
               )),
-              PopupMenuItem(
-                onTap: onEdit,
-                child: ListTile(
-                  leading: Icon(Icons.edit),
-                  title: Text("Rediger"),
-                ),
-              ),
+              // PopupMenuItem(
+              //   onTap: onEdit,
+              //   child: ListTile(
+              //     leading: Icon(Icons.edit),
+              //     title: Text("Rediger"),
+              //   ),
+              // ),
               PopupMenuItem(
                   onTap: () => showDialog(
                       context: context,
