@@ -3,17 +3,13 @@ import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/actions_log_page.dart';
-import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
-import 'package:productivity_app/pages/home/widgets/show_today_overview.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
-import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart' as Foundation;
 
 import '../../models/activity.dart';
-import '../../models/unit.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title, required this.userData});
@@ -40,29 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Future<List<Activity>> _getActivities() async {
-    return _databaseService.getActivities();
-  }
-
-  Future<List<Task>> _getTasks() async {
-    return _databaseService.getTasks();
-  }
-
   Future<List<AmountGoal>> _getAmountGoals() async {
     return _databaseService.getAmountGoals();
   }
 
   Future<List<CheckmarkGoal>> _getCheckmarkGoals() async {
     return _databaseService.getCheckmarkGoal();
-  }
-
-  Future<void> _onActivityComplete({Activity? activity, Task? task}) async {
-    if (activity != null) {
-      _databaseService.addActivity(activity);
-    } else if (task != null) {
-      _databaseService.addTask(task);
-    }
-    setState(() {});
   }
 
   Future<void> _addDoneAmountActivity(
@@ -100,11 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
           Foundation.kDebugMode
               ? IconButton(
                   onPressed: () async {
-                    await _databaseService.addActivity(Activity(
-                        amount: 42,
-                        actionType: kAllActionTypes[0],
-                        chosenUnit: Units.kilometer,
-                        dateCompleted: DateTime.now()));
                     setState(() {});
                   },
                   icon: const Icon(Icons.add_task))
@@ -112,8 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
           Foundation.kDebugMode
               ? IconButton(
                   onPressed: () async {
-                    await _databaseService.deleteAllActivities();
-                    await _databaseService.deleteAllTasks();
                     await _databaseService.deleteAllAmountGoals();
                     await _databaseService.deleteAllCheckMarkGoals();
                     setState(() {});
@@ -126,23 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              // FutureBuilder(
-              //   future: Future(() async => makeActionTypeCounts(
-              //       activities: await _getActivities(),
-              //       tasks: await _getTasks())),
-              //   builder:
-              //       (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              //     if (snapshot.hasData) {
-              //       return ShowTodayOverview(
-              //         actionTypeCounts: snapshot.data!,
-              //       );
-              //     } else {
-              //       return const Center(
-              //         child: CircularProgressIndicator(),
-              //       );
-              //     }
-              //   },
-              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -214,21 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         return Center(child: CircularProgressIndicator());
                     }),
               ),
-              // FutureBuilder(
-              //     future: Future(
-              //         () async => [await _getActivities(), await _getTasks()]),
-              //     builder: (context, snapshot) {
-              //       return snapshot.hasData
-              //           ? Column(
-              //               children: [
-              //                 ActionsLog(
-              //                   activities: snapshot.data![0] as List<Activity>,
-              //                   tasks: snapshot.data![1] as List<Task>,
-              //                 ),
-              //               ],
-              //             )
-              //           : Center(child: const CircularProgressIndicator());
-              //     }),
               IconButton(
                   onPressed: () => setState(() {}),
                   icon: const Icon(Icons.refresh)),
