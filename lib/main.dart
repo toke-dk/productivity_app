@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
+import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/home/home.dart';
 import 'package:productivity_app/pages/introduction_screens/main_intro_screens.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,11 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> _saveUserData(UserData userData) async {
+    UserDataStorage.saveUserData(userData);
+    print(UserDataStorage.getUserData);
+  }
+
   @override
   void initState() {
     _setFirstVisit();
@@ -88,12 +94,30 @@ class _MyAppState extends State<MyApp> {
                         ? MyIntroScreens(
                             onIntroComplete: (nick, first, last) async {
                               print("nick: $nick, first: $first, last: $last}");
-                              _setNotFirstVisit()
-                                  .then((value) => Navigator.pop(context));
+                              _saveUserData(UserData(
+                                  nickName: nick,
+                                  firstName: first,
+                                  lastName: last));
+                              _setNotFirstVisit();
+                              Navigator.pop(context);
                             },
                           )
-                        : MyHomePage(
-                            title: "${makeWelcomeMessage(DateTime.now())}");
+                        : FutureBuilder<UserData?>(
+                            future: UserDataStorage.getUserData,
+                            builder:
+                                (context, AsyncSnapshot<UserData?> snapshot) {
+                              if (snapshot.connectionState ==
+                                      ConnectionState.active ||
+                                  snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                return MyHomePage(
+                                  title:
+                                      "${makeWelcomeMessage(DateTime.now())}",
+                                  userData: snapshot.data!,
+                                );
+                              } else
+                                return Text(snapshot.connectionState.name);
+                            });
                   }
               }
             }),

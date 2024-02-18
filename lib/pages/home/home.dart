@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
+import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/actions_log_page.dart';
 import 'package:productivity_app/pages/home/widgets/actions_list.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
@@ -16,8 +17,9 @@ import '../../models/unit.dart';
 import 'widgets/add_activity_fab.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, required this.userData});
 
+  final UserData userData;
   final String title;
 
   @override
@@ -29,6 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    print("data: ${widget.userData}");
     print("init");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _databaseService.initDatabase();
@@ -97,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        appBar: AppBar(title: Text(widget.title), actions: [
+        appBar: AppBar(title: Text("${widget.title}, ${widget.userData.nickName}"), actions: [
           Foundation.kDebugMode
               ? IconButton(
                   onPressed: () async {
