@@ -57,7 +57,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _setFirstVisit();
     _isFirstVisit = _prefs.then(
         (SharedPreferences prefs) => prefs.getBool("isFirstVisit") ?? true);
     super.initState();
