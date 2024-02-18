@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:productivity_app/widgets/MyThemeButton.dart';
 
 class MyNumberBoard extends StatelessWidget {
   const MyNumberBoard(
@@ -42,8 +41,7 @@ class MyNumberBoard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.grey[100]),
+          borderRadius: BorderRadius.circular(15), color: Colors.grey[100]),
       child: GridView.count(
         childAspectRatio: (2 / 1),
         padding: const EdgeInsets.all(8),
@@ -51,7 +49,7 @@ class MyNumberBoard extends StatelessWidget {
         crossAxisCount: 3,
         children: List.generate(12, (index) {
           Widget currentChild;
-          String currentString = (index+1).toString();
+          String currentString = (index + 1).toString();
 
           if (index == 9) {
             currentString = ",";
@@ -64,9 +62,9 @@ class MyNumberBoard extends StatelessWidget {
                   currentString,
                   style: TextStyle(color: Colors.black),
                 )
-              : MyThemeButton(
-                  onTap: onNextButtonPressed,
-                  labelText: "Næste",
+              : FilledButton(
+                  onPressed: onNextButtonPressed,
+                  child: Text("Næste"),
                 );
 
           return InkWell(

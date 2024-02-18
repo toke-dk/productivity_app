@@ -9,7 +9,6 @@ import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/double_extension.dart';
 import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
-import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -155,8 +154,8 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                     SizedBox(
                       height: 20,
                     ),
-                    MyThemeButton(
-                      onTap: () {
+                    FilledButton(
+                      onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -169,7 +168,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                                           widget.onAmountGoalAdd(goal),
                                     )));
                       },
-                      labelText: "Angiv mål!",
+                      child: Text("Angiv mål!"),
                     ),
                   ],
                 ),

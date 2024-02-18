@@ -5,7 +5,6 @@ import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/task.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/services/database_service.dart';
-import 'package:productivity_app/widgets/MyThemeButton.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
@@ -134,8 +133,8 @@ class ActivityReceipt extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            MyThemeButton(
-              onTap: () {
+            FilledButton(
+              onPressed: () {
                 if (task != null && onActivityComplete != null) {
                   onActivityComplete!(task: task);
                 } else if (activity != null && onActivityComplete != null) {
@@ -143,8 +142,12 @@ class ActivityReceipt extends StatelessWidget {
                 }
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              trailingIcon: Icons.arrow_forward,
-              labelText: "Færdiggør",
+              child: Row(
+                children: [
+                  Icon(Icons.arrow_forward),
+                  Text("Færdiggør"),
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,
