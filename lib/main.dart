@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/pages/home/home.dart';
@@ -36,17 +35,23 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _setFirstVisit() async {
     final SharedPreferences prefs = await _prefs;
-    final bool isFirstVisit = prefs.getBool("isFirstVisit") ?? false;
-
     setState(() {
-      _isFirstVisit = prefs
-          .setBool("isFirstVisit", isFirstVisit)
-          .then((bool success) => isFirstVisit);
+      _isFirstVisit =
+          prefs.setBool("isFirstVisit", true).then((bool success) => true);
+    });
+  }
+
+  Future<void> _setNotFirstVisit() async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      _isFirstVisit =
+          prefs.setBool("isFirstVisit", false).then((bool success) => false);
     });
   }
 
   @override
   void initState() {
+    _setFirstVisit();
     _isFirstVisit = _prefs.then(
         (SharedPreferences prefs) => prefs.getBool("isFirstVisit") ?? true);
     super.initState();
@@ -70,7 +75,8 @@ class _MyAppState extends State<MyApp> {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
                 case ConnectionState.waiting:
-                  return const CircularProgressIndicator();
+                  return Scaffold(
+                      body: Center(child: const Text("Loading...")));
                 case ConnectionState.active:
                 case ConnectionState.done:
                   if (snapshot.hasError) {
@@ -79,7 +85,13 @@ class _MyAppState extends State<MyApp> {
                     final bool isFirstVisit = snapshot.data!;
                     print(isFirstVisit);
                     return isFirstVisit
-                        ? MyIntroScreens()
+                        ? MyIntroScreens(
+                            onIntroComplete: () {
+                              print("done");
+                              _setNotFirstVisit()
+                                  .then((value) => Navigator.pop(context));
+                            },
+                          )
                         : MyHomePage(
                             title: "${makeWelcomeMessage(DateTime.now())}");
                   }

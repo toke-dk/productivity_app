@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PageTwoIntroScreen extends StatelessWidget {
-  const PageTwoIntroScreen({super.key});
+  const PageTwoIntroScreen({super.key, required this.onCompletePress});
+
+  final Function() onCompletePress;
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +31,30 @@ class PageTwoIntroScreen extends StatelessWidget {
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(text: "Kaldenavn *")
+                  child: myTextField(text: "Kaldenavn *")),
+              SizedBox(
+                height: 40,
               ),
-              SizedBox(height: 40,),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(text: "Fornavn (valgfri)")
+                  child: myTextField(text: "Fornavn (valgfri)")),
+              SizedBox(
+                height: 20,
               ),
-              SizedBox(height: 20,),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(text: "Efternavn (valgfri)")
+                  child: myTextField(text: "Efternavn (valgfri)")),
+              Spacer(
+                flex: 8,
               ),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: FilledButton(
+                    onPressed: () => onCompletePress(),
+                    child: Text("Start Rejsen")),
+              ),
+              Spacer()
             ],
           ),
         ),
