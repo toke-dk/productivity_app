@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:productivity_app/models/activity.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/task.dart';
-import 'package:productivity_app/pages/activity_receipt.dart';
 import 'package:productivity_app/pages/add_activity_amount/widgets/number_board.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
