@@ -86,8 +86,8 @@ class _MyAppState extends State<MyApp> {
                     print(isFirstVisit);
                     return isFirstVisit
                         ? MyIntroScreens(
-                            onIntroComplete: () {
-                              print("done");
+                            onIntroComplete: (nick, first, last) async {
+                              print("nick: $nick, first: $first, last: $last}");
                               _setNotFirstVisit()
                                   .then((value) => Navigator.pop(context));
                             },

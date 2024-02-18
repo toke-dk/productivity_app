@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class PageTwoIntroScreen extends StatefulWidget {
   const PageTwoIntroScreen({super.key, required this.onCompletePress});
 
-  final Function() onCompletePress;
+  final Function(String nickName, String? firstName, String? lastName)
+      onCompletePress;
 
   @override
   State<PageTwoIntroScreen> createState() => _PageTwoIntroScreenState();
@@ -78,7 +79,12 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: FilledButton(
-                    onPressed: nickNameVal != "" ? () => widget.onCompletePress() : null,
+                    onPressed: nickNameVal != ""
+                        ? () => widget.onCompletePress(
+                            nickNameVal,
+                            firstNameVal != "" ? firstNameVal : null,
+                            lastNameVal != "" ? lastNameVal : null)
+                        : null,
                     child: Text("Start Rejsen")),
               ),
               Spacer()
