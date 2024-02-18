@@ -74,8 +74,7 @@ class _MyAppState extends State<MyApp> {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
               case ConnectionState.waiting:
-                return Scaffold(
-                    body: Center(child: const Text("Loading...")));
+                return Scaffold(body: Center(child: const Text("Loading...")));
               case ConnectionState.active:
               case ConnectionState.done:
                 if (snapshot.hasError) {
@@ -111,9 +110,15 @@ class _MyAppState extends State<MyApp> {
                                   return Text('Error: ${snapshot.error}');
                                 } else
                                   return MyHomePage(
-                                      title:
-                                          "${makeWelcomeMessage(DateTime.now())}",
-                                      userData: snapshot.data!);
+                                    title:
+                                        "${makeWelcomeMessage(DateTime.now())}",
+                                    userData: snapshot.data!,
+                                    editUserData: (UserData newData) {
+                                      setState(() {
+                                        _saveUserData(newData);
+                                      });
+                                    },
+                                  );
                             }
                           });
                 }

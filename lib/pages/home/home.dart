@@ -12,10 +12,11 @@ import 'package:flutter/foundation.dart' as Foundation;
 import '../../models/activity.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title, required this.userData});
+  const MyHomePage({super.key, required this.title, required this.userData, required this.editUserData});
 
   final UserData userData;
   final String title;
+  final Function(UserData newData) editUserData;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -34,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     super.initState();
   }
+
 
   Future<List<AmountGoal>> _getAmountGoals() async {
     return _databaseService.getAmountGoals();
@@ -75,8 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (context) => SettingsPage(
                               userData: widget.userData,
                               onSave: (UserData newUserData) {
+                                widget.editUserData(newUserData);
                                 Navigator.pop(context);
-                                print("should save");
                               },
                             ))),
               ),
