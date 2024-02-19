@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/home/home.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _setFirstVisit();
+    kDebugMode ? _setFirstVisit() : null;
     _isFirstVisit = _prefs.then(
         (SharedPreferences prefs) => prefs.getBool("isFirstVisit") ?? true);
     super.initState();
