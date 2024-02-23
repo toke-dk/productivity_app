@@ -16,6 +16,13 @@ class AddRoutine extends StatelessWidget {
         name: "Sport", child: Icon(Icons.sports_baseball), color: Colors.green),
     Category(
         name: "Kost", child: Icon(Icons.dinner_dining), color: Colors.orange),
+    Category(
+        name: "Finans", child: Icon(Icons.monetization_on), color: Colors.blue),
+    Category(name: "Udendørs", child: Icon(Icons.grass), color: Colors.brown),
+    Category(
+        name: "Uddannelse", child: Icon(Icons.menu_book), color: Colors.purple),
+    Category(name: "Hjem", child: Icon(Icons.home), color: Colors.black),
+    Category(name: "Andre", child: Icon(Icons.more_horiz), color: Colors.teal),
   ];
 
   @override
