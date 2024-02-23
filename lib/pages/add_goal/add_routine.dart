@@ -16,7 +16,7 @@ class AddRoutine extends StatelessWidget {
       appBar: AppBar(
         title: Text("Tilføj rutine"),
       ),
-      body: Text("Text"),
+      body: Center(child: Text("Text")),
     );
   }
 }
