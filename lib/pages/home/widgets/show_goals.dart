@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
-import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
+import 'package:productivity_app/pages/add_goal/add_routine.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/double_extension.dart';
 import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
@@ -119,7 +119,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddGoalPage(
+                                  builder: (context) => AddRoutine(
                                         onCheckMarkGoalAdd:
                                             (CheckmarkGoal checkmarkGoal) =>
                                                 widget.onCheckMarkGoalAdd(
@@ -159,7 +159,7 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddGoalPage(
+                                builder: (context) => AddRoutine(
                                       onCheckMarkGoalAdd:
                                           (CheckmarkGoal checkmarkGoal) =>
                                               widget.onCheckMarkGoalAdd(
