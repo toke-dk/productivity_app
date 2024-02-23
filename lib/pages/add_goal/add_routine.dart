@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
-class AddRoutine extends StatelessWidget {
+class AddRoutine extends StatefulWidget {
   const AddRoutine(
       {super.key,
       required this.onCheckMarkGoalAdd,
@@ -10,6 +10,29 @@ class AddRoutine extends StatelessWidget {
 
   final Function(CheckmarkGoal) onCheckMarkGoalAdd;
   final Function(AmountGoal) onAmountGoalAdd;
+
+  @override
+  State<AddRoutine> createState() => _AddRoutineState();
+}
+
+class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
+  late PageController _pageViewController;
+  late TabController _tabController;
+  int _currentPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageViewController = PageController();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageViewController.dispose();
+    _tabController.dispose();
+  }
 
   final List<Category> categories = const [
     Category(
@@ -31,20 +54,102 @@ class AddRoutine extends StatelessWidget {
       appBar: AppBar(
         title: Text("Vælg kategori"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: categories.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 2,
-              childAspectRatio: 4 / 1),
-          itemBuilder: (BuildContext context, int index) {
-            Category _currentCategory = categories[index];
-            return ShowCategoryWidget(category: _currentCategory);
-          },
-        ),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          PageView(
+            physics: NeverScrollableScrollPhysics(),
+            onPageChanged: null,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.builder(
+                  itemCount: categories.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      childAspectRatio: 4 / 1),
+                  itemBuilder: (BuildContext context, int index) {
+                    Category _currentCategory = categories[index];
+                    return ShowCategoryWidget(category: _currentCategory);
+                  },
+                ),
+              ),
+              Text("page two"),
+            ],
+          ),
+          PageIndicator(
+              tabController: _tabController,
+              currentPageIndex: _currentPageIndex,
+              onUpdateCurrentPageIndex: (int newIndex){},
+              isOnDesktopAndWeb: true)
+        ],
+      ),
+    );
+  }
+}
+
+class PageIndicator extends StatelessWidget {
+  const PageIndicator({
+    super.key,
+    required this.tabController,
+    required this.currentPageIndex,
+    required this.onUpdateCurrentPageIndex,
+    required this.isOnDesktopAndWeb,
+  });
+
+  final int currentPageIndex;
+  final TabController tabController;
+  final void Function(int) onUpdateCurrentPageIndex;
+  final bool isOnDesktopAndWeb;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isOnDesktopAndWeb) {
+      return const SizedBox.shrink();
+    }
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            splashRadius: 16.0,
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              if (currentPageIndex == 0) {
+                return;
+              }
+              onUpdateCurrentPageIndex(currentPageIndex - 1);
+            },
+            icon: const Icon(
+              Icons.arrow_left_rounded,
+              size: 32.0,
+            ),
+          ),
+          TabPageSelector(
+            controller: tabController,
+            color: colorScheme.background,
+            selectedColor: colorScheme.primary,
+          ),
+          IconButton(
+            splashRadius: 16.0,
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              if (currentPageIndex == 2) {
+                return;
+              }
+              onUpdateCurrentPageIndex(currentPageIndex + 1);
+            },
+            icon: const Icon(
+              Icons.arrow_right_rounded,
+              size: 32.0,
+            ),
+          ),
+        ],
       ),
     );
   }
