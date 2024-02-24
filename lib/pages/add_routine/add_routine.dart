@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/goal.dart';
+import 'package:productivity_app/pages/add_routine/pages/choose_category.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class AddRoutine extends StatefulWidget {
@@ -88,31 +89,12 @@ class _PageViewExampleState extends State<PageViewExample>
             controller: _pageViewController,
             onPageChanged: _handlePageViewChanged,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  children: [
-                    _pageTitle("Vælg kategori"),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: categories.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          crossAxisCount: 2,
-                          childAspectRatio: 4 / 1),
-                      itemBuilder: (BuildContext context, int index) {
-                        Category _currentCategory = categories[index];
-                        return ShowCategoryWidget(
-                          category: _currentCategory,
-                          onPressed: () {
-                            _updateCurrentPageIndex(1);
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+              EvaluatePage(
+                pageTitle: _pageTitle("Vælg Lategori"),
+                categories: categories,
+                updateCurrentPageIndex: () {
+                  _updateCurrentPageIndex(1);
+                },
               ),
               Column(
                 children: [
@@ -127,12 +109,14 @@ class _PageViewExampleState extends State<PageViewExample>
                           description:
                               "Hvis du blot vil måle om du har eller ikke har udført aktiviteten",
                         ),
-                        SizedBox(height: 40,),
+                        SizedBox(
+                          height: 40,
+                        ),
                         EvaluateButtonSection(
                           onPressed: () {},
                           title: 'Med en numerisk værdi',
                           description:
-                          "Hvis du gerne vil angive en værdi som et dagligt mål for din rutine",
+                              "Hvis du gerne vil angive en værdi som et dagligt mål for din rutine",
                         ),
                       ],
                     ),
@@ -261,11 +245,7 @@ class PageIndicator extends StatelessWidget {
             color: colorScheme.background,
             selectedColor: colorScheme.primary,
           ),
-          prevButtonDisabled
-              ? SizedBox()
-              : Expanded(
-                  child: SizedBox()
-                ),
+          prevButtonDisabled ? SizedBox() : Expanded(child: SizedBox()),
         ],
       ),
     );
