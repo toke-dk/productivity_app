@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 enum Frequencies {
   atLeast("Mindst"),
-  inTotal("I alt"),
+  inTotal("Total"),
   unLimited("Ubegrænset");
 
   const Frequencies(this.label);
@@ -37,7 +38,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
           TextField(
               onChanged: (val) => widget.readyToContinue(true),
               decoration: _myInputDecoration.copyWith(
-                  labelText: "Rutine", hintText: "Navn på din rutine...")),
+                  labelText: "Rutine*", hintText: "Navn på din rutine...")),
           SizedBox(
             height: 20,
           ),
@@ -45,7 +46,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               maxLines: 3,
               decoration: _myInputDecoration.copyWith(
                   hintText: "Med denne rutine skal jeg...",
-                  labelText: "Forklaring",
+                  labelText: "Forklaring (valgfri)",
                   alignLabelWithHint: true)),
           SizedBox(
             height: 40,
@@ -78,7 +79,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                   child: TextField(
                       enabled: selectedFrequency != Frequencies.unLimited,
                       decoration: _myInputDecoration.copyWith(
-                        labelText: "Mål",
+                        labelText: "Mål*",
                       ))),
               SizedBox(
                 width: 10,
@@ -96,6 +97,10 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             "for én dag",
             style: Theme.of(context).textTheme.labelMedium,
           )
+              .animate(target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
+              .show()
+              .then()
+              .slide(),
         ],
       ),
     );
