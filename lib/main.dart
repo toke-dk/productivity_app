@@ -66,10 +66,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Productivity app',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
-        useMaterial3: true,
-        textTheme: TextTheme(labelMedium: TextStyle(color: Colors.black.withOpacity(0.6)))
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+          useMaterial3: true,
+          textTheme: TextTheme(
+              labelMedium: TextStyle(color: Colors.black.withOpacity(0.6)))),
       home: FutureBuilder<bool>(
           future: _isFirstVisit,
           builder: (context, AsyncSnapshot<bool> snapshot) {
