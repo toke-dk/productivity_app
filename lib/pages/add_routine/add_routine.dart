@@ -8,9 +8,10 @@ import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class AddRoutine extends StatefulWidget {
-  const AddRoutine({super.key,
-    required this.onCheckMarkGoalAdd,
-    required this.onAmountGoalAdd});
+  const AddRoutine(
+      {super.key,
+      required this.onCheckMarkGoalAdd,
+      required this.onAmountGoalAdd});
 
   final Function(CheckmarkGoal) onCheckMarkGoalAdd;
   final Function(AmountGoal) onAmountGoalAdd;
@@ -42,18 +43,12 @@ class _PageViewExampleState extends State<PageViewExample>
 
   late List<Widget> _pages = [
     ChooseCategoryPage(
-      pageTitle: _pageTitle("Vælg Lategori"),
-      categories: categories,
-      updateCurrentPageIndex: () {
-        _updateCurrentPageIndex(1);
-      },
-    ),
-    DefineRoutinePage(
-      pageTitle: _pageTitle("Definer rutine"), readyToContinue: (val) {
-      setState(() {
-        nextButtonActive = val;
-      });
-    },),
+        pageTitle: _pageTitle("Vælg Lategori"),
+        categories: categories,
+        updateCurrentPageIndex: () {
+          _updateCurrentPageIndex(1);
+        }),
+    DefineRoutinePage(pageTitle: _pageTitle("Definer rutine")),
     EvaluatePage(pageTitle: _pageTitle("Evaluering")),
   ];
 
@@ -85,24 +80,18 @@ class _PageViewExampleState extends State<PageViewExample>
     Category(name: "Andre", child: Icon(Icons.more_horiz), color: Colors.teal),
   ];
 
-  Widget _pageTitle(String text) =>
-      Padding(
+  Widget _pageTitle(String text) => Padding(
         padding: const EdgeInsets.all(20),
         child: Center(
             child: Text(
-              text,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .titleLarge,
-            )),
+          text,
+          style: Theme.of(context).textTheme.titleLarge,
+        )),
       );
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme
-        .of(context)
-        .textTheme;
+    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return SafeArea(
       child: Stack(
@@ -169,11 +158,12 @@ class PageIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme
-        .of(context)
-        .colorScheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Padding(
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Theme.of(context).colorScheme.outline)),
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,27 +171,27 @@ class PageIndicator extends StatelessWidget {
           !prevButtonActive
               ? SizedBox()
               : Expanded(
-            child: TextButton(
-              onPressed: () {
-                if (currentPageIndex == 0) {
-                  return onCancel != null ? onCancel!() : null;
-                }
-                onUpdateCurrentPageIndex(currentPageIndex - 1);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  currentPageIndex == 0
-                      ? SizedBox()
-                      : Icon(
-                    Icons.arrow_left_rounded,
-                    size: 32.0,
+                  child: TextButton(
+                    onPressed: () {
+                      if (currentPageIndex == 0) {
+                        return onCancel != null ? onCancel!() : null;
+                      }
+                      onUpdateCurrentPageIndex(currentPageIndex - 1);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentPageIndex == 0
+                            ? SizedBox()
+                            : Icon(
+                                Icons.arrow_left_rounded,
+                                size: 32.0,
+                              ),
+                        Text(currentPageIndex == 0 ? "Afbryd" : "Forrige"),
+                      ],
+                    ),
                   ),
-                  Text(currentPageIndex == 0 ? "Afbryd" : "Forrige"),
-                ],
-              ),
-            ),
-          ),
+                ),
           TabPageSelector(
             controller: tabController,
             color: colorScheme.background,
@@ -210,29 +200,29 @@ class PageIndicator extends StatelessWidget {
           !nextButtonActive
               ? Expanded(child: SizedBox())
               : Expanded(
-            child: TextButton(
-              onPressed: () {
-                if (currentPageIndex == listLength-1) {
-                  return onFinish != null ? onFinish!() : null;
-                }
-                onUpdateCurrentPageIndex(currentPageIndex + 1);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(currentPageIndex == listLength-1
-                      ? "Gem og afslut"
-                      : "Næste"),
-                  currentPageIndex == listLength-1
-                      ? SizedBox()
-                      : Icon(
-                    Icons.arrow_right_rounded,
-                    size: 32.0,
+                  child: TextButton(
+                    onPressed: () {
+                      if (currentPageIndex == listLength - 1) {
+                        return onFinish != null ? onFinish!() : null;
+                      }
+                      onUpdateCurrentPageIndex(currentPageIndex + 1);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(currentPageIndex == listLength - 1
+                            ? "Gem og afslut"
+                            : "Næste"),
+                        currentPageIndex == listLength - 1
+                            ? SizedBox()
+                            : Icon(
+                                Icons.arrow_right_rounded,
+                                size: 32.0,
+                              ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
         ],
       ),
     );
