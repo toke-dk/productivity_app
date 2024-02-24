@@ -138,18 +138,20 @@ class PageIndicator extends StatelessWidget {
               }
               onUpdateCurrentPageIndex(currentPageIndex - 1);
             },
-            icon: prevButtonDisabled ? SizedBox() : TextButton(
-              onPressed: () {},
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.arrow_left_rounded,
-                    size: 32.0,
+            icon: prevButtonDisabled
+                ? SizedBox()
+                : TextButton(
+                    onPressed: () {},
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.arrow_left_rounded,
+                          size: 32.0,
+                        ),
+                        Text("Forrige"),
+                      ],
+                    ),
                   ),
-                  Text("Forrige"),
-                ],
-              ),
-            ),
           ),
           TabPageSelector(
             controller: tabController,
@@ -165,18 +167,20 @@ class PageIndicator extends StatelessWidget {
               }
               onUpdateCurrentPageIndex(currentPageIndex + 1);
             },
-            icon: !nextButtonDisabled ? TextButton(
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Text("Næste"),
-                  const Icon(
-                    Icons.arrow_right_rounded,
-                    size: 32.0,
-                  ),
-                ],
-              ),
-            ) : SizedBox(),
+            icon: !nextButtonDisabled
+                ? TextButton(
+                    onPressed: () {},
+                    child: Row(
+                      children: [
+                        Text("Næste"),
+                        const Icon(
+                          Icons.arrow_right_rounded,
+                          size: 32.0,
+                        ),
+                      ],
+                    ),
+                  )
+                : SizedBox(),
           ),
         ],
       ),
