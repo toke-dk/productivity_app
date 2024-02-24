@@ -36,6 +36,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
         children: [
           widget.pageTitle,
           TextField(
+              textCapitalization: TextCapitalization.words,
               onChanged: (val) => widget.readyToContinue(true),
               decoration: _myInputDecoration.copyWith(
                   labelText: "Rutine*", hintText: "Navn på din rutine...")),
@@ -43,6 +44,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             height: 20,
           ),
           TextField(
+            textCapitalization: TextCapitalization.sentences,
               maxLines: 3,
               decoration: _myInputDecoration.copyWith(
                   hintText: "Med denne rutine skal jeg...",
@@ -77,6 +79,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             children: [
               Expanded(
                   child: TextField(
+                    keyboardType: TextInputType.number,
                       enabled: selectedFrequency != Frequencies.unLimited,
                       decoration: _myInputDecoration.copyWith(
                         labelText: "Mål*",
