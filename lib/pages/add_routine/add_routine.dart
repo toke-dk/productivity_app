@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/pages/add_routine/pages/choose_category.dart';
+import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class AddRoutine extends StatefulWidget {
@@ -89,40 +90,14 @@ class _PageViewExampleState extends State<PageViewExample>
             controller: _pageViewController,
             onPageChanged: _handlePageViewChanged,
             children: <Widget>[
-              EvaluatePage(
+              ChooseCategoryPage(
                 pageTitle: _pageTitle("Vælg Lategori"),
                 categories: categories,
                 updateCurrentPageIndex: () {
                   _updateCurrentPageIndex(1);
                 },
               ),
-              Column(
-                children: [
-                  _pageTitle("Evaluering"),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: Column(
-                      children: [
-                        EvaluateButtonSection(
-                          onPressed: () {},
-                          title: 'Med "udført" eller "ikke udført"',
-                          description:
-                              "Hvis du blot vil måle om du har eller ikke har udført aktiviteten",
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        EvaluateButtonSection(
-                          onPressed: () {},
-                          title: 'Med en numerisk værdi',
-                          description:
-                              "Hvis du gerne vil angive en værdi som et dagligt mål for din rutine",
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )
+              EvaluatePage(pageTitle: _pageTitle("Evaluering"))
             ],
           ),
           PageIndicator(

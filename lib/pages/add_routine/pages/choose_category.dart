@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../add_routine.dart';
 
-class EvaluatePage extends StatelessWidget {
-  const EvaluatePage({super.key, required this.pageTitle, required this.categories, required this.updateCurrentPageIndex});
+class ChooseCategoryPage extends StatelessWidget {
+  const ChooseCategoryPage({super.key, required this.pageTitle, required this.categories, required this.updateCurrentPageIndex});
   final Widget pageTitle;
   final List<Category> categories;
   final Function() updateCurrentPageIndex;
