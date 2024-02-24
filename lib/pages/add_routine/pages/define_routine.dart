@@ -13,15 +13,17 @@ enum Frequencies {
 }
 
 class DefineRoutinePage extends StatefulWidget {
-  const DefineRoutinePage({super.key, required this.pageTitle});
+  const DefineRoutinePage(
+      {super.key, required this.pageTitle, required this.readyToContinue});
 
   final Widget pageTitle;
+  final Function(bool val) readyToContinue;
 
   @override
   State<DefineRoutinePage> createState() => _DefineRoutinePageState();
 }
 
-class _DefineRoutinePageState extends State<DefineRoutinePage> {
+class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   Frequencies selectedFrequency = Frequencies.atLeast;
 
   @override
@@ -33,6 +35,7 @@ class _DefineRoutinePageState extends State<DefineRoutinePage> {
         children: [
           widget.pageTitle,
           TextField(
+              onChanged: (val) => widget.readyToContinue(true),
               decoration: _myInputDecoration.copyWith(
                   labelText: "Rutine", hintText: "Navn på din rutine...")),
           SizedBox(
@@ -42,7 +45,8 @@ class _DefineRoutinePageState extends State<DefineRoutinePage> {
               maxLines: 3,
               decoration: _myInputDecoration.copyWith(
                   hintText: "Med denne rutine skal jeg...",
-                  labelText: "Forklaring", alignLabelWithHint: true)),
+                  labelText: "Forklaring",
+                  alignLabelWithHint: true)),
           SizedBox(
             height: 40,
           ),
@@ -54,9 +58,10 @@ class _DefineRoutinePageState extends State<DefineRoutinePage> {
                 child: DropdownMenu(
                     initialSelection: Frequencies.atLeast,
                     onSelected: (Frequencies? frequency) {
-                      if (frequency != null) setState(() {
-                        selectedFrequency = frequency;
-                      });
+                      if (frequency != null)
+                        setState(() {
+                          selectedFrequency = frequency;
+                        });
                     },
                     dropdownMenuEntries: Frequencies.values
                         .map((e) => DropdownMenuEntry(value: e, label: e.label))
@@ -72,8 +77,9 @@ class _DefineRoutinePageState extends State<DefineRoutinePage> {
               Expanded(
                   child: TextField(
                       enabled: selectedFrequency != Frequencies.unLimited,
-                      decoration:
-                      _myInputDecoration.copyWith(labelText: "Mål",))),
+                      decoration: _myInputDecoration.copyWith(
+                        labelText: "Mål",
+                      ))),
               SizedBox(
                 width: 10,
               ),
@@ -83,11 +89,13 @@ class _DefineRoutinePageState extends State<DefineRoutinePage> {
                           labelText: "Enhed (valgfri)", hintText: "eks. km."))),
             ],
           ),
-          SizedBox(height: 5,),
-          Text("for én dag", style: Theme
-              .of(context)
-              .textTheme
-              .labelMedium,)
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "for én dag",
+            style: Theme.of(context).textTheme.labelMedium,
+          )
         ],
       ),
     );

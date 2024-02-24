@@ -8,10 +8,9 @@ import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
 class AddRoutine extends StatefulWidget {
-  const AddRoutine(
-      {super.key,
-      required this.onCheckMarkGoalAdd,
-      required this.onAmountGoalAdd});
+  const AddRoutine({super.key,
+    required this.onCheckMarkGoalAdd,
+    required this.onAmountGoalAdd});
 
   final Function(CheckmarkGoal) onCheckMarkGoalAdd;
   final Function(AmountGoal) onAmountGoalAdd;
@@ -39,6 +38,7 @@ class _PageViewExampleState extends State<PageViewExample>
   late PageController _pageViewController;
   late TabController _tabController;
   int _currentPageIndex = 0;
+  bool nextButtonActive = false;
 
   late List<Widget> _pages = [
     ChooseCategoryPage(
@@ -48,7 +48,12 @@ class _PageViewExampleState extends State<PageViewExample>
         _updateCurrentPageIndex(1);
       },
     ),
-    DefineRoutinePage(pageTitle: _pageTitle("Definer rutine")),
+    DefineRoutinePage(
+      pageTitle: _pageTitle("Definer rutine"), readyToContinue: (val) {
+      setState(() {
+        nextButtonActive = val;
+      });
+    },),
     EvaluatePage(pageTitle: _pageTitle("Evaluering")),
   ];
 
@@ -80,18 +85,24 @@ class _PageViewExampleState extends State<PageViewExample>
     Category(name: "Andre", child: Icon(Icons.more_horiz), color: Colors.teal),
   ];
 
-  Widget _pageTitle(String text) => Padding(
+  Widget _pageTitle(String text) =>
+      Padding(
         padding: const EdgeInsets.all(20),
         child: Center(
             child: Text(
-          text,
-          style: Theme.of(context).textTheme.titleLarge,
-        )),
+              text,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleLarge,
+            )),
       );
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
 
     return SafeArea(
       child: Stack(
@@ -104,10 +115,12 @@ class _PageViewExampleState extends State<PageViewExample>
             children: _pages,
           ),
           PageIndicator(
+            nextButtonActive: nextButtonActive,
             onCancel: () => Navigator.pop(context),
             tabController: _tabController,
             currentPageIndex: _currentPageIndex,
             onUpdateCurrentPageIndex: _updateCurrentPageIndex,
+            listLength: _pages.length,
           ),
         ],
       ),
@@ -137,58 +150,89 @@ class PageIndicator extends StatelessWidget {
     required this.tabController,
     required this.currentPageIndex,
     required this.onUpdateCurrentPageIndex,
-    this.prevButtonDisabled = false,
-    this.nextButtonDisabled = false,
+    this.prevButtonActive = true,
+    this.nextButtonActive = false,
     this.onCancel,
+    required this.listLength,
+    this.onFinish,
   });
 
   final int currentPageIndex;
   final TabController tabController;
   final void Function(int) onUpdateCurrentPageIndex;
   final void Function()? onCancel;
+  final void Function()? onFinish;
+  final int listLength;
 
-  final bool prevButtonDisabled;
-  final bool nextButtonDisabled;
+  final bool prevButtonActive;
+  final bool nextButtonActive;
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme colorScheme = Theme
+        .of(context)
+        .colorScheme;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          prevButtonDisabled
+          !prevButtonActive
               ? SizedBox()
               : Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      if (currentPageIndex == 0) {
-                        return onCancel != null ? onCancel!() : null;
-                      }
-                      onUpdateCurrentPageIndex(currentPageIndex - 1);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentPageIndex == 0
-                            ? SizedBox()
-                            : Icon(
-                                Icons.arrow_left_rounded,
-                                size: 32.0,
-                              ),
-                        Text(currentPageIndex == 0 ? "Afbryd" : "Forrige"),
-                      ],
-                    ),
+            child: TextButton(
+              onPressed: () {
+                if (currentPageIndex == 0) {
+                  return onCancel != null ? onCancel!() : null;
+                }
+                onUpdateCurrentPageIndex(currentPageIndex - 1);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  currentPageIndex == 0
+                      ? SizedBox()
+                      : Icon(
+                    Icons.arrow_left_rounded,
+                    size: 32.0,
                   ),
-                ),
+                  Text(currentPageIndex == 0 ? "Afbryd" : "Forrige"),
+                ],
+              ),
+            ),
+          ),
           TabPageSelector(
             controller: tabController,
             color: colorScheme.background,
             selectedColor: colorScheme.primary,
           ),
-          prevButtonDisabled ? SizedBox() : Expanded(child: SizedBox()),
+          !nextButtonActive
+              ? Expanded(child: SizedBox())
+              : Expanded(
+            child: TextButton(
+              onPressed: () {
+                if (currentPageIndex == listLength-1) {
+                  return onFinish != null ? onFinish!() : null;
+                }
+                onUpdateCurrentPageIndex(currentPageIndex + 1);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(currentPageIndex == listLength-1
+                      ? "Gem og afslut"
+                      : "Næste"),
+                  currentPageIndex == listLength-1
+                      ? SizedBox()
+                      : Icon(
+                    Icons.arrow_right_rounded,
+                    size: 32.0,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
