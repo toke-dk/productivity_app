@@ -104,12 +104,9 @@ class _PageViewExampleState extends State<PageViewExample>
                       itemBuilder: (BuildContext context, int index) {
                         Category _currentCategory = categories[index];
                         return ShowCategoryWidget(
-                          selected: _selectedCategoryIndex == index,
                           category: _currentCategory,
                           onPressed: () {
-                            setState(() {
-                              _selectedCategoryIndex = index;
-                            });
+                            _updateCurrentPageIndex(1);
                           },
                         );
                       },
@@ -267,24 +264,7 @@ class PageIndicator extends StatelessWidget {
           prevButtonDisabled
               ? SizedBox()
               : Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      if (currentPageIndex == 2) {
-                        return;
-                      }
-                      onUpdateCurrentPageIndex(currentPageIndex + 1);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Næste"),
-                        const Icon(
-                          Icons.arrow_right_rounded,
-                          size: 32.0,
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: SizedBox()
                 ),
         ],
       ),
