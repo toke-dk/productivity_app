@@ -14,8 +14,7 @@ enum Frequencies {
 }
 
 class DefineRoutinePage extends StatefulWidget {
-  const DefineRoutinePage(
-      {super.key, required this.pageTitle});
+  const DefineRoutinePage({super.key, required this.pageTitle});
 
   final Widget pageTitle;
 
@@ -33,14 +32,19 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
 
   Widget get generateRoutineText {
     TextTheme textTheme = Theme.of(context).textTheme;
-    return RichText(
-        text: TextSpan(style: textTheme.bodyMedium, children: [
-      TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
-      TextSpan(text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
-      TextSpan(text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
-      TextSpan(text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
-      TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]"),
-    ]));
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: RichText(
+          text: TextSpan(style: textTheme.bodyMedium, children: [
+        TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
+        TextSpan(text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
+        TextSpan(text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
+        TextSpan(text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
+        TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
+            TextSpan(text: "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
+
+          ])),
+    );
   }
 
   @override
@@ -88,7 +92,8 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                           });
                       },
                       dropdownMenuEntries: Frequencies.values
-                          .map((e) => DropdownMenuEntry(value: e, label: e.label))
+                          .map((e) =>
+                              DropdownMenuEntry(value: e, label: e.label))
                           .toList()),
                 ),
               ),
@@ -111,7 +116,8 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                 Expanded(
                     child: TextField(
                         decoration: _myInputDecoration.copyWith(
-                            labelText: "Enhed (valgfri)", hintText: "eks. km."))),
+                            labelText: "Enhed (valgfri)",
+                            hintText: "eks. km."))),
               ],
             ),
             SizedBox(
@@ -121,10 +127,19 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               "for én dag",
               style: Theme.of(context).textTheme.labelMedium,
             )
-                .animate(target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
+                .animate(
+                    target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
                 .show()
                 .then()
                 .slide(),
+            SizedBox(
+              height: 10,
+            ),
+            _NewGoalButton(
+              trailing: Icon(Icons.add),
+              title: "Tilføj et ekstra-mål",
+              onPressed: () {},
+            ),
             SizedBox(
               height: 40,
             ),
@@ -149,6 +164,42 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _NewGoalButton extends StatelessWidget {
+  const _NewGoalButton(
+      {super.key,
+      this.onPressed,
+      required this.title,
+      this.description,
+      this.trailing = const SizedBox()});
+
+  final Function()? onPressed;
+  final String title;
+  final String? description;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: FilledButton(
+        onPressed: onPressed,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+            ),
+            trailing,
+          ],
+        ),
+        style: ButtonStyle(
+            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6)))),
       ),
     );
   }

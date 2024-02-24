@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/category.dart';
@@ -48,7 +49,11 @@ class _PageViewExampleState extends State<PageViewExample>
         updateCurrentPageIndex: () {
           _updateCurrentPageIndex(1);
         }),
-    DefineRoutinePage(pageTitle: _pageTitle("Definer rutine")),
+    Container(
+      // TODO change this to be maybe a collumn instead of stack with padding
+      padding: const EdgeInsets.only(bottom: 70),
+      child: DefineRoutinePage(pageTitle: _pageTitle("Definer rutine")),
+    ),
     EvaluatePage(pageTitle: _pageTitle("Evaluering")),
   ];
 
