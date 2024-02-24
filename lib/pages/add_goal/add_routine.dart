@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
@@ -16,21 +17,30 @@ class AddRoutine extends StatefulWidget {
 }
 
 class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: PageViewExample());
+  }
+}
+
+class PageViewExample extends StatefulWidget {
+  const PageViewExample({super.key});
+
+  @override
+  State<PageViewExample> createState() => _PageViewExampleState();
+}
+
+class _PageViewExampleState extends State<PageViewExample>
+    with TickerProviderStateMixin {
   late PageController _pageViewController;
   late TabController _tabController;
   int _currentPageIndex = 0;
 
-  bool prevButtonDisabled = true;
-  bool nextButtonDisabled = false;
-
   @override
   void initState() {
-    prevButtonDisabled = _currentPageIndex == 0 ? true : prevButtonDisabled;
-    nextButtonDisabled = _currentPageIndex == 0 ? true : nextButtonDisabled;
-
     super.initState();
     _pageViewController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -56,44 +66,59 @@ class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Vælg kategori"),
-      ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          PageView(
-            physics: NeverScrollableScrollPhysics(),
-            onPageChanged: null,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                  itemCount: categories.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 2,
-                      childAspectRatio: 4 / 1),
-                  itemBuilder: (BuildContext context, int index) {
-                    Category _currentCategory = categories[index];
-                    return ShowCategoryWidget(category: _currentCategory);
-                  },
-                ),
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: <Widget>[
+        PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageViewController,
+          onPageChanged: _handlePageViewChanged,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                itemCount: categories.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    childAspectRatio: 4 / 1),
+                itemBuilder: (BuildContext context, int index) {
+                  Category _currentCategory = categories[index];
+                  return ShowCategoryWidget(
+                    category: _currentCategory,
+                    onPressed: () => _updateCurrentPageIndex(1),
+                  );
+                },
               ),
-              Text("page two"),
-            ],
-          ),
-          PageIndicator(
-              prevButtonDisabled: prevButtonDisabled,
-              nextButtonDisabled: nextButtonDisabled,
-              tabController: _tabController,
-              currentPageIndex: _currentPageIndex,
-              onUpdateCurrentPageIndex: (int newIndex) {},
-              isOnDesktopAndWeb: true)
-        ],
-      ),
+            ),
+            Text("page two"),
+          ],
+        ),
+        PageIndicator(
+          tabController: _tabController,
+          currentPageIndex: _currentPageIndex,
+          onUpdateCurrentPageIndex: _updateCurrentPageIndex,
+        ),
+      ],
+    );
+  }
+
+  void _handlePageViewChanged(int currentPageIndex) {
+    _tabController.index = currentPageIndex;
+    setState(() {
+      _currentPageIndex = currentPageIndex;
+    });
+  }
+
+  void _updateCurrentPageIndex(int index) {
+    _tabController.index = index;
+    _pageViewController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
     );
   }
 }
@@ -104,7 +129,6 @@ class PageIndicator extends StatelessWidget {
     required this.tabController,
     required this.currentPageIndex,
     required this.onUpdateCurrentPageIndex,
-    required this.isOnDesktopAndWeb,
     this.prevButtonDisabled = false,
     this.nextButtonDisabled = false,
   });
@@ -112,16 +136,12 @@ class PageIndicator extends StatelessWidget {
   final int currentPageIndex;
   final TabController tabController;
   final void Function(int) onUpdateCurrentPageIndex;
-  final bool isOnDesktopAndWeb;
 
   final bool prevButtonDisabled;
   final bool nextButtonDisabled;
 
   @override
   Widget build(BuildContext context) {
-    if (!isOnDesktopAndWeb) {
-      return const SizedBox.shrink();
-    }
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
@@ -129,59 +149,49 @@ class PageIndicator extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton(
-            splashRadius: 16.0,
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              if (currentPageIndex == 0) {
-                return;
-              }
-              onUpdateCurrentPageIndex(currentPageIndex - 1);
-            },
-            icon: prevButtonDisabled
-                ? SizedBox()
-                : TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.arrow_left_rounded,
-                          size: 32.0,
-                        ),
-                        Text("Forrige"),
-                      ],
-                    ),
+          prevButtonDisabled
+              ? SizedBox()
+              : TextButton(
+                  onPressed: () {
+                    if (currentPageIndex == 0) {
+                      return;
+                    }
+                    onUpdateCurrentPageIndex(currentPageIndex - 1);
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.arrow_left_rounded,
+                        size: 32.0,
+                      ),
+                      Text("Forrige"),
+                    ],
                   ),
-          ),
+                ),
           TabPageSelector(
             controller: tabController,
             color: colorScheme.background,
             selectedColor: colorScheme.primary,
           ),
-          IconButton(
-            splashRadius: 16.0,
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              if (currentPageIndex == 2) {
-                return;
-              }
-              onUpdateCurrentPageIndex(currentPageIndex + 1);
-            },
-            icon: !nextButtonDisabled
-                ? TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        Text("Næste"),
-                        const Icon(
-                          Icons.arrow_right_rounded,
-                          size: 32.0,
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox(),
-          ),
+          prevButtonDisabled
+              ? SizedBox()
+              : TextButton(
+                  onPressed: () {
+                    if (currentPageIndex == 2) {
+                      return;
+                    }
+                    onUpdateCurrentPageIndex(currentPageIndex + 1);
+                  },
+                  child: Row(
+                    children: [
+                      Text("Næste"),
+                      const Icon(
+                        Icons.arrow_right_rounded,
+                        size: 32.0,
+                      ),
+                    ],
+                  ),
+                ),
         ],
       ),
     );
@@ -189,36 +199,40 @@ class PageIndicator extends StatelessWidget {
 }
 
 class ShowCategoryWidget extends StatelessWidget {
-  const ShowCategoryWidget({super.key, required this.category});
+  const ShowCategoryWidget({super.key, required this.category, this.onPressed});
 
   final Category category;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: category.color.withOpacity(0.3)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(category.name),
-          CircleAvatar(
-            backgroundColor: category.color.withOpacity(0.8),
-            radius: 13,
-            child: ClipOval(
-              child: Padding(
-                padding: EdgeInsets.all(4),
-                child: FittedBox(
-                    child: ColorFiltered(
-                        colorFilter:
-                            ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                        child: category.child)),
+    return InkWell(
+      onTap: onPressed != null ? () => onPressed!() : null,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: category.color.withOpacity(0.3)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(category.name),
+            CircleAvatar(
+              backgroundColor: category.color.withOpacity(0.8),
+              radius: 13,
+              child: ClipOval(
+                child: Padding(
+                  padding: EdgeInsets.all(4),
+                  child: FittedBox(
+                      child: ColorFiltered(
+                          colorFilter:
+                              ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                          child: category.child)),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
