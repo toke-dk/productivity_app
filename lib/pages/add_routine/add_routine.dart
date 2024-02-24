@@ -40,7 +40,6 @@ class _PageViewExampleState extends State<PageViewExample>
   late TabController _tabController;
   int _currentPageIndex = 0;
 
-  int? _selectedCategoryIndex;
   late List<Widget> _pages = [
     ChooseCategoryPage(
       pageTitle: _pageTitle("Vælg Lategori"),
