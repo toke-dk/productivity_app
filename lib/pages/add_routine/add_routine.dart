@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/category.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/pages/add_routine/pages/choose_category.dart';
+import 'package:productivity_app/pages/add_routine/pages/define_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 
@@ -40,12 +41,23 @@ class _PageViewExampleState extends State<PageViewExample>
   int _currentPageIndex = 0;
 
   int? _selectedCategoryIndex;
+  late List<Widget> _pages = [
+    ChooseCategoryPage(
+      pageTitle: _pageTitle("Vælg Lategori"),
+      categories: categories,
+      updateCurrentPageIndex: () {
+        _updateCurrentPageIndex(1);
+      },
+    ),
+    DefineRoutinePage(pageTitle: _pageTitle("Definer rutine")),
+    EvaluatePage(pageTitle: _pageTitle("Evaluering")),
+  ];
 
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -90,16 +102,7 @@ class _PageViewExampleState extends State<PageViewExample>
             physics: NeverScrollableScrollPhysics(),
             controller: _pageViewController,
             onPageChanged: _handlePageViewChanged,
-            children: <Widget>[
-              ChooseCategoryPage(
-                pageTitle: _pageTitle("Vælg Lategori"),
-                categories: categories,
-                updateCurrentPageIndex: () {
-                  _updateCurrentPageIndex(1);
-                },
-              ),
-              EvaluatePage(pageTitle: _pageTitle("Evaluering"))
-            ],
+            children: _pages,
           ),
           PageIndicator(
             onCancel: () => Navigator.pop(context),
