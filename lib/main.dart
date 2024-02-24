@@ -68,6 +68,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
+        textTheme: TextTheme(labelMedium: TextStyle(color: Colors.black.withOpacity(0.6)))
       ),
       home: FutureBuilder<bool>(
           future: _isFirstVisit,

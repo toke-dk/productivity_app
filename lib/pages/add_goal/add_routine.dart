@@ -66,6 +66,15 @@ class _PageViewExampleState extends State<PageViewExample>
     Category(name: "Andre", child: Icon(Icons.more_horiz), color: Colors.teal),
   ];
 
+  Widget _pageTitle(String text) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+            child: Text(
+          text,
+          style: Theme.of(context).textTheme.titleLarge,
+        )),
+      );
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -83,10 +92,7 @@ class _PageViewExampleState extends State<PageViewExample>
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Center(child: Text("Vælg kategori", style: Theme.of(context).textTheme.titleLarge,)),
-                    ),
+                    _pageTitle("Vælg kategori"),
                     GridView.builder(
                       shrinkWrap: true,
                       itemCount: categories.length,
@@ -98,7 +104,6 @@ class _PageViewExampleState extends State<PageViewExample>
                       itemBuilder: (BuildContext context, int index) {
                         Category _currentCategory = categories[index];
                         return ShowCategoryWidget(
-
                           selected: _selectedCategoryIndex == index,
                           category: _currentCategory,
                           onPressed: () {
@@ -112,11 +117,35 @@ class _PageViewExampleState extends State<PageViewExample>
                   ],
                 ),
               ),
-              Text("page two"),
+              Column(
+                children: [
+                  _pageTitle("Evaluering"),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    child: Column(
+                      children: [
+                        EvaluateButtonSection(
+                          onPressed: () {},
+                          title: 'Med "udført" eller "ikke udført"',
+                          description:
+                              "Hvis du blot vil måle om du har eller ikke har udført aktiviteten",
+                        ),
+                        SizedBox(height: 40,),
+                        EvaluateButtonSection(
+                          onPressed: () {},
+                          title: 'Med en numerisk værdi',
+                          description:
+                          "Hvis du gerne vil angive en værdi som et dagligt mål for din rutine",
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
             ],
           ),
           PageIndicator(
-            onCancel: ()=>Navigator.pop(context),
+            onCancel: () => Navigator.pop(context),
             tabController: _tabController,
             currentPageIndex: _currentPageIndex,
             onUpdateCurrentPageIndex: _updateCurrentPageIndex,
@@ -143,6 +172,41 @@ class _PageViewExampleState extends State<PageViewExample>
   }
 }
 
+class EvaluateButtonSection extends StatelessWidget {
+  const EvaluateButtonSection(
+      {super.key, this.onPressed, required this.title, this.description});
+
+  final Function()? onPressed;
+  final String title;
+  final String? description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        FilledButton(
+          onPressed: onPressed,
+          child: Text(title),
+          style: ButtonStyle(
+              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)))),
+        ),
+        SizedBox(
+          height: 2,
+        ),
+        description != null
+            ? Text(
+                description!,
+                style: Theme.of(context).textTheme.labelMedium,
+                textAlign: TextAlign.center,
+              )
+            : SizedBox()
+      ],
+    );
+  }
+}
+
 class PageIndicator extends StatelessWidget {
   const PageIndicator({
     super.key,
@@ -150,7 +214,8 @@ class PageIndicator extends StatelessWidget {
     required this.currentPageIndex,
     required this.onUpdateCurrentPageIndex,
     this.prevButtonDisabled = false,
-    this.nextButtonDisabled = false, this.onCancel,
+    this.nextButtonDisabled = false,
+    this.onCancel,
   });
 
   final int currentPageIndex;
@@ -160,7 +225,6 @@ class PageIndicator extends StatelessWidget {
 
   final bool prevButtonDisabled;
   final bool nextButtonDisabled;
-
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +238,7 @@ class PageIndicator extends StatelessWidget {
           prevButtonDisabled
               ? SizedBox()
               : Expanded(
-                child: TextButton(
+                  child: TextButton(
                     onPressed: () {
                       if (currentPageIndex == 0) {
                         return onCancel != null ? onCancel!() : null;
@@ -184,15 +248,17 @@ class PageIndicator extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        currentPageIndex == 0 ? SizedBox() : Icon(
-                          Icons.arrow_left_rounded,
-                          size: 32.0,
-                        ),
+                        currentPageIndex == 0
+                            ? SizedBox()
+                            : Icon(
+                                Icons.arrow_left_rounded,
+                                size: 32.0,
+                              ),
                         Text(currentPageIndex == 0 ? "Afbryd" : "Forrige"),
                       ],
                     ),
                   ),
-              ),
+                ),
           TabPageSelector(
             controller: tabController,
             color: colorScheme.background,
@@ -201,7 +267,7 @@ class PageIndicator extends StatelessWidget {
           prevButtonDisabled
               ? SizedBox()
               : Expanded(
-                child: TextButton(
+                  child: TextButton(
                     onPressed: () {
                       if (currentPageIndex == 2) {
                         return;
@@ -219,7 +285,7 @@ class PageIndicator extends StatelessWidget {
                       ],
                     ),
                   ),
-              ),
+                ),
         ],
       ),
     );
@@ -247,7 +313,9 @@ class ShowCategoryWidget extends StatelessWidget {
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
             border: Border.all(
-                color: selected ? Colors.black.withOpacity(0.7) : Colors.transparent,
+                color: selected
+                    ? Colors.black.withOpacity(0.7)
+                    : Colors.transparent,
                 width: 2),
             borderRadius: BorderRadius.circular(10),
             color: backgroundColor),
