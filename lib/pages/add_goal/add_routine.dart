@@ -80,32 +80,43 @@ class _PageViewExampleState extends State<PageViewExample>
             onPageChanged: _handlePageViewChanged,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                  itemCount: categories.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 2,
-                      childAspectRatio: 4 / 1),
-                  itemBuilder: (BuildContext context, int index) {
-                    Category _currentCategory = categories[index];
-                    return ShowCategoryWidget(
-                      selected: _selectedCategoryIndex == index,
-                      category: _currentCategory,
-                      onPressed: () {
-                        setState(() {
-                          _selectedCategoryIndex = index;
-                        });
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Center(child: Text("Vælg kategori", style: Theme.of(context).textTheme.titleLarge,)),
+                    ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: categories.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          crossAxisCount: 2,
+                          childAspectRatio: 4 / 1),
+                      itemBuilder: (BuildContext context, int index) {
+                        Category _currentCategory = categories[index];
+                        return ShowCategoryWidget(
+
+                          selected: _selectedCategoryIndex == index,
+                          category: _currentCategory,
+                          onPressed: () {
+                            setState(() {
+                              _selectedCategoryIndex = index;
+                            });
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
               Text("page two"),
             ],
           ),
           PageIndicator(
+            onCancel: ()=>Navigator.pop(context),
             tabController: _tabController,
             currentPageIndex: _currentPageIndex,
             onUpdateCurrentPageIndex: _updateCurrentPageIndex,
@@ -139,15 +150,17 @@ class PageIndicator extends StatelessWidget {
     required this.currentPageIndex,
     required this.onUpdateCurrentPageIndex,
     this.prevButtonDisabled = false,
-    this.nextButtonDisabled = false,
+    this.nextButtonDisabled = false, this.onCancel,
   });
 
   final int currentPageIndex;
   final TabController tabController;
   final void Function(int) onUpdateCurrentPageIndex;
+  final void Function()? onCancel;
 
   final bool prevButtonDisabled;
   final bool nextButtonDisabled;
+
 
   @override
   Widget build(BuildContext context) {
@@ -156,27 +169,30 @@ class PageIndicator extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           prevButtonDisabled
               ? SizedBox()
-              : TextButton(
-                  onPressed: () {
-                    if (currentPageIndex == 0) {
-                      return;
-                    }
-                    onUpdateCurrentPageIndex(currentPageIndex - 1);
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.arrow_left_rounded,
-                        size: 32.0,
-                      ),
-                      Text("Forrige"),
-                    ],
+              : Expanded(
+                child: TextButton(
+                    onPressed: () {
+                      if (currentPageIndex == 0) {
+                        return onCancel != null ? onCancel!() : null;
+                      }
+                      onUpdateCurrentPageIndex(currentPageIndex - 1);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentPageIndex == 0 ? SizedBox() : Icon(
+                          Icons.arrow_left_rounded,
+                          size: 32.0,
+                        ),
+                        Text(currentPageIndex == 0 ? "Afbryd" : "Forrige"),
+                      ],
+                    ),
                   ),
-                ),
+              ),
           TabPageSelector(
             controller: tabController,
             color: colorScheme.background,
@@ -184,23 +200,26 @@ class PageIndicator extends StatelessWidget {
           ),
           prevButtonDisabled
               ? SizedBox()
-              : TextButton(
-                  onPressed: () {
-                    if (currentPageIndex == 2) {
-                      return;
-                    }
-                    onUpdateCurrentPageIndex(currentPageIndex + 1);
-                  },
-                  child: Row(
-                    children: [
-                      Text("Næste"),
-                      const Icon(
-                        Icons.arrow_right_rounded,
-                        size: 32.0,
-                      ),
-                    ],
+              : Expanded(
+                child: TextButton(
+                    onPressed: () {
+                      if (currentPageIndex == 2) {
+                        return;
+                      }
+                      onUpdateCurrentPageIndex(currentPageIndex + 1);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Næste"),
+                        const Icon(
+                          Icons.arrow_right_rounded,
+                          size: 32.0,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+              ),
         ],
       ),
     );
