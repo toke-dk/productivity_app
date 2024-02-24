@@ -128,41 +128,6 @@ class _PageViewExampleState extends State<PageViewExample>
   }
 }
 
-class EvaluateButtonSection extends StatelessWidget {
-  const EvaluateButtonSection(
-      {super.key, this.onPressed, required this.title, this.description});
-
-  final Function()? onPressed;
-  final String title;
-  final String? description;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        FilledButton(
-          onPressed: onPressed,
-          child: Text(title),
-          style: ButtonStyle(
-              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)))),
-        ),
-        SizedBox(
-          height: 2,
-        ),
-        description != null
-            ? Text(
-                description!,
-                style: Theme.of(context).textTheme.labelMedium,
-                textAlign: TextAlign.center,
-              )
-            : SizedBox()
-      ],
-    );
-  }
-}
-
 class PageIndicator extends StatelessWidget {
   const PageIndicator({
     super.key,
