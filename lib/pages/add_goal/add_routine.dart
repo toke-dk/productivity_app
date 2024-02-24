@@ -20,8 +20,14 @@ class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
   late TabController _tabController;
   int _currentPageIndex = 0;
 
+  bool prevButtonDisabled = true;
+  bool nextButtonDisabled = false;
+
   @override
   void initState() {
+    prevButtonDisabled = _currentPageIndex == 0 ? true : prevButtonDisabled;
+    nextButtonDisabled = _currentPageIndex == 0 ? true : nextButtonDisabled;
+
     super.initState();
     _pageViewController = PageController();
     _tabController = TabController(length: 3, vsync: this);
@@ -80,9 +86,11 @@ class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
             ],
           ),
           PageIndicator(
+              prevButtonDisabled: prevButtonDisabled,
+              nextButtonDisabled: nextButtonDisabled,
               tabController: _tabController,
               currentPageIndex: _currentPageIndex,
-              onUpdateCurrentPageIndex: (int newIndex){},
+              onUpdateCurrentPageIndex: (int newIndex) {},
               isOnDesktopAndWeb: true)
         ],
       ),
@@ -97,12 +105,17 @@ class PageIndicator extends StatelessWidget {
     required this.currentPageIndex,
     required this.onUpdateCurrentPageIndex,
     required this.isOnDesktopAndWeb,
+    this.prevButtonDisabled = false,
+    this.nextButtonDisabled = false,
   });
 
   final int currentPageIndex;
   final TabController tabController;
   final void Function(int) onUpdateCurrentPageIndex;
   final bool isOnDesktopAndWeb;
+
+  final bool prevButtonDisabled;
+  final bool nextButtonDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +138,17 @@ class PageIndicator extends StatelessWidget {
               }
               onUpdateCurrentPageIndex(currentPageIndex - 1);
             },
-            icon: const Icon(
-              Icons.arrow_left_rounded,
-              size: 32.0,
+            icon: prevButtonDisabled ? SizedBox() : TextButton(
+              onPressed: () {},
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.arrow_left_rounded,
+                    size: 32.0,
+                  ),
+                  Text("Forrige"),
+                ],
+              ),
             ),
           ),
           TabPageSelector(
@@ -144,10 +165,18 @@ class PageIndicator extends StatelessWidget {
               }
               onUpdateCurrentPageIndex(currentPageIndex + 1);
             },
-            icon: const Icon(
-              Icons.arrow_right_rounded,
-              size: 32.0,
-            ),
+            icon: !nextButtonDisabled ? TextButton(
+              onPressed: () {},
+              child: Row(
+                children: [
+                  Text("Næste"),
+                  const Icon(
+                    Icons.arrow_right_rounded,
+                    size: 32.0,
+                  ),
+                ],
+              ),
+            ) : SizedBox(),
           ),
         ],
       ),
