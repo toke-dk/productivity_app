@@ -36,6 +36,8 @@ class _PageViewExampleState extends State<PageViewExample>
   late TabController _tabController;
   int _currentPageIndex = 0;
 
+  int? _selectedCategoryIndex;
+
   @override
   void initState() {
     super.initState();
@@ -68,41 +70,48 @@ class _PageViewExampleState extends State<PageViewExample>
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: <Widget>[
-        PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageViewController,
-          onPageChanged: _handlePageViewChanged,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.builder(
-                itemCount: categories.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 2,
-                    childAspectRatio: 4 / 1),
-                itemBuilder: (BuildContext context, int index) {
-                  Category _currentCategory = categories[index];
-                  return ShowCategoryWidget(
-                    category: _currentCategory,
-                    onPressed: () => _updateCurrentPageIndex(1),
-                  );
-                },
+    return SafeArea(
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _pageViewController,
+            onPageChanged: _handlePageViewChanged,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.builder(
+                  itemCount: categories.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      childAspectRatio: 4 / 1),
+                  itemBuilder: (BuildContext context, int index) {
+                    Category _currentCategory = categories[index];
+                    return ShowCategoryWidget(
+                      selected: _selectedCategoryIndex == index,
+                      category: _currentCategory,
+                      onPressed: () {
+                        setState(() {
+                          _selectedCategoryIndex = index;
+                        });
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-            Text("page two"),
-          ],
-        ),
-        PageIndicator(
-          tabController: _tabController,
-          currentPageIndex: _currentPageIndex,
-          onUpdateCurrentPageIndex: _updateCurrentPageIndex,
-        ),
-      ],
+              Text("page two"),
+            ],
+          ),
+          PageIndicator(
+            tabController: _tabController,
+            currentPageIndex: _currentPageIndex,
+            onUpdateCurrentPageIndex: _updateCurrentPageIndex,
+          ),
+        ],
+      ),
     );
   }
 
@@ -199,10 +208,17 @@ class PageIndicator extends StatelessWidget {
 }
 
 class ShowCategoryWidget extends StatelessWidget {
-  const ShowCategoryWidget({super.key, required this.category, this.onPressed});
+  const ShowCategoryWidget(
+      {super.key,
+      required this.category,
+      this.onPressed,
+      this.selected = false});
 
   final Category category;
   final Function()? onPressed;
+  final bool selected;
+
+  Color get backgroundColor => category.color.withOpacity(0.3);
 
   @override
   Widget build(BuildContext context) {
@@ -211,8 +227,11 @@ class ShowCategoryWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
+            border: Border.all(
+                color: selected ? Colors.black.withOpacity(0.7) : Colors.transparent,
+                width: 2),
             borderRadius: BorderRadius.circular(10),
-            color: category.color.withOpacity(0.3)),
+            color: backgroundColor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
