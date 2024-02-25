@@ -139,8 +139,8 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               height: 10,
             ),
             _NewGoalButton(
-              trailing: Icon(Icons.add),
-              title: "Tilføj et ekstra-mål",
+              leading: Icon(Icons.emoji_flags_sharp),
+              title: "Tilføj et Ekstra-Mål",
               onPressed: () {
                 showModalBottomSheet(
                     context: context,
@@ -153,6 +153,9 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            Text("Ekstra-Mål",style: Theme.of(context).textTheme.titleLarge,),
+                            Text("Her kan du vælge at lave et mål ud fra dit daglige mål",style: Theme.of(context).textTheme.labelMedium,),
+                            SizedBox(height: 10,),
                             _ExtraGoalButton(
                               title: "Uge mål",
                               onTap: () {},
@@ -226,9 +229,10 @@ class _NewGoalButton extends StatelessWidget {
       this.onPressed,
       required this.title,
       this.description,
-      this.trailing = const SizedBox()});
+      this.trailing = const SizedBox(), this.leading = const SizedBox()});
 
   final Function()? onPressed;
+  final Widget leading;
   final String title;
   final String? description;
   final Widget trailing;
@@ -240,11 +244,13 @@ class _NewGoalButton extends StatelessWidget {
       child: FilledButton(
         onPressed: onPressed,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            leading,
+            SizedBox(width: 10,),
             Text(
               title,
             ),
+            Spacer(),
             trailing,
           ],
         ),
