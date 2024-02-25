@@ -33,20 +33,25 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   bool _canContinue = true;
 
   Widget get generateRoutineText {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    TextTheme textTheme = Theme
+        .of(context)
+        .textTheme;
     return Align(
       alignment: Alignment.centerLeft,
       child: RichText(
           text: TextSpan(style: textTheme.bodyMedium, children: [
-        TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
-        TextSpan(text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
-        TextSpan(text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
-        TextSpan(text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
-        TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
-        TextSpan(
-            text:
+            TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
+            TextSpan(
+                text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
+            TextSpan(
+                text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
+            TextSpan(
+                text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
+            TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
+            TextSpan(
+                text:
                 "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
-      ])),
+          ])),
     );
   }
 
@@ -96,7 +101,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                       },
                       dropdownMenuEntries: Frequencies.values
                           .map((e) =>
-                              DropdownMenuEntry(value: e, label: e.label))
+                          DropdownMenuEntry(value: e, label: e.label))
                           .toList()),
                 ),
               ),
@@ -128,16 +133,36 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             ),
             Text(
               "for én dag",
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .labelMedium,
             )
                 .animate(
-                    target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
+                target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
                 .show()
                 .then()
                 .slide(),
             SizedBox(
               height: 10,
             ),
+            _NewGoalButton(title: "test", onPressed: () =>
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SimpleDialog(
+                        title: Text("Tilføj et Ekstra-Mål"),
+                        contentPadding: EdgeInsets.all(30),
+                        children: [
+                          TextField(
+                            decoration: _myInputDecoration.copyWith(
+                                labelText: "Mål for en uge"
+                            ),
+                          ),
+                          Switch(value: true, onChanged: (newVal) {})
+                        ],
+                      );
+                    }),),
             _NewGoalButton(
               leading: Icon(Icons.emoji_flags_sharp),
               title: "Tilføj et Ekstra-Mål",
@@ -148,29 +173,51 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                       final double space = 10;
                       return Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+                        EdgeInsets.symmetric(vertical: 30, horizontal: 40),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text("Ekstra-Mål",style: Theme.of(context).textTheme.titleLarge,),
-                            Text("Her kan du vælge at lave et mål ud fra dit daglige mål",style: Theme.of(context).textTheme.labelMedium,),
-                            SizedBox(height: 10,),
+                            Text(
+                              "Ekstra-Mål",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .titleLarge,
+                            ),
+                            Text(
+                              "Her kan du vælge at lave et mål ud fra dit daglige mål",
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .labelMedium,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             _ExtraGoalButton(
                               title: "Uge mål",
-                              onTap: () {},
+                              onTap: () {
+
+                              },
                             ),
-                            SizedBox(height: space,),
+                            SizedBox(
+                              height: space,
+                            ),
                             _ExtraGoalButton(
                               title: "Måned mål",
                               onTap: () {},
                             ),
-                            SizedBox(height: space,),
+                            SizedBox(
+                              height: space,
+                            ),
                             _ExtraGoalButton(
                               title: "År mål",
                               onTap: () {},
                             ),
-                            SizedBox(height: space,),
+                            SizedBox(
+                              height: space,
+                            ),
                             _ExtraGoalButton(
                               title: "Total mål",
                               onTap: () {},
@@ -224,12 +271,12 @@ class _ExtraGoalButton extends StatelessWidget {
 }
 
 class _NewGoalButton extends StatelessWidget {
-  const _NewGoalButton(
-      {super.key,
-      this.onPressed,
-      required this.title,
-      this.description,
-      this.trailing = const SizedBox(), this.leading = const SizedBox()});
+  const _NewGoalButton({super.key,
+    this.onPressed,
+    required this.title,
+    this.description,
+    this.trailing = const SizedBox(),
+    this.leading = const SizedBox()});
 
   final Function()? onPressed;
   final Widget leading;
@@ -246,7 +293,9 @@ class _NewGoalButton extends StatelessWidget {
         child: Row(
           children: [
             leading,
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Text(
               title,
             ),
