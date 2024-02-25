@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -41,9 +43,10 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
         TextSpan(text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
         TextSpan(text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
         TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
-            TextSpan(text: "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
-
-          ])),
+        TextSpan(
+            text:
+                "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
+      ])),
     );
   }
 
@@ -138,34 +141,82 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             _NewGoalButton(
               trailing: Icon(Icons.add),
               title: "Tilføj et ekstra-mål",
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      final double space = 10;
+                      return Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _ExtraGoalButton(
+                              title: "Uge mål",
+                              onTap: () {},
+                            ),
+                            SizedBox(height: space,),
+                            _ExtraGoalButton(
+                              title: "Måned mål",
+                              onTap: () {},
+                            ),
+                            SizedBox(height: space,),
+                            _ExtraGoalButton(
+                              title: "År mål",
+                              onTap: () {},
+                            ),
+                            SizedBox(height: space,),
+                            _ExtraGoalButton(
+                              title: "Total mål",
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              },
             ),
-            SizedBox(
-              height: 40,
-            ),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  border:
-                      Border.all(color: Theme.of(context).colorScheme.outline)),
-              child: Column(
-                children: [
-                  generateRoutineText,
-                  CheckboxListTile(
-                    enabled: _filledRequiredTexts,
-                    value: false,
-                    onChanged: (bool? newVal) {},
-                    title: Text("Det er jeg klar på!"),
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),
     );
+  }
+}
+
+class _ExtraGoalButton extends StatelessWidget {
+  const _ExtraGoalButton({super.key, required this.title, this.onTap});
+
+  final String title;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+        onPressed: onTap,
+        style: ButtonStyle(
+            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              textAlign: TextAlign.start,
+            ),
+            Spacer(),
+            Container(
+              width: 1,
+              height: 50,
+              color: Colors.black.withOpacity(0.3),
+            ),
+            SizedBox(
+              width: 12,
+            ),
+            Icon(Icons.add),
+          ],
+        ));
   }
 }
 
