@@ -6,6 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:productivity_app/models/unit.dart';
 import 'package:productivity_app/pages/add_activity_amount/add_activity_amount.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
+import 'package:productivity_app/pages/home/widgets/show_amount_goals.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:productivity_app/shared/extensions/double_extension.dart';
 import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
@@ -75,8 +76,19 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
 
   DateTime get _currentDay => DateTime.now();
 
-  late List<bool> expanded =
-      List.generate(activeCheckmarkGoalsSelectedDay.length, (index) => false);
+  late List<bool> _expandedCheckmarkGoals;
+
+  late List<bool> _expandedAmountGoals;
+
+  @override
+  void initState() {
+    _expandedCheckmarkGoals =
+        List.generate(activeCheckmarkGoalsSelectedDay.length, (index) => false);
+    _expandedAmountGoals =
+        List.generate(activeAmountGoalsSelectedDay.length, (index) => false);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,355 +188,208 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                   ],
                 ),
               )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ExpansionPanelList(
-                    expansionCallback: (int, bool) {
-                      setState(() {
-                        expanded[int] = bool;
-                      });
-                    },
-                    elevation: 2,
-                    children: List.generate(
-                        activeCheckmarkGoalsSelectedDay.length, (index) {
-                      CheckmarkGoal currentGoal =
-                          activeCheckmarkGoalsSelectedDay[index];
-                      return ExpansionPanel(
-                        isExpanded: expanded[index],
-                        headerBuilder: (context, isOpen) {
-                          return Container(
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                DisplayActionType(
-                                  actionType: currentGoal.actionType,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                ),
-                                currentGoal.isDateDone(_currentDay)
-                                    ? FilledButton(
-                                  onPressed: _currentDay.isToday
-                                      ? () => widget
-                                      .onCheckmarkGoalDoneDateDelete(
-                                      currentGoal, _currentDay)
-                                      : null,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.check_circle),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("Udført!"),
-                                    ],
-                                    mainAxisSize: MainAxisSize.min,
-                                  ),
-                                )
-                                    : OutlinedButton(
-                                  onPressed: _currentDay.isToday
-                                      ? () =>
-                                      widget.onCheckMarkGoalDoneDateAdd(
-                                          currentGoal, _currentDay)
-                                      : null,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.add_circle_outline),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("Udfør"),
-                                    ],
-                                    mainAxisSize: MainAxisSize.min,
-                                  ),
-                                ),
-                                _GoalMenuOptions(
-                                  onDelete: () =>
-                                      widget.onCheckmarkGoalDelete != null
-                                          ? widget.onCheckmarkGoalDelete!(
-                                              currentGoal)
-                                          : null,
-                                  onLogPress: () => debugPrint("Show logs"),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                        body: Container(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            children: [
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Ugens mål (${currentGoal.daysPerWeek})",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  )),
-                              WeekdaySelector(
-                                onChanged: (newDate) {
-                                  DateTime dateToAdd = _currentDay
-                                      .subtract(Duration(
-                                          days: _currentDay.weekday - newDate))
-                                      .onlyYearMonthDay;
-                          
-                                  !currentGoal.doneDates.contains(dateToAdd)
-                                      ? widget.onCheckMarkGoalDoneDateAdd(
-                                          currentGoal, dateToAdd)
-                                      : widget.onCheckmarkGoalDoneDateDelete(
-                                          currentGoal, dateToAdd);
-                                },
-                                values: makeValuesList(
-                                    currentGoal.doneDaysOfWeekFromWeekNr(
-                                        _currentDay.weekOfYear),
-                                    _currentDay,
-                                    currentGoal.startDate),
-                                elevation: 0,
-                                shortWeekdays: [
-                                  "S",
-                                  "M",
-                                  "T",
-                                  "O",
-                                  "T",
-                                  "F",
-                                  "L"
-                                ],
-                                shape: CircleBorder(
-                                    side: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        width: 2)),
-                              ),
-                              Row(
-                                children: [
-                                  AnimatedDigitWidget(
-                                    value: currentGoal
-                                        .doneDaysOfWeekFromWeekNr(
-                                            _currentDay.weekOfYear)
-                                        .length,
-                                    textStyle: _labelTextStyle,
-                                  ),
-                                  Text(
-                                    "/${currentGoal.daysPerWeek} udførte",
-                                    style: _labelTextStyle,
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    "${currentGoal.weeksUntilEndDateFromNow} uger tilbage",
-                                    style: _labelTextStyle,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                  Column(
-                    children: List.generate(activeAmountGoalsSelectedDay.length,
-                        (index) {
-                      AmountGoal _currentGoal =
-                          activeAmountGoalsSelectedDay[index];
-
-                      ///TODO: make theese a method in the goal class
-                      double _amountDone =
-                          _currentGoal.doneAmountActivities.totalAmountDone;
-                      double _percent = _amountDone / _currentGoal.amountGoal;
-
-                      double _totalAmountLeft =
-                          _currentGoal.amountGoal - _amountDone;
-
-                      List<DoneAmountActivity> _doneActivitiesToday =
-                          _currentGoal.doneAmountActivities
-                              .where((element) =>
-                                  element.date.isSameDate(_currentDay))
-                              .toList();
-
-                      List<DoneAmountActivity> _doneActivitiesInPast =
-                          _currentGoal.doneAmountActivities
-                              .where((element) => element.date.onlyYearMonthDay
-                                  .isBefore(_currentDay.onlyYearMonthDay))
-                              .toList();
-
-                      double _goalForToday = (_currentGoal.amountGoal -
-                              _doneActivitiesInPast.totalAmountDone) /
-                          (_currentGoal.daysUntilEndDateFromNow + 1);
-                      double _percentForToday =
-                          _doneActivitiesToday.totalAmountDone / _goalForToday;
-
-                      double _amountLeftToday =
-                          _goalForToday - _doneActivitiesToday.totalAmountDone;
-
-                      String _displayUnitString =
-                          _currentGoal.chosenUnit != Units.unitLess
-                              ? _currentGoal.chosenUnit.shortStringName
-                              : 'gange';
-
-                      return _GoalCard(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            : ExpansionPanelList(
+                expansionCallback: (int, bool) {
+                  setState(() {
+                    _expandedCheckmarkGoals[int] = bool;
+                  });
+                },
+                elevation: 2,
+                children: List.generate(activeCheckmarkGoalsSelectedDay.length,
+                    (index) {
+                  CheckmarkGoal currentGoal =
+                      activeCheckmarkGoalsSelectedDay[index];
+                  return ExpansionPanel(
+                    isExpanded: _expandedCheckmarkGoals[index],
+                    headerBuilder: (context, isOpen) {
+                      return Container(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                DisplayActionType(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  actionType: _currentGoal.actionType,
-                                  axisDirection: Axis.horizontal,
-                                ),
-                                Spacer(),
-                                TextButton.icon(
-                                  label: Text("Tilføj"),
-                                  icon: Icon(
-                                    Icons.add_circle_outlined,
-                                    size: 25,
-                                  ),
-                                  onPressed: _currentDay.isToday
-                                      ? () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddActivityAmount(
-                                                    onComplete: (DoneAmountActivity
-                                                            doneAmount) =>
-                                                        widget
-                                                            .onAmountGoalActivityAdded(
-                                                                _currentGoal,
-                                                                doneAmount),
-                                                    actionType:
-                                                        _currentGoal.actionType,
-                                                    date: _currentDay,
-                                                    goalEndDate:
-                                                        _currentGoal.endDate,
-                                                    goalStartDate:
-                                                        _currentGoal.startDate,
-                                                  )))
-                                      : null,
-                                ),
-                                _GoalMenuOptions(
-                                  onLogPress: () =>
-                                      widget.onAmountActionsLog(_currentGoal),
-                                  onDelete: () => widget.onAmountGoalDelete !=
-                                          null
-                                      ? widget.onAmountGoalDelete!(_currentGoal)
-                                      : null,
-                                )
-                              ],
+                            DisplayActionType(
+                              actionType: currentGoal.actionType,
+                              mainAxisAlignment: MainAxisAlignment.start,
                             ),
-                            _currentGoal.frequencyFormat ==
-                                    GoalFrequencyFormats.inTotal
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Dagens mål (${_goalForToday.myDoubleToString})",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      LinearPercentIndicator(
-                                          barRadius: Radius.circular(20),
-                                          percent: _percentForToday <= 1
-                                              ? _percentForToday
-                                              : 1,
-                                          progressColor: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          lineHeight: 14,
-                                          animation: true,
-                                          animationDuration: 1000,
-                                          leading: _MyAnimatedPercent(
-                                              val: (_percentForToday * 100))),
-                                      Row(
-                                        children: [
-                                          _amountLeftToday > 0
-                                              ? AnimatedDigitWidget(
-                                                  duration: 1500.milliseconds,
-                                                  value: _amountLeftToday,
-                                                  textStyle: _labelTextStyle,
-                                                )
-                                              : SizedBox(),
-                                          Text(
-                                            _amountLeftToday > 0
-                                                ? " $_displayUnitString tilbage"
-                                                : "Fuldført!",
-                                            style: _labelTextStyle,
-                                          ),
-                                          Spacer(),
-                                          AnimatedDigitWidget(
-                                            value: _doneActivitiesToday
-                                                .totalAmountDone,
-                                            textStyle: _labelTextStyle,
-                                            duration: 1500.milliseconds,
-                                          ),
-                                          Text(
-                                            "/${_goalForToday.myDoubleToString} $_displayUnitString",
-                                            style: _labelTextStyle,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                    ],
+                            currentGoal.isDateDone(_currentDay)
+                                ? FilledButton(
+                                    onPressed: _currentDay.isToday
+                                        ? () => widget
+                                            .onCheckmarkGoalDoneDateDelete(
+                                                currentGoal, _currentDay)
+                                        : null,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.check_circle),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text("Udført!"),
+                                      ],
+                                      mainAxisSize: MainAxisSize.min,
+                                    ),
                                   )
-                                : SizedBox(),
-                            Text(
-                              _currentGoal.frequencyFormat ==
-                                      GoalFrequencyFormats.inTotal
-                                  ? "Totalt mål (${_totalAmountLeft > 0 ? _currentGoal.amountGoal.myDoubleToString : 'Fuldført!'})"
-                                  : _currentGoal.frequencyFormat ==
-                                          GoalFrequencyFormats.perWeek
-                                      ? "Ugens mål"
-                                      : _currentGoal.frequencyFormat ==
-                                              GoalFrequencyFormats.perDay
-                                          ? "Dagens mål"
-                                          : "FEJL!!",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            LinearPercentIndicator(
-                              barRadius: Radius.circular(20),
-                              percent: _percent > 1 ? 1 : _percent,
-                              progressColor:
-                                  Theme.of(context).colorScheme.primary,
-                              lineHeight: 11,
-                              animation: true,
-                              animationDuration: 1000,
-                              leading: _MyAnimatedPercent(
-                                val: _percent * 100,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Slut: ${DateFormat("dd/MM/yyyy").format(_currentGoal.endDate)} "
-                                  "(${_currentGoal.daysUntilEndDateFromNow} d)",
-                                  style: _labelTextStyle,
-                                ),
-                                Spacer(),
-                                AnimatedDigitWidget(
-                                  value: _amountDone,
-                                  textStyle: _labelTextStyle,
-                                  duration: 1500.milliseconds,
-                                ),
-                                Text(
-                                  "/${_currentGoal.amountGoal.myDoubleToString} $_displayUnitString ",
-                                  style: _labelTextStyle,
-                                ),
-                              ],
-                            ),
+                                : OutlinedButton(
+                                    onPressed: _currentDay.isToday
+                                        ? () =>
+                                            widget.onCheckMarkGoalDoneDateAdd(
+                                                currentGoal, _currentDay)
+                                        : null,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.add_circle_outline),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text("Udfør"),
+                                      ],
+                                      mainAxisSize: MainAxisSize.min,
+                                    ),
+                                  ),
+                            GoalMenuOptions(
+                              onDelete: () => widget.onCheckmarkGoalDelete !=
+                                      null
+                                  ? widget.onCheckmarkGoalDelete!(currentGoal)
+                                  : null,
+                              onLogPress: () => debugPrint("Show logs"),
+                            )
                           ],
                         ),
                       );
-                    }),
+                    },
+                    body: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Ugens mål (${currentGoal.daysPerWeek})",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              )),
+                          WeekdaySelector(
+                            onChanged: (newDate) {
+                              DateTime dateToAdd = _currentDay
+                                  .subtract(Duration(
+                                      days: _currentDay.weekday - newDate))
+                                  .onlyYearMonthDay;
+
+                              !currentGoal.doneDates.contains(dateToAdd)
+                                  ? widget.onCheckMarkGoalDoneDateAdd(
+                                      currentGoal, dateToAdd)
+                                  : widget.onCheckmarkGoalDoneDateDelete(
+                                      currentGoal, dateToAdd);
+                            },
+                            values: makeValuesList(
+                                currentGoal.doneDaysOfWeekFromWeekNr(
+                                    _currentDay.weekOfYear),
+                                _currentDay,
+                                currentGoal.startDate),
+                            elevation: 0,
+                            shortWeekdays: ["S", "M", "T", "O", "T", "F", "L"],
+                            shape: CircleBorder(
+                                side: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    width: 2)),
+                          ),
+                          Row(
+                            children: [
+                              AnimatedDigitWidget(
+                                value: currentGoal
+                                    .doneDaysOfWeekFromWeekNr(
+                                        _currentDay.weekOfYear)
+                                    .length,
+                                textStyle: _labelTextStyle,
+                              ),
+                              Text(
+                                "/${currentGoal.daysPerWeek} udførte",
+                                style: _labelTextStyle,
+                              ),
+                              Spacer(),
+                              Text(
+                                "${currentGoal.weeksUntilEndDateFromNow} uger tilbage",
+                                style: _labelTextStyle,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                })),
+        Divider(
+          height: 0,
+        ),
+        ExpansionPanelList(
+          expansionCallback: (index, bool) {
+            setState(() {
+              _expandedAmountGoals[index] = bool;
+            });
+          },
+          children: List.generate(activeAmountGoalsSelectedDay.length, (index) {
+            AmountGoal currentGoal = activeAmountGoalsSelectedDay[index];
+            return ExpansionPanel(
+                isExpanded: _expandedAmountGoals[index],
+                headerBuilder: (context, bool) {
+                  return Container(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        DisplayActionType(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          actionType: currentGoal.actionType,
+                          axisDirection: Axis.horizontal,
+                        ),
+                        Spacer(),
+                        TextButton.icon(
+                          label: Text("Tilføj"),
+                          icon: Icon(
+                            Icons.add_circle_outlined,
+                            size: 25,
+                          ),
+                          onPressed: _currentDay.isToday
+                              ? () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddActivityAmount(
+                                            onComplete: (DoneAmountActivity
+                                                    doneAmount) =>
+                                                widget
+                                                    .onAmountGoalActivityAdded(
+                                                        currentGoal,
+                                                        doneAmount),
+                                            actionType: currentGoal.actionType,
+                                            date: _currentDay,
+                                            goalEndDate: currentGoal.endDate,
+                                            goalStartDate:
+                                                currentGoal.startDate,
+                                          )))
+                              : null,
+                        ),
+                        GoalMenuOptions(
+                          onLogPress: () =>
+                              widget.onAmountActionsLog(currentGoal),
+                          onDelete: () => widget.onAmountGoalDelete != null
+                              ? widget.onAmountGoalDelete!(currentGoal)
+                              : null,
+                        )
+                      ],
+                    ),
+                  );
+                },
+                body: Container(
+                  padding: EdgeInsets.all(20),
+                  child: ShowAmountGoals(
+                    goals: activeAmountGoalsSelectedDay,
+                    currentDay: _currentDay,
+                    onAmountGoalActivityAdded: widget.onAmountGoalActivityAdded,
+                    onAmountActionsLog: widget.onAmountActionsLog,
+                    onAmountGoalDelete: widget.onAmountGoalDelete,
                   ),
-                ],
-              ),
+                ));
+          }),
+        ),
         SizedBox(
           height: 20,
         ),
@@ -564,8 +429,8 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
   }
 }
 
-class _GoalMenuOptions extends StatelessWidget {
-  const _GoalMenuOptions({this.onDelete, this.onLogPress, this.onEdit});
+class GoalMenuOptions extends StatelessWidget {
+  const GoalMenuOptions({this.onDelete, this.onLogPress, this.onEdit});
 
   final Function()? onDelete;
   final Function()? onEdit;
@@ -622,67 +487,5 @@ class _GoalMenuOptions extends StatelessWidget {
                     title: Text("Slet"),
                   )),
             ]);
-  }
-}
-
-class _GoalCard extends StatelessWidget {
-  const _GoalCard({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: child,
-      margin: EdgeInsets.only(top: 16),
-      padding: EdgeInsets.all(14),
-      decoration: BoxDecoration(
-          color: Colors.grey[100], borderRadius: BorderRadius.circular(10)),
-    );
-  }
-}
-
-class _MyAnimatedPercent extends StatelessWidget {
-  const _MyAnimatedPercent({required this.val, this.style});
-
-  final double val;
-  final TextStyle? style;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedDigitWidget(
-      duration: 1500.milliseconds,
-      value: val,
-      suffix: "%",
-      decimalSeparator: ",",
-      textStyle: style ?? Theme.of(context).textTheme.bodyMedium,
-    );
-  }
-}
-
-class _DayChanger extends StatelessWidget {
-  const _DayChanger(
-      {required this.date, required this.onPrevDate, required this.onNextDate});
-
-  final DateTime date;
-  final Function(DateTime oldDate)? onPrevDate;
-  final Function(DateTime oldDate)? onNextDate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-            onPressed: onPrevDate != null ? () => onPrevDate!(date) : null,
-            icon: Icon(Icons.keyboard_arrow_left)),
-        Text(date.onlyYearMonthDay == DateTime.now().onlyYearMonthDay
-            ? "i dag"
-            : DateFormat("EEE. dd. MMM. yyyy").format(date)),
-        IconButton(
-            onPressed: onNextDate != null ? () => onNextDate!(date) : null,
-            icon: Icon(Icons.keyboard_arrow_right)),
-      ],
-    );
   }
 }
