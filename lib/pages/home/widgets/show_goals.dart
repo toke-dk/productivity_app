@@ -321,75 +321,86 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
         Divider(
           height: 0,
         ),
-        ExpansionPanelList(
-          expansionCallback: (index, bool) {
-            setState(() {
-              _expandedAmountGoals[index] = bool;
-            });
-          },
-          children: List.generate(activeAmountGoalsSelectedDay.length, (index) {
-            AmountGoal currentGoal = activeAmountGoalsSelectedDay[index];
-            return ExpansionPanel(
-                isExpanded: _expandedAmountGoals[index],
-                headerBuilder: (context, bool) {
-                  return Container(
-                    padding: EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        DisplayActionType(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          actionType: currentGoal.actionType,
-                          axisDirection: Axis.horizontal,
-                        ),
-                        Spacer(),
-                        TextButton.icon(
-                          label: Text("Tilføj"),
-                          icon: Icon(
-                            Icons.add_circle_outlined,
-                            size: 25,
-                          ),
-                          onPressed: _currentDay.isToday
-                              ? () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddActivityAmount(
-                                            onComplete: (DoneAmountActivity
-                                                    doneAmount) =>
-                                                widget
-                                                    .onAmountGoalActivityAdded(
-                                                        currentGoal,
-                                                        doneAmount),
-                                            actionType: currentGoal.actionType,
-                                            date: _currentDay,
-                                            goalEndDate: currentGoal.endDate,
-                                            goalStartDate:
-                                                currentGoal.startDate,
-                                          )))
-                              : null,
-                        ),
-                        GoalMenuOptions(
-                          onLogPress: () =>
-                              widget.onAmountActionsLog(currentGoal),
-                          onDelete: () => widget.onAmountGoalDelete != null
-                              ? widget.onAmountGoalDelete!(currentGoal)
-                              : null,
-                        )
-                      ],
-                    ),
-                  );
+        Column(
+            children:
+                List.generate(activeAmountGoalsSelectedDay.length, (index) {
+          AmountGoal currentGoal = activeAmountGoalsSelectedDay[index];
+          return Column(
+            children: [
+              ExpansionPanelList(
+                expansionCallback: (_, bool) {
+                  setState(() {
+                    _expandedAmountGoals[index] = bool;
+                  });
                 },
-                body: Container(
-                  padding: EdgeInsets.all(20),
-                  child: ShowAmountGoals(
-                    goals: activeAmountGoalsSelectedDay,
-                    currentDay: _currentDay,
-                    onAmountGoalActivityAdded: widget.onAmountGoalActivityAdded,
-                    onAmountActionsLog: widget.onAmountActionsLog,
-                    onAmountGoalDelete: widget.onAmountGoalDelete,
-                  ),
-                ));
-          }),
-        ),
+                children: [
+                  ExpansionPanel(
+                      isExpanded: _expandedAmountGoals[index],
+                      headerBuilder: (context, bool) {
+                        return Container(
+                          padding: EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              DisplayActionType(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                actionType: currentGoal.actionType,
+                                axisDirection: Axis.horizontal,
+                              ),
+                              Spacer(),
+                              TextButton.icon(
+                                label: Text("Tilføj"),
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                  size: 25,
+                                ),
+                                onPressed: _currentDay.isToday
+                                    ? () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddActivityAmount(
+                                                  onComplete: (DoneAmountActivity
+                                                          doneAmount) =>
+                                                      widget
+                                                          .onAmountGoalActivityAdded(
+                                                              currentGoal,
+                                                              doneAmount),
+                                                  actionType:
+                                                      currentGoal.actionType,
+                                                  date: _currentDay,
+                                                  goalEndDate: currentGoal.endDate,
+                                                  goalStartDate:
+                                                      currentGoal.startDate,
+                                                )))
+                                    : null,
+                              ),
+                              GoalMenuOptions(
+                                onLogPress: () =>
+                                    widget.onAmountActionsLog(currentGoal),
+                                onDelete: () => widget.onAmountGoalDelete != null
+                                    ? widget.onAmountGoalDelete!(currentGoal)
+                                    : null,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      body: Container(
+                        padding: EdgeInsets.all(20),
+                        child: ShowAmountGoals(
+                          goals: activeAmountGoalsSelectedDay,
+                          currentDay: _currentDay,
+                          onAmountGoalActivityAdded:
+                              widget.onAmountGoalActivityAdded,
+                          onAmountActionsLog: widget.onAmountActionsLog,
+                          onAmountGoalDelete: widget.onAmountGoalDelete,
+                        ),
+                      )),
+                ],
+              ),
+              Divider(height: 0,),
+            ],
+          );
+        })),
         SizedBox(
           height: 20,
         ),
