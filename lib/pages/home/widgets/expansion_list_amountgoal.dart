@@ -1,7 +1,6 @@
 import 'package:animated_digit/animated_digit.dart';
 import 'package:flutter/material.dart';
 import 'package:productivity_app/pages/home/widgets/show_amount_goal.dart';
-import 'package:productivity_app/pages/home/widgets/show_goals.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -91,6 +90,8 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
     print(_amountGoalItemData.length);
     return Column(
       children: [
+
+        /// Making the amount goals first
         Column(
             children: _amountGoalItemData.map((indexGoal) {
           AmountGoal currentGoal = indexGoal.amountGoal;
@@ -177,6 +178,8 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
             ],
           );
         }).toList()),
+
+        /// Then making the checkmark goals
         Column(
             children: _checkmarkGoalItemData.map((indexGoal) {
           CheckmarkGoal currentGoal = indexGoal.checkmarkGoal;
@@ -343,4 +346,58 @@ class _CheckmarkGoalItem {
   bool isExpanded;
 
   _CheckmarkGoalItem({required this.checkmarkGoal, this.isExpanded = false});
+}
+
+class GoalMenuOptions extends StatelessWidget {
+  const GoalMenuOptions({this.onDelete, this.onLogPress, this.onEdit});
+
+  final Function()? onDelete;
+  final Function()? onEdit;
+  final Function()? onLogPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        itemBuilder: (context) => [
+          PopupMenuItem(
+              child: ListTile(
+                leading: Icon(
+                  Icons.history,
+                ),
+                title: Text("Logbog"),
+                onTap: onLogPress != null
+                    ? () {
+                  Navigator.pop(context);
+                  onLogPress!();
+                }
+                    : null,
+              )),
+          PopupMenuItem(
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text("Du er i gang med at slette et mål!"),
+                    content:
+                    Text(" Når du først har slettet et mål kan det "
+                        "ikke gendannes"),
+                    actions: [
+                      OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text("Anuller")),
+                      FilledButton(
+                          onPressed: () {
+                            onDelete != null ? onDelete!() : null;
+                            onDelete != null
+                                ? Navigator.pop(context)
+                                : null;
+                          },
+                          child: Text("Slet"))
+                    ],
+                  )),
+              child: ListTile(
+                leading: Icon(Icons.delete),
+                title: Text("Slet"),
+              )),
+        ]);
+  }
 }
