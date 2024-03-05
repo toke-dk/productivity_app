@@ -94,6 +94,7 @@ class DataBaseService {
   Future<List<AmountGoal>> getAmountGoals() async {
     final List<Map<String, dynamic>> maps =
         await _db?.query(tableAmountGoalName) ?? [];
+    print("maps: ${maps.length}");
     return List.generate(
         maps.length, (index) => AmountGoal.fromMap(maps[index]));
   }
