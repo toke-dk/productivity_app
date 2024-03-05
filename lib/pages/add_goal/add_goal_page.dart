@@ -56,6 +56,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
     return false;
   }
 
+  DateTime _firstDateOption = DateTime(DateTime.now().year - 10,DateTime.now().month, DateTime.now().day);
+  DateTime _lastDateOption = DateTime(DateTime.now().year + 10,DateTime.now().month, DateTime.now().day);
+
+
   List<Step> _steps() => [
         Step(
             title: Text("Vælg handling"),
@@ -140,8 +144,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
+                          firstDate: _firstDateOption,
+                          lastDate: _lastDateOption,
                           initialDate: _selectedStartDate);
                       if (pickedDate != null &&
                           pickedDate != _selectedStartDate) {
@@ -181,8 +185,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
+                          firstDate: _firstDateOption,
+                          lastDate: _lastDateOption,
                           initialDate: _selectedEndDate);
                       if (pickedDate != null &&
                           pickedDate != _selectedEndDate) {
