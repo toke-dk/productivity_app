@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 
 # Versioning: https://stackoverflow.com/questions/2864448/best-practice-software-versioning
-version: 1.2.0+9
+version: 1.2.1+10
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
