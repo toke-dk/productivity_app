@@ -1,5 +1,6 @@
 import 'package:animated_digit/animated_digit.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:productivity_app/pages/home/widgets/show_amount_goal.dart';
@@ -67,7 +68,10 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _isFirstLaunch().then((value) {
-        if (value) ShowCaseWidget.of(myContext!).startShowCase([_key]);
+        if (value &&
+            (_amountGoalItemData.isNotEmpty ||
+                _checkmarkGoalItemData.isNotEmpty))
+          ShowCaseWidget.of(myContext!).startShowCase([_key]);
       });
     });
     super.initState();
@@ -79,7 +83,7 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
     bool isFirstLaunch =
         sharedPreferences.getBool(firstSeeingPrefString) ?? true;
 
-    // isFirstLaunch = true;
+    //if (kDebugMode) isFirstLaunch = true;
     if (isFirstLaunch) sharedPreferences.setBool(firstSeeingPrefString, false);
 
     print(isFirstLaunch);

@@ -21,77 +21,75 @@ class _PageTwoIntroScreenState extends State<PageTwoIntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Fantastisk!",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(fontWeight: FontWeight.bold),
-              ).animate().fadeIn(duration: animationDuration).moveX(begin: -10,duration: animationDuration),
-              Text(
-                "Lad os komme i gang",
-                style: Theme.of(context).textTheme.titleMedium,
-              ).animate(delay: 500.milliseconds).fadeIn(duration: animationDuration).moveX(begin: -10,duration: animationDuration),
-              SizedBox(
-                height: 40,
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(
-                      text: "Kaldenavn *",
-                      onChanged: (String newVal) {
-                        setState(() {
-                          nickNameVal = newVal;
-                        });
-                      }).animate(delay: animationDuration*1.3).fadeIn(duration: animationDuration)),
-              SizedBox(
-                height: 40,
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(
-                      text: "Fornavn (valgfri)",
-                      onChanged: (String newVal) {
-                        setState(() {
-                          firstNameVal = newVal;
-                        });
-                      }).animate(delay: animationDuration*1.6).fadeIn(duration: animationDuration)),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: myTextField(
-                      text: "Efternavn (valgfri)",
-                      onChanged: (String newVal) {
-                        setState(() {
-                          lastNameVal = newVal;
-                        });
-                      }).animate(delay: animationDuration*1.9).fadeIn(duration: animationDuration)),
-              Spacer(
-                flex: 8,
-              ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: FilledButton(
-                    onPressed: nickNameVal != ""
-                        ? () => widget.onCompletePress(
-                            nickNameVal,
-                            firstNameVal != "" ? firstNameVal : null,
-                            lastNameVal != "" ? lastNameVal : null)
-                        : null,
-                    child: Text("Start Rejsen")),
-              ),
-              Spacer()
-            ],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: Column(
+               children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Fantastisk!",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ).animate().fadeIn(duration: animationDuration).moveX(begin: -10,duration: animationDuration),
+                Text(
+                  "Lad os komme i gang",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ).animate(delay: 500.milliseconds).fadeIn(duration: animationDuration).moveX(begin: -10,duration: animationDuration),
+                SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: myTextField(
+                        text: "Kaldenavn *",
+                        onChanged: (String newVal) {
+                          setState(() {
+                            nickNameVal = newVal;
+                          });
+                        }).animate(delay: animationDuration*1.3).fadeIn(duration: animationDuration)),
+                SizedBox(
+                  height: 40,
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: myTextField(
+                        text: "Fornavn (valgfri)",
+                        onChanged: (String newVal) {
+                          setState(() {
+                            firstNameVal = newVal;
+                          });
+                        }).animate(delay: animationDuration*1.6).fadeIn(duration: animationDuration)),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: myTextField(
+                        text: "Efternavn (valgfri)",
+                        onChanged: (String newVal) {
+                          setState(() {
+                            lastNameVal = newVal;
+                          });
+                        }).animate(delay: animationDuration*1.9).fadeIn(duration: animationDuration)),
+                SizedBox(height: 20,),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: FilledButton(
+                      onPressed: nickNameVal != ""
+                          ? () => widget.onCompletePress(
+                              nickNameVal,
+                              firstNameVal != "" ? firstNameVal : null,
+                              lastNameVal != "" ? lastNameVal : null)
+                          : null,
+                      child: Text("Start Rejsen")),
+                ),
+              ],
+            ),
           ),
         ),
       ),
