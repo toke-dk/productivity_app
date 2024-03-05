@@ -287,7 +287,7 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
                                                   ? () => widget
                                                       .onCheckmarkGoalDoneDateDelete(
                                                           currentGoal,
-                                                          widget.currentDay)
+                                                          widget.currentDay.onlyYearMonthDay)
                                                   : null,
                                               child: Row(
                                                 children: [
@@ -306,7 +306,7 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
                                                   ? () => widget
                                                       .onCheckMarkGoalDoneDateAdd(
                                                           currentGoal,
-                                                          widget.currentDay)
+                                                          widget.currentDay.onlyYearMonthDay)
                                                   : null,
                                               child: Row(
                                                 children: [
