@@ -12,7 +12,11 @@ import 'package:flutter/foundation.dart' as Foundation;
 import '../../models/activity.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title, required this.userData, required this.editUserData});
+  const MyHomePage(
+      {super.key,
+      required this.title,
+      required this.userData,
+      required this.editUserData});
 
   final UserData userData;
   final String title;
@@ -27,13 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await _databaseService.initDatabase();
-    });
-
     super.initState();
   }
-
 
   Future<List<AmountGoal>> _getAmountGoals() async {
     return _databaseService.getAmountGoals();
@@ -163,9 +162,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             });
                           },
                           onAmountGoalAdd: (AmountGoal amountGoal) {
-                            setState(() {
-                              _databaseService.addAmountGoal(amountGoal);
-                            });
+                            if (this.mounted)
+                              setState(() {
+                                _databaseService.addAmountGoal(amountGoal);
+                              });
                           },
                           onAmountActionsLog: (AmountGoal goal) {
                             Navigator.push(

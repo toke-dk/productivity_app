@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/home/home.dart';
 import 'package:productivity_app/pages/introduction_screens/main_intro_screens.dart';
+import 'package:productivity_app/services/database_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  DataBaseService _databaseService = DataBaseService();
+  await _databaseService.initDatabase();
+
   runApp(const MyApp());
 }
 

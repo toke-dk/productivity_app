@@ -29,7 +29,7 @@ class ActivityCard extends StatelessWidget {
             boxShadow: hasShadow ? [kMyThemedBoxShadow] : [],
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
-            border: selected ? Border.all(color: Colors.blue) : null,
+            border: selected ? Border.all(color: Colors.blue) : Border.all(color: Colors.transparent),
           ),
           child: DisplayActionType(
             dense: dense,
