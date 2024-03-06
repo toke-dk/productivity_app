@@ -150,8 +150,13 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                       title: Text("Tilføj et Ekstra-Mål"),
                       contentPadding: EdgeInsets.all(30),
                       children: [
-                        Text("Mål for en uge/måned/år", style: Theme.of(context).textTheme.bodyLarge,),
-                        SizedBox(height: 10,),
+                        Text(
+                          "Mål for en uge/måned/år",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -167,8 +172,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: TextField(
-                                    decoration: _myInputDecoration.copyWith(
-                                    ),
+                                    decoration: _myInputDecoration.copyWith(),
                                     controller: _controller,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
@@ -314,7 +318,9 @@ class _StartDateFieldState extends State<_StartDateField>
             ),
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         SwitchListTile(
           value: isVisible,
           onChanged: (newVal) {
@@ -331,7 +337,6 @@ class _StartDateFieldState extends State<_StartDateField>
           subtitle: Text("afslut rutinen når ekstra-målet er fuldført"),
         ),
       ],
-
     );
   }
 }

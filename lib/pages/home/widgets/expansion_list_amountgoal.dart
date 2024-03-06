@@ -1,8 +1,5 @@
 import 'package:animated_digit/animated_digit.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:productivity_app/pages/home/widgets/show_amount_goal.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
