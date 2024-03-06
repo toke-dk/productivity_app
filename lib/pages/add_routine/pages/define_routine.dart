@@ -50,9 +50,12 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
     );
   }
 
+  late TextEditingController _controller;
+
   @override
   void initState() {
     super.initState();
+    _controller = new TextEditingController(text: '0');
   }
 
   @override
@@ -166,6 +169,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                                   child: TextField(
                                     decoration: _myInputDecoration.copyWith(
                                     ),
+                                    controller: _controller,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
                                   ),
