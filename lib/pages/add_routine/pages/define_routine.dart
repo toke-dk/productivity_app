@@ -33,25 +33,20 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   bool _canContinue = true;
 
   Widget get generateRoutineText {
-    TextTheme textTheme = Theme
-        .of(context)
-        .textTheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Align(
       alignment: Alignment.centerLeft,
       child: RichText(
           text: TextSpan(style: textTheme.bodyMedium, children: [
-            TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
-            TextSpan(
-                text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
-            TextSpan(
-                text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
-            TextSpan(
-                text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
-            TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
-            TextSpan(
-                text:
+        TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
+        TextSpan(text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
+        TextSpan(text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
+        TextSpan(text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
+        TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
+        TextSpan(
+            text:
                 "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
-          ])),
+      ])),
     );
   }
 
@@ -101,7 +96,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                       },
                       dropdownMenuEntries: Frequencies.values
                           .map((e) =>
-                          DropdownMenuEntry(value: e, label: e.label))
+                              DropdownMenuEntry(value: e, label: e.label))
                           .toList()),
                 ),
               ),
@@ -133,36 +128,60 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             ),
             Text(
               "for én dag",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .labelMedium,
+              style: Theme.of(context).textTheme.labelMedium,
             )
                 .animate(
-                target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
+                    target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
                 .show()
                 .then()
                 .slide(),
             SizedBox(
               height: 10,
             ),
-            _NewGoalButton(title: "test", onPressed: () =>
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        title: Text("Tilføj et Ekstra-Mål"),
-                        contentPadding: EdgeInsets.all(30),
-                        children: [
-                          TextField(
-                            decoration: _myInputDecoration.copyWith(
-                                labelText: "Mål for en uge"
+            _NewGoalButton(
+              title: "test",
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      title: Text("Tilføj et Ekstra-Mål"),
+                      contentPadding: EdgeInsets.all(30),
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _ChangeValueIcon(
+                              subtract: true,
+                              onPressed: () {},
                             ),
-                          ),
-                          Switch(value: true, onChanged: (newVal) {})
-                        ],
-                      );
-                    }),),
+                            Expanded(
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: TextField(
+                                    decoration: _myInputDecoration.copyWith(
+                                      labelText: "Mål for en uge",
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            _ChangeValueIcon(
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _StartDateField(),
+                      ],
+                    );
+                  }),
+            ),
             _NewGoalButton(
               leading: Icon(Icons.emoji_flags_sharp),
               title: "Tilføj et Ekstra-Mål",
@@ -173,33 +192,25 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                       final double space = 10;
                       return Container(
                         padding:
-                        EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 40),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               "Ekstra-Mål",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .titleLarge,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text(
                               "Her kan du vælge at lave et mål ud fra dit daglige mål",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .labelMedium,
+                              style: Theme.of(context).textTheme.labelMedium,
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             _ExtraGoalButton(
                               title: "Uge mål",
-                              onTap: () {
-
-                              },
+                              onTap: () {},
                             ),
                             SizedBox(
                               height: space,
@@ -231,6 +242,93 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+const double _kPanelHeaderCollapsedHeight = kMinInteractiveDimension;
+const EdgeInsets _kPanelHeaderExpandedDefaultPadding = EdgeInsets.symmetric(
+  vertical: 64.0 - _kPanelHeaderCollapsedHeight,
+);
+
+class _StartDateField extends StatefulWidget {
+  const _StartDateField({super.key});
+
+  @override
+  State<_StartDateField> createState() => _StartDateFieldState();
+}
+
+class _StartDateFieldState extends State<_StartDateField>
+    with SingleTickerProviderStateMixin {
+  bool isVisible = false;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: 300.milliseconds,
+    );
+
+    _animation =
+        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SwitchListTile(
+          value: isVisible,
+          onChanged: (newVal) {
+            setState(() {
+              isVisible = !isVisible;
+              if (isVisible) {
+                _animationController.forward();
+              } else {
+                _animationController.reverse();
+              }
+            });
+          },
+          title: Text("Start dato"),
+        ),
+        SizeTransition(
+          sizeFactor: _animation,
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: Offset(0, -1),
+              end: Offset.zero,
+            ).animate(_animation),
+            child: Text(
+              'Her skal resten af widgets vær',
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ChangeValueIcon extends StatelessWidget {
+  const _ChangeValueIcon({super.key, this.subtract = false, this.onPressed});
+
+  final bool subtract;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 30,
+      height: 30,
+      child: FilledButton(
+          style: ButtonStyle(
+              padding: MaterialStatePropertyAll(EdgeInsets.all(0)),
+              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2)))),
+          onPressed: onPressed,
+          child: subtract ? Icon(Icons.remove) : Icon(Icons.add)),
     );
   }
 }
@@ -271,12 +369,13 @@ class _ExtraGoalButton extends StatelessWidget {
 }
 
 class _NewGoalButton extends StatelessWidget {
-  const _NewGoalButton({super.key,
-    this.onPressed,
-    required this.title,
-    this.description,
-    this.trailing = const SizedBox(),
-    this.leading = const SizedBox()});
+  const _NewGoalButton(
+      {super.key,
+      this.onPressed,
+      required this.title,
+      this.description,
+      this.trailing = const SizedBox(),
+      this.leading = const SizedBox()});
 
   final Function()? onPressed;
   final Widget leading;
