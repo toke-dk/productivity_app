@@ -147,21 +147,24 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                       title: Text("Tilføj et Ekstra-Mål"),
                       contentPadding: EdgeInsets.all(30),
                       children: [
+                        Text("Mål for en uge/måned/år", style: Theme.of(context).textTheme.bodyLarge,),
+                        SizedBox(height: 10,),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            Spacer(),
                             _ChangeValueIcon(
                               subtract: true,
                               onPressed: () {},
                             ),
-                            Expanded(
+                            Flexible(
+                              flex: 2,
                               child: Center(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: TextField(
                                     decoration: _myInputDecoration.copyWith(
-                                      labelText: "Mål for en uge",
                                     ),
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
@@ -172,10 +175,11 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                             _ChangeValueIcon(
                               onPressed: () {},
                             ),
+                            Spacer(),
                           ],
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         _StartDateField(),
                       ],
@@ -292,7 +296,7 @@ class _StartDateFieldState extends State<_StartDateField>
               }
             });
           },
-          title: Text("Start dato"),
+          title: Text("Start uge/måned/år"),
         ),
         SizeTransition(
           sizeFactor: _animation,
@@ -306,7 +310,24 @@ class _StartDateFieldState extends State<_StartDateField>
             ),
           ),
         ),
+        SizedBox(height: 20,),
+        SwitchListTile(
+          value: isVisible,
+          onChanged: (newVal) {
+            setState(() {
+              isVisible = !isVisible;
+              if (isVisible) {
+                _animationController.forward();
+              } else {
+                _animationController.reverse();
+              }
+            });
+          },
+          title: Text("Bestemt afslutning"),
+          subtitle: Text("afslut rutinen når ekstra-målet er fuldført"),
+        ),
       ],
+
     );
   }
 }
