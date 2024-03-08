@@ -55,15 +55,10 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
 
   @override
   void initState() {
-    print("h");
     _expandedCheckmarkGoals =
         List.generate(activeCheckmarkGoalsSelectedDay.length, (index) => false);
-    print(activeCheckmarkGoalsSelectedDay.length);
     _expandedAmountGoals =
         List.generate(activeAmountGoalsSelectedDay.length, (index) => false);
-
-    print("initstate");
-
     super.initState();
   }
 

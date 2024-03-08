@@ -184,7 +184,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           },
                         );
                       } else if (snapshot.hasError) {
-                        print(snapshot.stackTrace.toString());
                         return Text(snapshot.error.toString());
                       } else
                         return Center(child: CircularProgressIndicator());

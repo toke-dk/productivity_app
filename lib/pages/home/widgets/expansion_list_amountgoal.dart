@@ -85,8 +85,6 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
 
     //if (kDebugMode) isFirstLaunch = true;
     if (isFirstLaunch) sharedPreferences.setBool(firstSeeingPrefString, false);
-
-    print(isFirstLaunch);
     return isFirstLaunch;
   }
 
@@ -148,7 +146,6 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
 
   @override
   Widget build(BuildContext context) {
-    print(_amountGoalItemData.length);
     return ShowCaseWidget(
       builder: Builder(builder: (context) {
         myContext = context;
@@ -169,11 +166,9 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
                     children: [
                       ExpansionPanelList(
                         expansionCallback: (_, bool) {
-                          print(indexGoal.isExpanded);
                           setState(() {
                             indexGoal.isExpanded = bool;
                           });
-                          print(indexGoal.isExpanded);
                         },
                         children: [
                           ExpansionPanel(

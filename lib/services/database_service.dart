@@ -101,7 +101,6 @@ class DataBaseService {
   // Checkmark Goal
 
   Future<void> deleteCheckmarkGoal(CheckmarkGoal goal) async {
-    print(goal.id);
     await _db!
         .delete(tableCheckmarkGoalName, where: "id = ?", whereArgs: [goal.id]);
   }
