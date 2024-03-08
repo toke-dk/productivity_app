@@ -42,7 +42,6 @@ class _SettingsPageState extends State<SettingsPage> {
       saveButtonActive = nickNameChange || firstNameChange || lastNameChange;
     });
 
-    print("here: ${widget.userData.lastName.runtimeType}");
     return Scaffold(
       appBar: AppBar(
         title: Text("Indstillinger"),
