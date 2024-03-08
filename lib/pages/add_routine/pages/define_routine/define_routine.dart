@@ -142,10 +142,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               height: 10,
             ),
             _NewGoalButton(
-              title: "test",
-              onPressed: () => openAddExtraGoalDialog(TimeUnit.week),
-            ),
-            _NewGoalButton(
               leading: Icon(Icons.emoji_flags_sharp),
               title: "Tilføj et Ekstra-Mål",
               onPressed: () {
@@ -182,21 +178,29 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                             ),
                             ExtraGoalButton(
                               title: "Måned mål",
-                              onTap: () {},
+                              onTap: () {
+                                openAddExtraGoalDialog(TimeUnit.month);
+
+                              },
                             ),
                             SizedBox(
                               height: space,
                             ),
                             ExtraGoalButton(
                               title: "År mål",
-                              onTap: () {},
+                              onTap: () {
+                                openAddExtraGoalDialog(TimeUnit.year);
+
+                              },
                             ),
                             SizedBox(
                               height: space,
                             ),
                             ExtraGoalButton(
                               title: "Total mål",
-                              onTap: () {},
+                              onTap: () {
+                                openAddExtraGoalDialog(TimeUnit.total);
+                              },
                             ),
                           ],
                         ),

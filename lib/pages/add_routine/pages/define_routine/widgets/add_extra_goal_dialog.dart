@@ -7,9 +7,10 @@ import '../../../../../shared/decorations.dart';
 import '../define_routine.dart';
 
 enum TimeUnit {
-  year('år'),
-  month('måned'),
-  week("uge");
+  year('for et år'),
+  month('for en måned'),
+  total("i alt"),
+  week("for en uge");
   const TimeUnit(this.translatedName);
   final String translatedName;
 }
@@ -60,7 +61,7 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
       contentPadding: EdgeInsets.all(30),
       children: [
         Text(
-          "Mål for en ${widget.timeUnit.translatedName}",
+          "Mål ${widget.timeUnit.translatedName}",
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         SizedBox(
