@@ -53,6 +53,14 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
     );
   }
 
+  void openAddExtraGoalDialog(TimeUnit timeUnit) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AddExtraGoalDialog(timeUnit: timeUnit,);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -138,11 +146,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             ),
             _NewGoalButton(
               title: "test",
-              onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AddExtraGoalDialog();
-                  }),
+              onPressed: () => openAddExtraGoalDialog(TimeUnit.week),
             ),
             _NewGoalButton(
               leading: Icon(Icons.emoji_flags_sharp),
@@ -172,7 +176,9 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                             ),
                             _ExtraGoalButton(
                               title: "Uge mål",
-                              onTap: () {},
+                              onTap: () {
+                                openAddExtraGoalDialog(TimeUnit.week);
+                              },
                             ),
                             SizedBox(
                               height: space,
@@ -208,8 +214,18 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   }
 }
 
+enum TimeUnit {
+  year('år'),
+  month('måned'),
+  week("uge");
+  const TimeUnit(this.translatedName);
+  final String translatedName;
+}
+
+
 class AddExtraGoalDialog extends StatefulWidget {
-  const AddExtraGoalDialog({super.key});
+  final TimeUnit timeUnit;
+  const AddExtraGoalDialog({super.key, required this.timeUnit});
 
   @override
   State<AddExtraGoalDialog> createState() => _AddExtraGoalDialogState();
@@ -252,7 +268,7 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
       contentPadding: EdgeInsets.all(30),
       children: [
         Text(
-          "Mål for en uge/måned/år",
+          "Mål for en ${widget.timeUnit.translatedName}",
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         SizedBox(
@@ -305,7 +321,8 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
             });
           },
           title: Text("Afslutning"),
-          subtitle: Text("Vil du afslutte rutinen når ekstra-målet er fuldført?"),
+          subtitle:
+              Text("Vil du afslutte rutinen når ekstra-målet er fuldført?"),
         ),
         SizedBox(
           height: 18,
