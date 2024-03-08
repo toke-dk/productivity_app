@@ -1,8 +1,8 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
@@ -51,15 +51,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                 "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
       ])),
     );
-  }
-
-  late TextEditingController _controller;
-  int _goalValue = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = new TextEditingController(text: '0');
   }
 
   @override
@@ -150,52 +141,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               onPressed: () => showDialog(
                   context: context,
                   builder: (context) {
-                    return SimpleDialog(
-                      title: Text("Tilføj et Ekstra-Mål"),
-                      contentPadding: EdgeInsets.all(30),
-                      children: [
-                        Text(
-                          "Mål for en uge/måned/år",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Spacer(),
-                            _ChangeValueIcon(
-                              subtract: true,
-                              onPressed: () {},
-                            ),
-                            Flexible(
-                              flex: 2,
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: TextField(
-                                    decoration: myInputDecoration.copyWith(),
-                                    controller: _controller,
-                                    keyboardType: TextInputType.number,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            _ChangeValueIcon(
-                              onPressed: () {},
-                            ),
-                            Spacer(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        _StartDateField(),
-                      ],
-                    );
+                    return AddExtraGoalDialog();
                   }),
             ),
             _NewGoalButton(
@@ -262,6 +208,118 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   }
 }
 
+class AddExtraGoalDialog extends StatefulWidget {
+  const AddExtraGoalDialog({super.key});
+
+  @override
+  State<AddExtraGoalDialog> createState() => _AddExtraGoalDialogState();
+}
+
+class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
+  late TextEditingController _goalText;
+
+  @override
+  void initState() {
+    super.initState();
+    _goalText = new TextEditingController(text: '0');
+  }
+
+  void handleGoalValueDecrement() {
+    setState(() {
+      if (int.tryParse(_goalText.text) == null ||
+          int.parse(_goalText.text) <= 0)
+        _goalText.text = "0";
+      else
+        _goalText.text = (int.parse(_goalText.text) - 1).toString();
+    });
+  }
+
+  void handleGoalValueIncrement() {
+    setState(() {
+      if (int.tryParse(_goalText.text) == null || int.parse(_goalText.text) < 0)
+        _goalText.text = "1";
+      else
+        _goalText.text = (int.parse(_goalText.text) + 1).toString();
+    });
+  }
+
+  bool _exactEndDateActivated = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      title: Text("Tilføj et Ekstra-Mål"),
+      contentPadding: EdgeInsets.all(30),
+      children: [
+        Text(
+          "Mål for en uge/måned/år",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Spacer(),
+            _ChangeValueIcon(
+              subtract: true,
+              onPressed: () => handleGoalValueDecrement(),
+            ),
+            Flexible(
+              flex: 2,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: TextField(
+                    decoration: myInputDecoration.copyWith(),
+                    controller: _goalText,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            _ChangeValueIcon(
+              subtract: false,
+              onPressed: () {
+                handleGoalValueIncrement();
+              },
+            ),
+            Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        _StartDateField(),
+        SizedBox(
+          height: 20,
+        ),
+        SwitchListTile(
+          value: _exactEndDateActivated,
+          onChanged: (newVal) {
+            setState(() {
+              _exactEndDateActivated = !_exactEndDateActivated;
+            });
+          },
+          title: Text("Afslutning"),
+          subtitle: Text("Vil du afslutte rutinen når ekstra-målet er fuldført?"),
+        ),
+        SizedBox(
+          height: 18,
+        ),
+        FilledButton(
+            onPressed: () {
+              print("finished");
+            },
+            child: Text("Opret mål"))
+      ],
+    );
+  }
+}
+
 const double _kPanelHeaderCollapsedHeight = kMinInteractiveDimension;
 const EdgeInsets _kPanelHeaderExpandedDefaultPadding = EdgeInsets.symmetric(
   vertical: 64.0 - _kPanelHeaderCollapsedHeight,
@@ -289,15 +347,14 @@ class _StartDateFieldState extends State<_StartDateField>
       duration: 300.milliseconds,
     );
 
-    _dateTextController = TextEditingController(text: _themeFormat
-        .format(_selectedDate));
+    _dateTextController =
+        TextEditingController(text: _themeFormat.format(_selectedDate));
 
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
   }
 
   final DateFormat _themeFormat = DateFormat("EEE. dd. MMM. yyyy");
-
 
   DateTime _firstDateOption = DateTime(
       DateTime.now().year - 10, DateTime.now().month, DateTime.now().day);
@@ -332,8 +389,7 @@ class _StartDateFieldState extends State<_StartDateField>
                   firstDate: _firstDateOption,
                   lastDate: _lastDateOption,
                   initialDate: _selectedDate);
-              if (pickedDate != null &&
-                  pickedDate != _selectedDate) {
+              if (pickedDate != null && pickedDate != _selectedDate) {
                 setState(() {
                   _selectedDate = pickedDate;
                 });
@@ -348,32 +404,17 @@ class _StartDateFieldState extends State<_StartDateField>
               child: Row(
                 children: [
                   Icon(Icons.date_range),
-                  SizedBox(width: 20,),
-                  Text(DateFormat("EEE. dd. MMM. yyyy")
-                      .format(_selectedDate),),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    DateFormat("EEE. dd. MMM. yyyy").format(_selectedDate),
+                  ),
                   Spacer()
                 ],
               ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        SwitchListTile(
-          value: isVisible,
-          onChanged: (newVal) {
-            setState(() {
-              isVisible = !isVisible;
-              if (isVisible) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
-            });
-          },
-          title: Text("Bestemt afslutning"),
-          subtitle: Text("afslut rutinen når ekstra-målet er fuldført"),
         ),
       ],
     );
