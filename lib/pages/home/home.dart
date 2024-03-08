@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/models/user.dart';
+import 'package:productivity_app/pages/about_app_page.dart';
 import 'package:productivity_app/pages/actions_log_page.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
 import 'package:productivity_app/pages/settings/settings_page.dart';
@@ -84,6 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text("Feedback"),
                 onTap: launchFeedBackForm,
                 leading: Icon(Icons.open_in_new),
+              ),
+              ListTile(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutUsPage())),
+                leading: Icon(Icons.account_balance_sharp),
+                title: Text("Om Appen"),
               )
             ],
           ),
