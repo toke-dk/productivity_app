@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 
 import '../../../../shared/decorations.dart';
 import 'widgets/add_extra_goal_dialog.dart';
@@ -208,6 +209,8 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     });
               },
             ),
+            SizedBox(height: 10,),
+            ChooseFrequency()
           ],
         ),
       ),

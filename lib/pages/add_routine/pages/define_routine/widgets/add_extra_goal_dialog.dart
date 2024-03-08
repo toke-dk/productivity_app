@@ -11,13 +11,15 @@ enum TimeUnit {
   month('for en måned'),
   total("i alt"),
   week("for en uge");
+
   const TimeUnit(this.translatedName);
+
   final String translatedName;
 }
 
-
 class AddExtraGoalDialog extends StatefulWidget {
   final TimeUnit timeUnit;
+
   const AddExtraGoalDialog({super.key, required this.timeUnit});
 
   @override
@@ -33,26 +35,9 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
     _goalText = new TextEditingController(text: '0');
   }
 
-  void handleGoalValueDecrement() {
-    setState(() {
-      if (int.tryParse(_goalText.text) == null ||
-          int.parse(_goalText.text) <= 0)
-        _goalText.text = "0";
-      else
-        _goalText.text = (int.parse(_goalText.text) - 1).toString();
-    });
-  }
-
-  void handleGoalValueIncrement() {
-    setState(() {
-      if (int.tryParse(_goalText.text) == null || int.parse(_goalText.text) < 0)
-        _goalText.text = "1";
-      else
-        _goalText.text = (int.parse(_goalText.text) + 1).toString();
-    });
-  }
-
   bool _exactEndDateActivated = false;
+
+  int goalValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -67,37 +52,12 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
         SizedBox(
           height: 10,
         ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Spacer(),
-            _ChangeValueIcon(
-              subtract: true,
-              onPressed: () => handleGoalValueDecrement(),
-            ),
-            Flexible(
-              flex: 2,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: TextField(
-                    decoration: kMyInputDecoration.copyWith(),
-                    controller: _goalText,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-            _ChangeValueIcon(
-              subtract: false,
-              onPressed: () {
-                handleGoalValueIncrement();
-              },
-            ),
-            Spacer(),
-          ],
+        MyValueChanger(
+          handleValueChange: (int newVal) {
+            setState(() {
+              goalValue = newVal;
+            });
+          },
         ),
         SizedBox(
           height: 20,
@@ -115,7 +75,7 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
           },
           title: Text("Afslutning"),
           subtitle:
-          Text("Vil du afslutte rutinen når ekstra-målet er fuldført?"),
+              Text("Vil du afslutte rutinen når ekstra-målet er fuldført?"),
         ),
         SizedBox(
           height: 18,
@@ -125,6 +85,85 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
               print("finished");
             },
             child: Text("Opret mål"))
+      ],
+    );
+  }
+}
+
+class MyValueChanger extends StatefulWidget {
+  const MyValueChanger(
+      {super.key, required this.handleValueChange});
+
+  final Function(int newVal) handleValueChange;
+
+  @override
+  State<MyValueChanger> createState() => _MyValueChangerState();
+}
+
+class _MyValueChangerState extends State<MyValueChanger> {
+  void _handleGoalValueDecrement(String textValue) {
+    if (int.tryParse(textValue) == null || int.parse(textValue) <= 0) {
+      setState(() {
+        _controller.text = "0";
+      });
+      widget.handleValueChange(0);
+    } else {
+      setState(() {
+        _controller.text = (int.parse(textValue) - 1).toString();
+      });
+      widget.handleValueChange((int.parse(textValue) - 1));
+    }
+  }
+
+  void _handleGoalValueIncrement(String textValue) {
+    if (int.tryParse(textValue) == null || int.parse(textValue) < 0) {
+      setState(() {
+        _controller.text = "1";
+      });
+      widget.handleValueChange(1);
+    } else {
+      setState(() {
+        _controller.text = (int.parse(textValue) + 1).toString();
+      });
+      widget.handleValueChange((int.parse(textValue) + 1));
+    }
+  }
+
+  late TextEditingController _controller = TextEditingController(text: "0");
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Spacer(),
+        _ChangeValueIcon(
+          subtract: true,
+          onPressed: () => _handleGoalValueDecrement(_controller.text),
+        ),
+        Flexible(
+          flex: 2,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                decoration: kMyInputDecoration.copyWith(),
+                onChanged: (String newString) {
+                  widget.handleValueChange(int.parse(newString));
+                },
+                controller: _controller,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+        _ChangeValueIcon(
+            subtract: false,
+            onPressed: () =>
+                _handleGoalValueIncrement(_controller.text)),
+        Spacer(),
       ],
     );
   }
