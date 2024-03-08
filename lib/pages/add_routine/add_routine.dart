@@ -81,7 +81,7 @@ class _PageViewExampleState extends State<PageViewExample>
     Category(name: "Udendørs", child: Icon(Icons.grass), color: Colors.brown),
     Category(
         name: "Uddannelse", child: Icon(Icons.menu_book), color: Colors.purple),
-    Category(name: "Hjem", child: Icon(Icons.home), color: Colors.black),
+    Category(name: "Rengøring", child: Icon(Icons.cleaning_services), color: Colors.black),
     Category(name: "Teknologisk", child: Icon(Icons.code), color: Colors.indigo),
     Category(name: "Andre", child: Icon(Icons.more_horiz), color: Colors.teal),
   ];

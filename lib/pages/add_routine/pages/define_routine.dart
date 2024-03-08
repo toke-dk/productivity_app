@@ -1,9 +1,12 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
+import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 
 enum Frequencies {
   atLeast("Mindst"),
@@ -51,6 +54,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   }
 
   late TextEditingController _controller;
+  int _goalValue = 0;
 
   @override
   void initState() {
@@ -69,7 +73,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             widget.pageTitle,
             TextField(
                 textCapitalization: TextCapitalization.words,
-                decoration: _myInputDecoration.copyWith(
+                decoration: myInputDecoration.copyWith(
                     labelText: "Rutine*", hintText: "Navn på din rutine...")),
             SizedBox(
               height: 20,
@@ -77,7 +81,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             TextField(
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 3,
-                decoration: _myInputDecoration.copyWith(
+                decoration: myInputDecoration.copyWith(
                     hintText: "Med denne rutine skal jeg...",
                     labelText: "Forklaring (valgfri)",
                     alignLabelWithHint: true)),
@@ -113,7 +117,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     child: TextField(
                         keyboardType: TextInputType.number,
                         enabled: selectedFrequency != Frequencies.unLimited,
-                        decoration: _myInputDecoration.copyWith(
+                        decoration: myInputDecoration.copyWith(
                           labelText: "Mål*",
                         ))),
                 SizedBox(
@@ -121,7 +125,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                 ),
                 Expanded(
                     child: TextField(
-                        decoration: _myInputDecoration.copyWith(
+                        decoration: myInputDecoration.copyWith(
                             labelText: "Enhed (valgfri)",
                             hintText: "eks. km."))),
               ],
@@ -172,7 +176,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: TextField(
-                                    decoration: _myInputDecoration.copyWith(),
+                                    decoration: myInputDecoration.copyWith(),
                                     controller: _controller,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
@@ -275,6 +279,7 @@ class _StartDateFieldState extends State<_StartDateField>
   bool isVisible = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
+  late TextEditingController _dateTextController;
 
   @override
   void initState() {
@@ -284,9 +289,21 @@ class _StartDateFieldState extends State<_StartDateField>
       duration: 300.milliseconds,
     );
 
+    _dateTextController = TextEditingController(text: _themeFormat
+        .format(_selectedDate));
+
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
   }
+
+  final DateFormat _themeFormat = DateFormat("EEE. dd. MMM. yyyy");
+
+
+  DateTime _firstDateOption = DateTime(
+      DateTime.now().year - 10, DateTime.now().month, DateTime.now().day);
+  DateTime _lastDateOption = DateTime(
+      DateTime.now().year + 10, DateTime.now().month, DateTime.now().day);
+  DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -304,17 +321,39 @@ class _StartDateFieldState extends State<_StartDateField>
               }
             });
           },
-          title: Text("Start uge/måned/år"),
+          title: Text("Start dato"),
         ),
         SizeTransition(
           sizeFactor: _animation,
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: Offset(0, -1),
-              end: Offset.zero,
-            ).animate(_animation),
-            child: Text(
-              'Her skal resten af widgets vær',
+          child: GestureDetector(
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  firstDate: _firstDateOption,
+                  lastDate: _lastDateOption,
+                  initialDate: _selectedDate);
+              if (pickedDate != null &&
+                  pickedDate != _selectedDate) {
+                setState(() {
+                  _selectedDate = pickedDate;
+                });
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  border: Border.all(color: Colors.grey[900]!)),
+              child: Row(
+                children: [
+                  Icon(Icons.date_range),
+                  SizedBox(width: 20,),
+                  Text(DateFormat("EEE. dd. MMM. yyyy")
+                      .format(_selectedDate),),
+                  Spacer()
+                ],
+              ),
             ),
           ),
         ),
@@ -440,5 +479,5 @@ class _NewGoalButton extends StatelessWidget {
   }
 }
 
-InputDecoration _myInputDecoration = InputDecoration(
+InputDecoration myInputDecoration = InputDecoration(
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(9)));
