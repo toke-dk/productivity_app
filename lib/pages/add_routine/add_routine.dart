@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/category.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/pages/add_routine/pages/choose_category.dart';
-import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/define_routine.dart';
+import 'package:productivity_app/pages/add_routine/pages/define_routine/define_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 

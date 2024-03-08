@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../shared/decorations.dart';
-import 'widgets/define_routine.dart';
+import '../../../../../shared/decorations.dart';
+import '../define_routine.dart';
 
 enum TimeUnit {
   year('år'),

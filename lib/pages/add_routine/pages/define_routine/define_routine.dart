@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import '../../../../../shared/decorations.dart';
-import '../add_extra_goal_dialog.dart';
-import 'extra_goal_button.dart';
+import '../../../../shared/decorations.dart';
+import 'widgets/add_extra_goal_dialog.dart';
+import 'widgets/extra_goal_button.dart';
 
 enum Frequencies {
   atLeast("Mindst"),
