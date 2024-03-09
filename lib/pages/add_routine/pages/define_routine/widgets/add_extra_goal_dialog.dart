@@ -92,9 +92,10 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
 
 class MyValueChanger extends StatefulWidget {
   const MyValueChanger(
-      {super.key, required this.handleValueChange});
+      {super.key, required this.handleValueChange, this.maxValue});
 
   final Function(int newVal) handleValueChange;
+  final int? maxValue;
 
   @override
   State<MyValueChanger> createState() => _MyValueChangerState();
@@ -116,16 +117,21 @@ class _MyValueChangerState extends State<MyValueChanger> {
   }
 
   void _handleGoalValueIncrement(String textValue) {
-    if (int.tryParse(textValue) == null || int.parse(textValue) < 0) {
+    final int? intValue = int.tryParse(textValue);
+
+    if (int.tryParse(textValue) == null ||
+        (widget.maxValue != null && intValue! >= widget.maxValue!)) return;
+
+    else if (intValue! < 0) {
       setState(() {
         _controller.text = "1";
       });
       widget.handleValueChange(1);
     } else {
       setState(() {
-        _controller.text = (int.parse(textValue) + 1).toString();
+        _controller.text = (intValue + 1).toString();
       });
-      widget.handleValueChange((int.parse(textValue) + 1));
+      widget.handleValueChange((intValue + 1));
     }
   }
 
@@ -133,38 +139,41 @@ class _MyValueChangerState extends State<MyValueChanger> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Spacer(),
-        _ChangeValueIcon(
-          subtract: true,
-          onPressed: () => _handleGoalValueDecrement(_controller.text),
-        ),
-        Flexible(
-          flex: 2,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: TextField(
-                decoration: kMyInputDecoration.copyWith(),
-                onChanged: (String newString) {
-                  widget.handleValueChange(int.parse(newString));
-                },
-                controller: _controller,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
+    return SizedBox(
+      width: 140,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _ChangeValueIcon(
+            subtract: true,
+            onPressed: () => _handleGoalValueDecrement(_controller.text),
+          ),
+          Flexible(
+            flex: 2,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                  decoration: kMyInputDecoration.copyWith(
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                      isDense: true),
+                  onChanged: (String newString) {
+                    widget.handleValueChange(int.parse(newString));
+                  },
+                  controller: _controller,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
-        ),
-        _ChangeValueIcon(
-            subtract: false,
-            onPressed: () =>
-                _handleGoalValueIncrement(_controller.text)),
-        Spacer(),
-      ],
+          _ChangeValueIcon(
+              subtract: false,
+              onPressed: () => _handleGoalValueIncrement(_controller.text)),
+        ],
+      ),
     );
   }
 }

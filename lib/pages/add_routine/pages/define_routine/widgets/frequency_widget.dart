@@ -45,6 +45,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
                 child: MyValueChanger(
                   handleValueChange: (int newVal) => debugPrint(newVal.toString()),
                 )),
+            SizedBox(width: 30,),
             Expanded(
               flex: 1,
               child: FittedBox(
@@ -62,6 +63,27 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
                         .toList()),
               ),
             ),
+          ],
+        ),
+        SizedBox(height: 20,),
+        selectedFrequency == _TimeUnit.week ? _WeekSelection() : SizedBox()
+      ],
+    );
+  }
+}
+
+class _WeekSelection extends StatelessWidget {
+  const _WeekSelection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            MyValueChanger(handleValueChange: (int newVal) {  },maxValue: 7,),
+            SizedBox(width: 20,),
+            Text("dage om ugen")
           ],
         ),
       ],
