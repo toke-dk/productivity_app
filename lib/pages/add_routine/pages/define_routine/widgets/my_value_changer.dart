@@ -1,0 +1,114 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../../../../../shared/decorations.dart';
+
+class MyValueChanger extends StatefulWidget {
+  const MyValueChanger(
+      {super.key, required this.handleValueChange, this.maxValue});
+
+  final Function(int newVal) handleValueChange;
+  final int? maxValue;
+
+  @override
+  State<MyValueChanger> createState() => _MyValueChangerState();
+}
+
+class _MyValueChangerState extends State<MyValueChanger> {
+  void _handleGoalValueDecrement(String textValue) {
+    if (int.tryParse(textValue) == null || int.parse(textValue) <= 0) {
+      setState(() {
+        _controller.text = "0";
+      });
+      widget.handleValueChange(0);
+    } else {
+      setState(() {
+        _controller.text = (int.parse(textValue) - 1).toString();
+      });
+      widget.handleValueChange((int.parse(textValue) - 1));
+    }
+  }
+
+  void _handleGoalValueIncrement(String textValue) {
+    final int? intValue = int.tryParse(textValue);
+
+    if (int.tryParse(textValue) == null ||
+        (widget.maxValue != null && intValue! >= widget.maxValue!)) return;
+
+    else if (intValue! < 0) {
+      setState(() {
+        _controller.text = "1";
+      });
+      widget.handleValueChange(1);
+    } else {
+      setState(() {
+        _controller.text = (intValue + 1).toString();
+      });
+      widget.handleValueChange((intValue + 1));
+    }
+  }
+
+  late TextEditingController _controller = TextEditingController(text: "0");
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 140,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _ChangeValueIcon(
+            subtract: true,
+            onPressed: () => _handleGoalValueDecrement(_controller.text),
+          ),
+          Flexible(
+            flex: 2,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                  decoration: kMyInputDecoration.copyWith(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                      isDense: true),
+                  onChanged: (String newString) {
+                    widget.handleValueChange(int.parse(newString));
+                  },
+                  controller: _controller,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          _ChangeValueIcon(
+              subtract: false,
+              onPressed: () => _handleGoalValueIncrement(_controller.text)),
+        ],
+      ),
+    );
+  }
+}
+
+class _ChangeValueIcon extends StatelessWidget {
+  const _ChangeValueIcon({super.key, this.subtract = false, this.onPressed});
+
+  final bool subtract;
+  final Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 30,
+      height: 30,
+      child: FilledButton(
+          style: ButtonStyle(
+              padding: MaterialStatePropertyAll(EdgeInsets.all(0)),
+              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2)))),
+          onPressed: onPressed,
+          child: subtract ? Icon(Icons.remove) : Icon(Icons.add)),
+    );
+  }
+}
