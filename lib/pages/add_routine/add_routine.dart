@@ -28,8 +28,7 @@ class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
   }
 }
 
-enum EvaluationType {numeric, checkMark}
-
+enum EvaluationType { numeric, checkMark }
 
 class PageViewExample extends StatefulWidget {
   const PageViewExample({super.key});
@@ -45,6 +44,8 @@ class _PageViewExampleState extends State<PageViewExample>
   int _currentPageIndex = 0;
   bool nextButtonActive = false;
 
+  EvaluationType selectedEvaluationType = EvaluationType.numeric;
+
   late List<Widget> _pages = [
     ChooseCategoryPage(
         pageTitle: _pageTitle("Vælg Lategori"),
@@ -52,15 +53,24 @@ class _PageViewExampleState extends State<PageViewExample>
         updateCurrentPageIndex: () {
           _updateCurrentPageIndex(1);
         }),
-    EvaluatePage(pageTitle: _pageTitle("Evaluering"), onNumericPress: () { _updateCurrentPageIndex(2); },),
+    EvaluatePage(
+      pageTitle: _pageTitle("Evaluering"),
+      onEvaluationTypeSelected: (EvaluationType enteredType) {
+        setState((){
+          selectedEvaluationType = enteredType;
+        });
+        _updateCurrentPageIndex(2);
+      },
+    ),
     Container(
       // TODO change this to be maybe a collumn instead of stack with padding
       padding: const EdgeInsets.only(bottom: 70),
       child: DefineRoutinePage(
         pageTitle: _pageTitle("Definer rutine"),
         onNextPagePressed: () {
-
+          print(selectedEvaluationType);
         },
+        evaluationType: selectedEvaluationType ?? EvaluationType.numeric,
       ),
     ),
   ];
