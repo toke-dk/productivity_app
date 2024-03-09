@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/widgets/my_size_transition.dart';
 import 'my_value_changer.dart';
-
 
 enum _TimeUnit {
   day("dag"),
@@ -13,7 +13,6 @@ enum _TimeUnit {
   final String translatedName;
 }
 
-
 class ChooseFrequency extends StatefulWidget {
   const ChooseFrequency({super.key});
 
@@ -22,9 +21,7 @@ class ChooseFrequency extends StatefulWidget {
 }
 
 class _ChooseFrequencyState extends State<ChooseFrequency> {
-
   _TimeUnit selectedFrequency = _TimeUnit.day;
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +29,21 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("Indtastning hver"),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
                 flex: 2,
                 child: MyValueChanger(
-                  handleValueChange: (int newVal) => debugPrint(newVal.toString()),
+                  handleValueChange: (int newVal) =>
+                      debugPrint(newVal.toString()),
                 )),
-            SizedBox(width: 30,),
+            SizedBox(
+              width: 30,
+            ),
             Expanded(
               flex: 1,
               child: FittedBox(
@@ -54,15 +56,24 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
                         });
                     },
                     dropdownMenuEntries: _TimeUnit.values
-                        .map((e) =>
-                        DropdownMenuEntry(value: e, label: e.translatedName))
+                        .map((e) => DropdownMenuEntry(
+                            value: e, label: e.translatedName))
                         .toList()),
               ),
             ),
           ],
         ),
-        SizedBox(height: 20,),
-        selectedFrequency == _TimeUnit.week ? _WeekSelection() : SizedBox()
+        SizedBox(
+          height: 20,
+        ),
+        MySizeTransition(
+          child: _WeekSelection(),
+          isShowing: selectedFrequency == _TimeUnit.week,
+        ),
+        MySizeTransition(
+          child: _WeekSelection(),
+          isShowing: selectedFrequency == _TimeUnit.month,
+        ),
       ],
     );
   }
@@ -77,8 +88,13 @@ class _WeekSelection extends StatelessWidget {
       children: [
         Row(
           children: [
-            MyValueChanger(handleValueChange: (int newVal) {  },maxValue: 7,),
-            SizedBox(width: 20,),
+            MyValueChanger(
+              handleValueChange: (int newVal) {},
+              maxValue: 7,
+            ),
+            SizedBox(
+              width: 20,
+            ),
             Text("dage om ugen")
           ],
         ),

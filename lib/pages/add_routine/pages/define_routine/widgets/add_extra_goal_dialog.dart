@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../widgets/my_size_transition.dart';
 import 'my_value_changer.dart';
 
 enum TimeUnit {
@@ -134,17 +135,12 @@ class _StartDateFieldState extends State<_StartDateField>
           onChanged: (newVal) {
             setState(() {
               isVisible = !isVisible;
-              if (isVisible) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
             });
           },
           title: Text("Start dato"),
         ),
-        SizeTransition(
-          sizeFactor: _animation,
+        MySizeTransition(
+          isShowing: isVisible,
           child: GestureDetector(
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
@@ -183,3 +179,5 @@ class _StartDateFieldState extends State<_StartDateField>
     );
   }
 }
+
+
