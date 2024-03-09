@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
@@ -17,9 +18,11 @@ enum Frequencies {
 }
 
 class DefineRoutinePage extends StatefulWidget {
-  const DefineRoutinePage({super.key, required this.pageTitle});
+  const DefineRoutinePage(
+      {super.key, required this.pageTitle, required this.onNextPagePressed});
 
   final Widget pageTitle;
+  final Function() onNextPagePressed;
 
   @override
   State<DefineRoutinePage> createState() => _DefineRoutinePageState();
@@ -55,7 +58,9 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
     showDialog(
         context: context,
         builder: (context) {
-          return AddExtraGoalDialog(timeUnit: timeUnit,);
+          return AddExtraGoalDialog(
+            timeUnit: timeUnit,
+          );
         });
   }
 
@@ -182,7 +187,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                               title: "Måned mål",
                               onTap: () {
                                 openAddExtraGoalDialog(TimeUnit.month);
-
                               },
                             ),
                             SizedBox(
@@ -192,7 +196,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                               title: "År mål",
                               onTap: () {
                                 openAddExtraGoalDialog(TimeUnit.year);
-
                               },
                             ),
                             SizedBox(
@@ -210,9 +213,21 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     });
               },
             ),
-            SizedBox(height: 10,),
-            Divider(height: 30,),
-            ChooseFrequency()
+            Divider(
+              height: 30,
+            ),
+            ChooseFrequency(),
+            SizedBox(
+              height: 25,
+            ),
+            Align(
+                alignment: Alignment.center,
+                child: FilledButton(
+                    onPressed: () => widget.onNextPagePressed(),
+                    child: Text("Næste"))),
+            SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),
@@ -261,4 +276,3 @@ class _NewGoalButton extends StatelessWidget {
     );
   }
 }
-

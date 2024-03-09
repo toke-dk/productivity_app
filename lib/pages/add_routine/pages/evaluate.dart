@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class EvaluatePage extends StatelessWidget {
-  const EvaluatePage({super.key, required this.pageTitle});
+  const EvaluatePage({super.key, required this.pageTitle, required this.onNumericPress});
 
   final Widget pageTitle;
+  final Function() onNumericPress;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class EvaluatePage extends StatelessWidget {
                 height: 40,
               ),
               EvaluateButtonSection(
-                onPressed: () {},
+                onPressed: () {onNumericPress();},
                 title: 'Med en numerisk værdi',
                 description:
                     "Hvis du gerne vil angive en værdi som et dagligt mål for din rutine",

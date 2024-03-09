@@ -49,12 +49,17 @@ class _PageViewExampleState extends State<PageViewExample>
         updateCurrentPageIndex: () {
           _updateCurrentPageIndex(1);
         }),
+    EvaluatePage(pageTitle: _pageTitle("Evaluering"), onNumericPress: () { _updateCurrentPageIndex(2); },),
     Container(
       // TODO change this to be maybe a collumn instead of stack with padding
       padding: const EdgeInsets.only(bottom: 70),
-      child: DefineRoutinePage(pageTitle: _pageTitle("Definer rutine")),
+      child: DefineRoutinePage(
+        pageTitle: _pageTitle("Definer rutine"),
+        onNextPagePressed: () {
+
+        },
+      ),
     ),
-    EvaluatePage(pageTitle: _pageTitle("Evaluering")),
   ];
 
   @override
@@ -81,8 +86,12 @@ class _PageViewExampleState extends State<PageViewExample>
     Category(name: "Udendørs", child: Icon(Icons.grass), color: Colors.brown),
     Category(
         name: "Uddannelse", child: Icon(Icons.menu_book), color: Colors.purple),
-    Category(name: "Rengøring", child: Icon(Icons.cleaning_services), color: Colors.black),
-    Category(name: "Teknologisk", child: Icon(Icons.code), color: Colors.indigo),
+    Category(
+        name: "Rengøring",
+        child: Icon(Icons.cleaning_services),
+        color: Colors.black),
+    Category(
+        name: "Teknologisk", child: Icon(Icons.code), color: Colors.indigo),
     Category(name: "Andre", child: Icon(Icons.more_horiz), color: Colors.teal),
   ];
 

@@ -14,9 +14,9 @@ class RangeFormatter extends TextInputFormatter {
     if (newValue.text.isEmpty) return newValue;
     double newValueAsDouble = double.parse(newValue.text);
     if (minValue != null && newValueAsDouble < minValue!) {
-      return TextEditingValue().copyWith(text: minValue!.toString());
+      return oldValue;
     } else if (maxValue != null && newValueAsDouble > maxValue!) {
-      return TextEditingValue().copyWith(text: maxValue!.toString());
+      return oldValue;
     } else {
       return newValue;
     }
@@ -69,13 +69,20 @@ class _MyValueChangerState extends State<MyValueChanger> {
     }
   }
 
-  late TextEditingController _controller = TextEditingController(text: "0");
+  late TextEditingController _controller = TextEditingController(text: widget.minValue.toString());
 
   // make this correct
   bool get isAddEnabled {
     final int? intValue = int.tryParse(_controller.text);
     if (intValue == null || widget.maxValue == null) return true;
     if(intValue+1 <= widget.maxValue!) return true;
+    return false;
+  }
+
+  bool get isSubtractEnabled {
+    final int? intValue = int.tryParse(_controller.text);
+    if (intValue == null || widget.minValue == null) return true;
+    if(intValue-1 >= widget.minValue!) return true;
     return false;
   }
 
@@ -90,7 +97,7 @@ class _MyValueChangerState extends State<MyValueChanger> {
         children: [
           _ChangeValueIcon(
             subtract: true,
-            onPressed: () => _handleGoalValueDecrement(_controller.text),
+            onPressed: isSubtractEnabled ? () => _handleGoalValueDecrement(_controller.text): null,
           ),
           Flexible(
             flex: 2,
@@ -105,9 +112,10 @@ class _MyValueChangerState extends State<MyValueChanger> {
                   onChanged: (String newString) {
                     if (int.tryParse(newString) == null) return;
                     widget.handleValueChange(int.parse(newString));
+                    setState(() {});
                   },
                   controller: _controller,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, RangeFormatter(minValue: 1, maxValue: widget.maxValue)],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, RangeFormatter(minValue: widget.minValue, maxValue: widget.maxValue)],
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                 ),

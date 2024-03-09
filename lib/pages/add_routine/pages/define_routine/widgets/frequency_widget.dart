@@ -90,9 +90,6 @@ class _TimeUnitChildWrapper extends StatelessWidget {
       children: [
         MySizeTransition(isShowing: selectedTimeUnit == _TimeUnit.week, child: _WeekTimeUnitChild()),
         MySizeTransition(isShowing: selectedTimeUnit == _TimeUnit.month, child: _MonthTimeUnitChild()),
-        SizedBox(
-          height: 40,
-        ),
       ],
     );
   }
