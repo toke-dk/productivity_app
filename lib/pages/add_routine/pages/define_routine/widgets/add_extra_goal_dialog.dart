@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
@@ -79,11 +80,19 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
         SizedBox(
           height: 18,
         ),
-        FilledButton(
-            onPressed: () {
-              print("finished");
-            },
-            child: Text("Opret mål"))
+        Row(
+          children: [
+            OutlinedButton(onPressed: () => Navigator.pop(context), child: Text("Annuler")),
+            SizedBox(width: 10,),
+            Expanded(
+              child: FilledButton(
+                  onPressed: () {
+                    print("finished");
+                  },
+                  child: Text("Opret mål")),
+            ),
+          ],
+        )
       ],
     );
   }
