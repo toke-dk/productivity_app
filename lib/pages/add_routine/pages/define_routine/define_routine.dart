@@ -115,7 +115,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                         keyboardType: TextInputType.number,
                         enabled: selectedFrequency != Frequencies.unLimited,
                         decoration: kMyInputDecoration.copyWith(
-                          labelText: "Mål*",
+                          labelText: "Antal*",
                         ))),
                 SizedBox(
                   width: 10,
@@ -145,6 +145,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             _NewGoalButton(
               leading: Icon(Icons.emoji_flags_sharp),
               title: "Tilføj et Ekstra-Mål",
+              trailing: Icon(Icons.add_circle),
               onPressed: () {
                 showModalBottomSheet(
                     context: context,

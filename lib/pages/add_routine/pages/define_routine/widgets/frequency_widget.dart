@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:productivity_app/widgets/my_size_transition.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'my_value_changer.dart';
@@ -36,32 +38,25 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-                flex: 2,
-                child: MyValueChanger(
-                  handleValueChange: (int newVal) =>
-                      debugPrint(newVal.toString()),
-                )),
+            MyValueChanger(
+              handleValueChange: (int newVal) =>
+                  debugPrint(newVal.toString()),
+            ),
             SizedBox(
               width: 30,
             ),
-            Expanded(
-              flex: 1,
-              child: FittedBox(
-                child: DropdownMenu(
-                    initialSelection: _TimeUnit.day,
-                    onSelected: (_TimeUnit? frequency) {
-                      if (frequency != null)
-                        setState(() {
-                          selectedTimeUnit = frequency;
-                        });
-                    },
-                    dropdownMenuEntries: _TimeUnit.values
-                        .map((e) => DropdownMenuEntry(
-                            value: e, label: e.translatedName))
-                        .toList()),
-              ),
-            ),
+            DropdownMenu(
+                initialSelection: _TimeUnit.day,
+                onSelected: (_TimeUnit? frequency) {
+                  if (frequency != null)
+                    setState(() {
+                      selectedTimeUnit = frequency;
+                    });
+                },
+                dropdownMenuEntries: _TimeUnit.values
+                    .map((e) => DropdownMenuEntry(
+                        value: e, label: e.translatedName))
+                    .toList()),
           ],
         ),
         SizedBox(
@@ -83,35 +78,22 @@ class _TimeUnitChildWrapper extends StatelessWidget {
   Widget buildChildForUnit() {
     if (selectedTimeUnit == _TimeUnit.week) {
       return _WeekTimeUnitChild();
+    } else if (selectedTimeUnit == _TimeUnit.month) {
+      return _MonthTimeUnitChild();
     }
     return SizedBox();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MySizeTransition(
-      isShowing: selectedTimeUnit == _TimeUnit.week,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              MyValueChanger(
-                handleValueChange: (int newVal) {},
-                maxValue: 7,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Text("dage hver ${selectedTimeUnit.translatedName}")
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          buildChildForUnit(),
-          SizedBox(height: 40,)
-        ],
-      ),
+    return Column(
+      children: [
+        MySizeTransition(isShowing: selectedTimeUnit == _TimeUnit.week, child: _WeekTimeUnitChild()),
+        MySizeTransition(isShowing: selectedTimeUnit == _TimeUnit.month, child: _MonthTimeUnitChild()),
+        SizedBox(
+          height: 40,
+        ),
+      ],
     );
   }
 }
@@ -130,23 +112,83 @@ class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SwitchListTile(
-            title: Text("Tilpasset"),
-            value: _isCustomSelected,
-            onChanged: (bool newVal) {
-              setState(() {
-                _isCustomSelected = newVal;
-              });
-            }),
-        MySizeTransition(
-          isShowing: _isCustomSelected,
-            child: Column(
+        Row(
           children: [
-            WeekdaySelector(
-                onChanged: (int newVal) {},
-                values: List.generate(7, (index) => false))
+            MyValueChanger(
+              handleValueChange: (int newVal) {},
+              maxValue: 6,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text("dage hver uge")
           ],
-        )),
+        ),
+        // SizedBox(height: 20,),
+        // SwitchListTile(
+        //     title: Text("Tilpasset"),
+        //     value: _isCustomSelected,
+        //     onChanged: (bool newVal) {
+        //       setState(() {
+        //         _isCustomSelected = newVal;
+        //       });
+        //     }),
+        // MySizeTransition(
+        //     isShowing: _isCustomSelected,
+        //     child: Column(
+        //       children: [
+        //         WeekdaySelector(
+        //             onChanged: (int newVal) {},
+        //             values: List.generate(7, (index) => false))
+        //       ],
+        //     )),
+      ],
+    );
+  }
+}
+
+class _MonthTimeUnitChild extends StatefulWidget {
+  const _MonthTimeUnitChild({super.key});
+
+  @override
+  State<_MonthTimeUnitChild> createState() => _MonthTimeUnitChildState();
+}
+
+class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
+  bool _isCustomSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            MyValueChanger(
+              handleValueChange: (int newVal) {},
+              maxValue: 30,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text("dage hver måned")
+          ],
+        ),
+        // SizedBox(height: 20,),
+        // SwitchListTile(
+        //     title: Text("Tilpasset"),
+        //     value: _isCustomSelected,
+        //     onChanged: (bool newVal) {
+        //       setState(() {
+        //         _isCustomSelected = newVal;
+        //       });
+        //     }),
+        // MySizeTransition(
+        //     isShowing: _isCustomSelected,
+        //     child: Column(
+        //       children: [
+        //         Text("Child here")
+        //       ],
+        //     )),
       ],
     );
   }
