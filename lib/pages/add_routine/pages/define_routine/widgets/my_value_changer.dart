@@ -3,12 +3,33 @@ import 'package:flutter/services.dart';
 
 import '../../../../../shared/decorations.dart';
 
+class RangeFormatter extends TextInputFormatter {
+  final int? minValue;
+  final int? maxValue;
+
+  RangeFormatter({required this.minValue, required this.maxValue});
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) return newValue;
+    double newValueAsDouble = double.parse(newValue.text);
+    if (minValue != null && newValueAsDouble < minValue!) {
+      return TextEditingValue().copyWith(text: minValue!.toString());
+    } else if (maxValue != null && newValueAsDouble > maxValue!) {
+      return TextEditingValue().copyWith(text: maxValue!.toString());
+    } else {
+      return newValue;
+    }
+  }
+}
+
 class MyValueChanger extends StatefulWidget {
   const MyValueChanger(
-      {super.key, required this.handleValueChange, this.maxValue});
+      {super.key, required this.handleValueChange, this.maxValue, this.minValue = 1});
 
   final Function(int newVal) handleValueChange;
   final int? maxValue;
+  final int? minValue;
 
   @override
   State<MyValueChanger> createState() => _MyValueChangerState();
@@ -33,8 +54,8 @@ class _MyValueChangerState extends State<MyValueChanger> {
     final int? intValue = int.tryParse(textValue);
 
     if (int.tryParse(textValue) == null ||
-        (widget.maxValue != null && intValue! >= widget.maxValue!)) return;
-
+        (widget.maxValue != null && intValue! >= widget.maxValue!))
+      return;
     else if (intValue! < 0) {
       setState(() {
         _controller.text = "1";
@@ -50,8 +71,18 @@ class _MyValueChangerState extends State<MyValueChanger> {
 
   late TextEditingController _controller = TextEditingController(text: "0");
 
+  // make this correct
+  bool get isAddEnabled {
+    final int? intValue = int.tryParse(_controller.text);
+    if (intValue == null || widget.maxValue == null) return true;
+    if(intValue+1 <= widget.maxValue!) return true;
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
     return SizedBox(
       width: 140,
       child: Row(
@@ -69,13 +100,14 @@ class _MyValueChangerState extends State<MyValueChanger> {
                 child: TextField(
                   decoration: kMyInputDecoration.copyWith(
                       contentPadding:
-                      EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 12),
                       isDense: true),
                   onChanged: (String newString) {
+                    if (int.tryParse(newString) == null) return;
                     widget.handleValueChange(int.parse(newString));
                   },
                   controller: _controller,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, RangeFormatter(minValue: 1, maxValue: widget.maxValue)],
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                 ),
@@ -84,7 +116,7 @@ class _MyValueChangerState extends State<MyValueChanger> {
           ),
           _ChangeValueIcon(
               subtract: false,
-              onPressed: () => _handleGoalValueIncrement(_controller.text)),
+              onPressed: isAddEnabled ? () => _handleGoalValueIncrement(_controller.text) : null),
         ],
       ),
     );
@@ -103,10 +135,12 @@ class _ChangeValueIcon extends StatelessWidget {
       width: 30,
       height: 30,
       child: FilledButton(
+
           style: ButtonStyle(
               padding: MaterialStatePropertyAll(EdgeInsets.all(0)),
               shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(2)))),
+
           onPressed: onPressed,
           child: subtract ? Icon(Icons.remove) : Icon(Icons.add)),
     );
