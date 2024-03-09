@@ -28,6 +28,9 @@ class _AddRoutineState extends State<AddRoutine> with TickerProviderStateMixin {
   }
 }
 
+enum EvaluationType {numeric, checkMark}
+
+
 class PageViewExample extends StatefulWidget {
   const PageViewExample({super.key});
 

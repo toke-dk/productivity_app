@@ -17,9 +17,9 @@ class EvaluatePage extends StatelessWidget {
             children: [
               EvaluateButtonSection(
                 onPressed: () {},
-                title: 'Med "udført" eller "ikke udført"',
+                title: 'Med afkrydsning',
                 description:
-                    "Hvis du blot vil måle om du har eller ikke har udført aktiviteten",
+                    "Hvis du blot vil måle om du har 'Udført' eller 'Ikke Udført' aktiviteten",
               ),
               SizedBox(
                 height: 40,
@@ -52,9 +52,11 @@ class EvaluateButtonSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FilledButton(
+          
           onPressed: onPressed,
-          child: Text(title),
+          child: Text(title, textAlign: TextAlign.center,),
           style: ButtonStyle(
+            padding: MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
               shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)))),
         ),
