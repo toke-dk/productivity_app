@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_button.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 
 import '../../../../shared/decorations.dart';
@@ -52,16 +53,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                 "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
       ])),
     );
-  }
-
-  void openAddExtraGoalDialog(TimeUnit timeUnit) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AddExtraGoalDialog(
-            timeUnit: timeUnit,
-          );
-        });
   }
 
   @override
@@ -147,76 +138,12 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             SizedBox(
               height: 10,
             ),
-            _NewGoalButton(
-              leading: Icon(Icons.emoji_flags_sharp),
-              title: "Tilføj et Ekstra-Mål",
-              trailing: Icon(Icons.add_circle),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      final double space = 10;
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 30, horizontal: 40),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "Ekstra-Mål",
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            Text(
-                              "Her kan du vælge at lave et mål ud fra dit daglige mål",
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            ExtraGoalButton(
-                              title: "Uge mål",
-                              onTap: () {
-                                openAddExtraGoalDialog(TimeUnit.week);
-                              },
-                            ),
-                            SizedBox(
-                              height: space,
-                            ),
-                            ExtraGoalButton(
-                              title: "Måned mål",
-                              onTap: () {
-                                openAddExtraGoalDialog(TimeUnit.month);
-                              },
-                            ),
-                            SizedBox(
-                              height: space,
-                            ),
-                            ExtraGoalButton(
-                              title: "År mål",
-                              onTap: () {
-                                openAddExtraGoalDialog(TimeUnit.year);
-                              },
-                            ),
-                            SizedBox(
-                              height: space,
-                            ),
-                            ExtraGoalButton(
-                              title: "Total mål",
-                              onTap: () {
-                                openAddExtraGoalDialog(TimeUnit.total);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    });
-              },
-            ),
             Divider(
               height: 30,
             ),
             ChooseFrequency(),
+            SizedBox(height: 20,),
+            AddExtraGoalButton(),
             SizedBox(
               height: 25,
             ),
@@ -230,48 +157,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _NewGoalButton extends StatelessWidget {
-  const _NewGoalButton(
-      {super.key,
-      this.onPressed,
-      required this.title,
-      this.description,
-      this.trailing = const SizedBox(),
-      this.leading = const SizedBox()});
-
-  final Function()? onPressed;
-  final Widget leading;
-  final String title;
-  final String? description;
-  final Widget trailing;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: FilledButton(
-        onPressed: onPressed,
-        child: Row(
-          children: [
-            leading,
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              title,
-            ),
-            Spacer(),
-            trailing,
-          ],
-        ),
-        style: ButtonStyle(
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6)))),
       ),
     );
   }
