@@ -210,6 +210,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               },
             ),
             SizedBox(height: 10,),
+            Divider(height: 30,),
             ChooseFrequency()
           ],
         ),
