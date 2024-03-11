@@ -4,12 +4,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/pages/add_routine/add_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_button.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
+import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/with_end_date_widget.dart';
 import 'package:productivity_app/widgets/my_date_picker.dart';
-import 'package:productivity_app/widgets/my_size_transition.dart';
-
 import '../../../../shared/decorations.dart';
-import 'widgets/add_extra_goal_dialog.dart';
-import 'widgets/extra_goal_button.dart';
 
 enum Frequencies {
   atLeast("Mindst"),
@@ -63,6 +60,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   }
 
   DateTime _selectedEndDate = DateTime.now();
+  bool _isEndDateOptionSelected = false;
   DateTime _startDate = DateTime.now();
 
   @override
@@ -101,12 +99,20 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               height: 40,
             ),
             ChooseFrequency(),
+            SizedBox(
+              height: 15,
+            ),
             AddExtraGoalButton(),
             Divider(
               height: 30,
             ),
-            Text("Startdato", style: Theme.of(context).textTheme.bodyLarge,),
-            SizedBox(height: 5,),
+            Text(
+              "Startdato",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(
+              height: 5,
+            ),
             MyDatePicker(
                 selectedDate: _startDate,
                 onDateSelected: (DateTime newDate) {
@@ -114,7 +120,9 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     _startDate = newDate;
                   });
                 }),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             WithEndDateWidget(
               onDateChange: (DateTime newDate) {
                 setState(() {
@@ -122,6 +130,12 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                 });
               },
               selectedDate: _selectedEndDate,
+              switchValue: _isEndDateOptionSelected,
+              onSwitchChange: (bool newVale) {
+                setState(() {
+                  _isEndDateOptionSelected = newVale;
+                });
+              },
             ),
             Divider(
               height: 30,
@@ -140,45 +154,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class WithEndDateWidget extends StatefulWidget {
-  WithEndDateWidget(
-      {super.key, required this.onDateChange, required this.selectedDate});
-
-  final DateTime selectedDate;
-  final Function(DateTime newDate) onDateChange;
-
-  @override
-  State<WithEndDateWidget> createState() => _WithEndDateWidgetState();
-}
-
-class _WithEndDateWidgetState extends State<WithEndDateWidget> {
-  bool switchValue = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-            title: Text("Slutdato"),
-            subtitle: Text("Skal rutinen have en slutdato"),
-            value: switchValue,
-            onChanged: (bool newVal) {
-              setState(() {
-                switchValue = newVal;
-              });
-            }),
-        MySizeTransition(
-          child: MyDatePicker(
-              selectedDate: widget.selectedDate,
-              onDateSelected: widget.onDateChange),
-          isShowing: switchValue,
-        ),
-      ],
     );
   }
 }
