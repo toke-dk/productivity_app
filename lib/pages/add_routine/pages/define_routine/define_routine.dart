@@ -4,6 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/pages/add_routine/add_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_button.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
+import 'package:productivity_app/widgets/my_date_picker.dart';
+import 'package:productivity_app/widgets/my_size_transition.dart';
 
 import '../../../../shared/decorations.dart';
 import 'widgets/add_extra_goal_dialog.dart';
@@ -21,7 +23,10 @@ enum Frequencies {
 
 class DefineRoutinePage extends StatefulWidget {
   const DefineRoutinePage(
-      {super.key, required this.pageTitle, required this.onNextPagePressed, required this.evaluationType});
+      {super.key,
+      required this.pageTitle,
+      required this.onNextPagePressed,
+      required this.evaluationType});
 
   final Widget pageTitle;
   final Function() onNextPagePressed;
@@ -40,27 +45,25 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   bool _canContinue = true;
 
   Widget get generateRoutineText {
-    TextTheme textTheme = Theme
-        .of(context)
-        .textTheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Align(
       alignment: Alignment.centerLeft,
       child: RichText(
           text: TextSpan(style: textTheme.bodyMedium, children: [
-            TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
-            TextSpan(
-                text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
-            TextSpan(
-                text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
-            TextSpan(
-                text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
-            TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
-            TextSpan(
-                text:
+        TextSpan(text: "[Rutine]\n", style: textTheme.bodyLarge),
+        TextSpan(text: "[Rutineforklaring?]\n\n", style: textTheme.labelMedium),
+        TextSpan(text: "Mit mål er at jeg vil lave 'mindst' [mål] [enhed?]\n"),
+        TextSpan(text: "Mit mål er at jeg vil lave [mål] [enhed?] i alt \n"),
+        TextSpan(text: "Jeg vil blive ved med at lave [Rutinenavn]\n\n"),
+        TextSpan(
+            text:
                 "Derudover vil jeg også opnå mit 'ekstra-mål' om at [ekstra mål tekst]"),
-          ])),
+      ])),
     );
   }
+
+  DateTime _selectedEndDate = DateTime.now();
+  DateTime _startDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -85,20 +88,46 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     hintText: "Med denne rutine skal jeg...",
                     labelText: "Forklaring (valgfri)",
                     alignLabelWithHint: true)),
-            widget.evaluationType == EvaluationType.numeric ? _NumericOptionsWidget(selectedFrequency: selectedFrequency,
-                onFrequencyChange: (Frequencies frequency) {
-                  setState(() {
-                    selectedFrequency = frequency;
-                  });
-                }) : SizedBox.shrink(),
+            widget.evaluationType == EvaluationType.numeric
+                ? _NumericOptionsWidget(
+                    selectedFrequency: selectedFrequency,
+                    onFrequencyChange: (Frequencies frequency) {
+                      setState(() {
+                        selectedFrequency = frequency;
+                      });
+                    })
+                : SizedBox.shrink(),
             Divider(
               height: 40,
             ),
             ChooseFrequency(),
-            SizedBox(height: 20,),
             AddExtraGoalButton(),
+            Divider(
+              height: 30,
+            ),
+            Text("Startdato", style: Theme.of(context).textTheme.bodyLarge,),
+            SizedBox(height: 5,),
+            MyDatePicker(
+                selectedDate: _startDate,
+                onDateSelected: (DateTime newDate) {
+                  setState(() {
+                    _startDate = newDate;
+                  });
+                }),
+            SizedBox(height: 10,),
+            WithEndDateWidget(
+              onDateChange: (DateTime newDate) {
+                setState(() {
+                  _selectedEndDate = newDate;
+                });
+              },
+              selectedDate: _selectedEndDate,
+            ),
+            Divider(
+              height: 30,
+            ),
             SizedBox(
-              height: 25,
+              height: 10,
             ),
             Align(
                 alignment: Alignment.center,
@@ -107,7 +136,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     child: Text("Næste"))),
             SizedBox(
               height: 40,
-            )
+            ),
           ],
         ),
       ),
@@ -115,9 +144,50 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
   }
 }
 
+class WithEndDateWidget extends StatefulWidget {
+  WithEndDateWidget(
+      {super.key, required this.onDateChange, required this.selectedDate});
+
+  final DateTime selectedDate;
+  final Function(DateTime newDate) onDateChange;
+
+  @override
+  State<WithEndDateWidget> createState() => _WithEndDateWidgetState();
+}
+
+class _WithEndDateWidgetState extends State<WithEndDateWidget> {
+  bool switchValue = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+            title: Text("Slutdato"),
+            subtitle: Text("Skal rutinen have en slutdato"),
+            value: switchValue,
+            onChanged: (bool newVal) {
+              setState(() {
+                switchValue = newVal;
+              });
+            }),
+        MySizeTransition(
+          child: MyDatePicker(
+              selectedDate: widget.selectedDate,
+              onDateSelected: widget.onDateChange),
+          isShowing: switchValue,
+        ),
+      ],
+    );
+  }
+}
+
 class _NumericOptionsWidget extends StatelessWidget {
   const _NumericOptionsWidget(
-      {super.key, required this.selectedFrequency, required this.onFrequencyChange});
+      {super.key,
+      required this.selectedFrequency,
+      required this.onFrequencyChange});
 
   final Frequencies selectedFrequency;
   final Function(Frequencies newFrequency) onFrequencyChange;
@@ -138,12 +208,10 @@ class _NumericOptionsWidget extends StatelessWidget {
               child: DropdownMenu(
                   initialSelection: Frequencies.atLeast,
                   onSelected: (Frequencies? frequency) {
-                    if (frequency != null)
-                      onFrequencyChange(frequency);
+                    if (frequency != null) onFrequencyChange(frequency);
                   },
                   dropdownMenuEntries: Frequencies.values
-                      .map((e) =>
-                      DropdownMenuEntry(value: e, label: e.label))
+                      .map((e) => DropdownMenuEntry(value: e, label: e.label))
                       .toList()),
             ),
           ),
@@ -151,7 +219,6 @@ class _NumericOptionsWidget extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-
         Row(
           children: [
             Expanded(
@@ -167,8 +234,7 @@ class _NumericOptionsWidget extends StatelessWidget {
             Expanded(
                 child: TextField(
                     decoration: kMyInputDecoration.copyWith(
-                        labelText: "Enhed (valgfri)",
-                        hintText: "eks. km."))),
+                        labelText: "Enhed (valgfri)", hintText: "eks. km."))),
           ],
         ),
         SizedBox(
@@ -176,17 +242,12 @@ class _NumericOptionsWidget extends StatelessWidget {
         ),
         Text(
           "for én dag",
-          style: Theme
-              .of(context)
-              .textTheme
-              .labelMedium,
+          style: Theme.of(context).textTheme.labelMedium,
         )
-            .animate(
-            target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
+            .animate(target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
             .show()
             .then()
             .slide(),
-
       ],
     );
   }

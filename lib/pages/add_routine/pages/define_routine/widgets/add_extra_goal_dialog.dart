@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../widgets/my_date_picker.dart';
 import '../../../../../widgets/my_size_transition.dart';
 import 'my_value_changer.dart';
 
@@ -82,8 +81,12 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
         ),
         Row(
           children: [
-            OutlinedButton(onPressed: () => Navigator.pop(context), child: Text("Annuler")),
-            SizedBox(width: 10,),
+            OutlinedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Annuler")),
+            SizedBox(
+              width: 10,
+            ),
             Expanded(
               child: FilledButton(
                   onPressed: () {
@@ -108,31 +111,13 @@ class _StartDateField extends StatefulWidget {
 class _StartDateFieldState extends State<_StartDateField>
     with SingleTickerProviderStateMixin {
   bool isVisible = false;
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-  late TextEditingController _dateTextController;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: 300.milliseconds,
-    );
-
-    _dateTextController =
-        TextEditingController(text: _themeFormat.format(_selectedDate));
-
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
   }
 
   final DateFormat _themeFormat = DateFormat("EEE. dd. MMM. yyyy");
-
-  DateTime _firstDateOption = DateTime(
-      DateTime.now().year - 10, DateTime.now().month, DateTime.now().day);
-  DateTime _lastDateOption = DateTime(
-      DateTime.now().year + 10, DateTime.now().month, DateTime.now().day);
   DateTime _selectedDate = DateTime.now();
 
   @override
@@ -149,44 +134,16 @@ class _StartDateFieldState extends State<_StartDateField>
           title: Text("Start dato"),
         ),
         MySizeTransition(
-          isShowing: isVisible,
-          child: GestureDetector(
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  firstDate: _firstDateOption,
-                  lastDate: _lastDateOption,
-                  initialDate: _selectedDate);
-              if (pickedDate != null && pickedDate != _selectedDate) {
-                setState(() {
-                  _selectedDate = pickedDate;
-                });
-              }
-            },
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
-                  border: Border.all(color: Colors.grey[900]!)),
-              child: Row(
-                children: [
-                  Icon(Icons.date_range),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    DateFormat("EEE. dd. MMM. yyyy").format(_selectedDate),
-                  ),
-                  Spacer()
-                ],
-              ),
-            ),
-          ),
-        ),
+            isShowing: isVisible,
+            child: MyDatePicker(
+                selectedDate: _selectedDate,
+                onDateSelected: (DateTime newDate) {
+                  setState(() {
+                    _selectedDate = newDate;
+                  });
+                })),
       ],
     );
   }
 }
-
 
