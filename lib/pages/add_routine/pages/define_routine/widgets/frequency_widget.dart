@@ -31,7 +31,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Færdiggørelserne skal udføres hver", style: Theme.of(context).textTheme.bodyLarge,),
+        Text("Indtastninger skal udføres hver", style: Theme.of(context).textTheme.bodyLarge,),
         SizedBox(
           height: 10,
         ),
