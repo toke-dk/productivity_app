@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/pages/add_routine/add_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_button.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
+import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/my_value_changer.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/with_end_date_widget.dart';
 import 'package:productivity_app/widgets/my_date_picker.dart';
 import '../../../../shared/decorations.dart';
@@ -87,13 +89,18 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     labelText: "Forklaring (valgfri)",
                     alignLabelWithHint: true)),
             widget.evaluationType == EvaluationType.numeric
-                ? _NumericOptionsWidget(
-                    selectedFrequency: selectedFrequency,
-                    onFrequencyChange: (Quantity frequency) {
-                      setState(() {
-                        selectedFrequency = frequency;
-                      });
-                    })
+                ? Column(
+                  children: [
+                    Divider(height: 40,),
+                    _NumericOptionsWidget(
+                        selectedFrequency: selectedFrequency,
+                        onFrequencyChange: (Quantity frequency) {
+                          setState(() {
+                            selectedFrequency = frequency;
+                          });
+                        }),
+                  ],
+                )
                 : SizedBox.shrink(),
             Divider(
               height: 40,
@@ -173,43 +180,29 @@ class _NumericOptionsWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 30,
+          width: 150,
+          child: TextField(
+              decoration: kMyInputDecoration.copyWith(
+                  labelText: "Enhed (valgfri)", hintText: "eks. km.")),
         ),
-        SizedBox(
-          height: 50,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: FittedBox(
-              child: DropdownMenu(
-                  initialSelection: Quantity.atLeast,
-                  onSelected: (Quantity? frequency) {
-                    if (frequency != null) onFrequencyChange(frequency);
-                  },
-                  dropdownMenuEntries: Quantity.values
-                      .map((e) => DropdownMenuEntry(value: e, label: e.label))
-                      .toList()),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 12,),
         Row(
           children: [
             Expanded(
-                child: TextField(
-                    keyboardType: TextInputType.number,
-                    enabled: selectedFrequency != Quantity.unLimited,
-                    decoration: kMyInputDecoration.copyWith(
-                      labelText: "Antal*",
-                    ))),
-            SizedBox(
-              width: 10,
+              child: DropdownButton<Quantity>(
+                  underline: SizedBox.shrink(),
+                  value: selectedFrequency,
+                  onChanged: (Quantity? frequency) {
+                    if (frequency != null) onFrequencyChange(frequency);
+                  },
+                  items: Quantity.values
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e.label),
+                          ))
+                      .toList()),
             ),
-            Expanded(
-                child: TextField(
-                    decoration: kMyInputDecoration.copyWith(
-                        labelText: "Enhed (valgfri)", hintText: "eks. km."))),
+            Expanded(child: MyValueChanger(handleValueChange: (int newVal){},hintText: "Antal",)),
           ],
         ),
         SizedBox(

@@ -46,7 +46,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
               width: 30,
             ),
             DropdownButton<_TimeUnit>(
-
+              underline: SizedBox.shrink(),
                 value: selectedTimeUnit,
                 onChanged: (_TimeUnit? frequency) {
                   if (frequency != null)

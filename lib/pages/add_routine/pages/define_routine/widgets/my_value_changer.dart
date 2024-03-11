@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,7 +11,8 @@ class RangeFormatter extends TextInputFormatter {
   RangeFormatter({required this.minValue, required this.maxValue});
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) return newValue;
     double newValueAsDouble = double.parse(newValue.text);
     if (minValue != null && newValueAsDouble < minValue!) {
@@ -24,12 +26,18 @@ class RangeFormatter extends TextInputFormatter {
 }
 
 class MyValueChanger extends StatefulWidget {
-  const MyValueChanger(
-      {super.key, required this.handleValueChange, this.maxValue, this.minValue = 1});
+  const MyValueChanger({
+    super.key,
+    required this.handleValueChange,
+    this.maxValue,
+    this.minValue = 1,
+    this.hintText,
+  });
 
   final Function(int newVal) handleValueChange;
   final int? maxValue;
   final int? minValue;
+  final String? hintText;
 
   @override
   State<MyValueChanger> createState() => _MyValueChangerState();
@@ -69,62 +77,84 @@ class _MyValueChangerState extends State<MyValueChanger> {
     }
   }
 
-  late TextEditingController _controller = TextEditingController(text: widget.minValue.toString());
+  late TextEditingController _controller =
+      TextEditingController(text: widget.minValue.toString());
 
   // make this correct
   bool get isAddEnabled {
     final int? intValue = int.tryParse(_controller.text);
     if (intValue == null || widget.maxValue == null) return true;
-    if(intValue+1 <= widget.maxValue!) return true;
+    if (intValue + 1 <= widget.maxValue!) return true;
     return false;
   }
 
   bool get isSubtractEnabled {
     final int? intValue = int.tryParse(_controller.text);
     if (intValue == null || widget.minValue == null) return true;
-    if(intValue-1 >= widget.minValue!) return true;
+    if (intValue - 1 >= widget.minValue!) return true;
     return false;
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return SizedBox(
       width: 140,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Column(
         children: [
-          _ChangeValueIcon(
-            subtract: true,
-            onPressed: isSubtractEnabled ? () => _handleGoalValueDecrement(_controller.text): null,
+          widget.hintText != null
+              ? Center(
+                  child: Text(
+                  widget.hintText!,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ))
+              : SizedBox.shrink(),
+          SizedBox(
+            height: 3,
           ),
-          Flexible(
-            flex: 2,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: TextField(
-                  decoration: kMyInputDecoration.copyWith(
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 0, vertical: 12),
-                      isDense: true),
-                  onChanged: (String newString) {
-                    if (int.tryParse(newString) == null) return;
-                    widget.handleValueChange(int.parse(newString));
-                    setState(() {});
-                  },
-                  controller: _controller,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, RangeFormatter(minValue: widget.minValue, maxValue: widget.maxValue)],
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _ChangeValueIcon(
+                subtract: true,
+                onPressed: isSubtractEnabled
+                    ? () => _handleGoalValueDecrement(_controller.text)
+                    : null,
+              ),
+              Flexible(
+                flex: 2,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: TextField(
+                      decoration: kMyInputDecoration.copyWith(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                          isDense: true),
+                      onChanged: (String newString) {
+                        if (int.tryParse(newString) == null) return;
+                        widget.handleValueChange(int.parse(newString));
+                        setState(() {});
+                      },
+                      controller: _controller,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        RangeFormatter(
+                            minValue: widget.minValue,
+                            maxValue: widget.maxValue)
+                      ],
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              _ChangeValueIcon(
+                  subtract: false,
+                  onPressed: isAddEnabled
+                      ? () => _handleGoalValueIncrement(_controller.text)
+                      : null),
+            ],
           ),
-          _ChangeValueIcon(
-              subtract: false,
-              onPressed: isAddEnabled ? () => _handleGoalValueIncrement(_controller.text) : null),
         ],
       ),
     );
@@ -143,12 +173,10 @@ class _ChangeValueIcon extends StatelessWidget {
       width: 30,
       height: 30,
       child: FilledButton(
-
           style: ButtonStyle(
               padding: MaterialStatePropertyAll(EdgeInsets.all(0)),
               shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(2)))),
-
           onPressed: onPressed,
           child: subtract ? Icon(Icons.remove) : Icon(Icons.add)),
     );
