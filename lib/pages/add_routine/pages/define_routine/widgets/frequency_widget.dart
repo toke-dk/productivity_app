@@ -31,7 +31,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Indtastning hver"),
+        Text("Færdiggørelserne skal udføres hver", style: Theme.of(context).textTheme.bodyLarge,),
         SizedBox(
           height: 10,
         ),
@@ -45,17 +45,18 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
             SizedBox(
               width: 30,
             ),
-            DropdownMenu(
-                initialSelection: _TimeUnit.day,
-                onSelected: (_TimeUnit? frequency) {
+            DropdownButton<_TimeUnit>(
+
+                value: selectedTimeUnit,
+                onChanged: (_TimeUnit? frequency) {
                   if (frequency != null)
                     setState(() {
                       selectedTimeUnit = frequency;
                     });
                 },
-                dropdownMenuEntries: _TimeUnit.values
-                    .map((e) => DropdownMenuEntry(
-                        value: e, label: e.translatedName))
+                items: _TimeUnit.values
+                    .map((e) => DropdownMenuItem(
+                    value: e, child: Text(e.translatedName)))
                     .toList()),
           ],
         ),

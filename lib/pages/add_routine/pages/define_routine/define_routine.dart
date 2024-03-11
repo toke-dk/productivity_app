@@ -8,12 +8,12 @@ import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/
 import 'package:productivity_app/widgets/my_date_picker.dart';
 import '../../../../shared/decorations.dart';
 
-enum Frequencies {
+enum Quantity {
   atLeast("Mindst"),
   inTotal("Total"),
   unLimited("Ubegrænset");
 
-  const Frequencies(this.label);
+  const Quantity(this.label);
 
   final String label;
 }
@@ -34,7 +34,7 @@ class DefineRoutinePage extends StatefulWidget {
 }
 
 class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
-  Frequencies selectedFrequency = Frequencies.atLeast;
+  Quantity selectedFrequency = Quantity.atLeast;
   String? routineName = "";
   String? description;
   int? goal;
@@ -89,7 +89,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             widget.evaluationType == EvaluationType.numeric
                 ? _NumericOptionsWidget(
                     selectedFrequency: selectedFrequency,
-                    onFrequencyChange: (Frequencies frequency) {
+                    onFrequencyChange: (Quantity frequency) {
                       setState(() {
                         selectedFrequency = frequency;
                       });
@@ -164,8 +164,8 @@ class _NumericOptionsWidget extends StatelessWidget {
       required this.selectedFrequency,
       required this.onFrequencyChange});
 
-  final Frequencies selectedFrequency;
-  final Function(Frequencies newFrequency) onFrequencyChange;
+  final Quantity selectedFrequency;
+  final Function(Quantity newFrequency) onFrequencyChange;
 
   @override
   Widget build(BuildContext context) {
@@ -181,11 +181,11 @@ class _NumericOptionsWidget extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: FittedBox(
               child: DropdownMenu(
-                  initialSelection: Frequencies.atLeast,
-                  onSelected: (Frequencies? frequency) {
+                  initialSelection: Quantity.atLeast,
+                  onSelected: (Quantity? frequency) {
                     if (frequency != null) onFrequencyChange(frequency);
                   },
-                  dropdownMenuEntries: Frequencies.values
+                  dropdownMenuEntries: Quantity.values
                       .map((e) => DropdownMenuEntry(value: e, label: e.label))
                       .toList()),
             ),
@@ -199,7 +199,7 @@ class _NumericOptionsWidget extends StatelessWidget {
             Expanded(
                 child: TextField(
                     keyboardType: TextInputType.number,
-                    enabled: selectedFrequency != Frequencies.unLimited,
+                    enabled: selectedFrequency != Quantity.unLimited,
                     decoration: kMyInputDecoration.copyWith(
                       labelText: "Antal*",
                     ))),
@@ -213,16 +213,24 @@ class _NumericOptionsWidget extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 5,
+          height: 12,
         ),
-        Text(
-          "for én dag",
-          style: Theme.of(context).textTheme.labelMedium,
-        )
-            .animate(target: selectedFrequency == Frequencies.atLeast ? 1 : 0)
-            .show()
-            .then()
-            .slide(),
+        Row(
+          children: [
+            Text(
+              "Færdiggørelser",
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+            Text(
+              " for én dag",
+              style: Theme.of(context).textTheme.labelMedium,
+            )
+                .animate(target: selectedFrequency == Quantity.atLeast ? 1 : 0)
+                .show()
+                .then()
+                .slide(),
+          ],
+        ),
       ],
     );
   }
