@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/models/providers/routine_provider.dart';
 import 'package:productivity_app/pages/add_goal/add_goal_page.dart';
 import 'package:productivity_app/pages/add_routine/add_routine.dart';
 import 'package:productivity_app/shared/extensions/gaol_extensions.dart';
 
 import '../../../models/goal.dart';
 import 'expansion_list_amountgoal.dart';
+import 'package:provider/provider.dart';
 
 class ShowGoalsWidget extends StatefulWidget {
   const ShowGoalsWidget(
@@ -89,11 +91,16 @@ class _ShowGoalsWidgetState extends State<ShowGoalsWidget> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddRoutine(
-                                      onCheckMarkGoalAdd:
-                                          widget.onCheckMarkGoalAdd,
-                                      onAmountGoalAdd:
-                                          widget.onAmountGoalAdd)));
+                                  builder: (context) => ChangeNotifierProvider(
+                                        create: (BuildContext context) {
+                                          return RoutineProvider();
+                                        },
+                                        child: AddRoutine(
+                                            onCheckMarkGoalAdd:
+                                                widget.onCheckMarkGoalAdd,
+                                            onAmountGoalAdd:
+                                                widget.onAmountGoalAdd),
+                                      )));
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

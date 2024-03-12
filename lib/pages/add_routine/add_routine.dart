@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/category.dart';
 import 'package:productivity_app/models/goal.dart';
+import 'package:productivity_app/models/providers/routine_provider.dart';
 import 'package:productivity_app/pages/add_routine/pages/choose_category.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/define_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
+import 'package:provider/provider.dart';
 
 class AddRoutine extends StatefulWidget {
   const AddRoutine(
@@ -44,8 +46,6 @@ class _PageViewExampleState extends State<PageViewExample>
   int _currentPageIndex = 0;
   bool nextButtonActive = false;
 
-  EvaluationType selectedEvaluationType = EvaluationType.numeric;
-
   late List<Widget> _pages = [
     ChooseCategoryPage(
         pageTitle: _pageTitle("Vælg Lategori"),
@@ -56,9 +56,7 @@ class _PageViewExampleState extends State<PageViewExample>
     EvaluatePage(
       pageTitle: _pageTitle("Evaluering"),
       onEvaluationTypeSelected: (EvaluationType enteredType) {
-        setState((){
-          selectedEvaluationType = enteredType;
-        });
+        Provider.of<RoutineProvider>(context, listen: false).setEvaluationType = enteredType;
         _updateCurrentPageIndex(2);
       },
     ),
@@ -67,10 +65,7 @@ class _PageViewExampleState extends State<PageViewExample>
       padding: const EdgeInsets.only(bottom: 70),
       child: DefineRoutinePage(
         pageTitle: _pageTitle("Definer rutine"),
-        onNextPagePressed: () {
-          print(selectedEvaluationType);
-        },
-        evaluationType: selectedEvaluationType ?? EvaluationType.numeric,
+        onNextPagePressed: () {},
       ),
     ),
   ];

@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/define_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_dialog.dart';
 
-class Routine {
+import '../pages/add_routine/add_routine.dart';
+
+class Routine{
   Routine(
       {required this.category,
+        required this.evaluationType,
       required this.name,
       this.description,
       required this.quantity,
@@ -19,6 +21,10 @@ class Routine {
   /// The category is what category the routine is selected for
   Category category;
 
+  /// If the user either wants to complete more completions per day or just
+  /// one per day
+  EvaluationType evaluationType;
+
   /// The name and description is what the user chooses the routine to be called
   String name;
   String? description;
@@ -26,13 +32,16 @@ class Routine {
   /// The quantity is either Mindst, Total eller Ubegrænset, which is what the
   /// user wants the goal to be
   Quantity quantity;
+
   /// This is the amount of repetetions the user wants to complete for a day
   int amountForOneDay;
+
   /// If the user wants a unit, this is the name
   String? unitName;
 
   /// This is how often the user wants to complete his [amountForOneDay] goal
   CompletionSchedule completionSchedule;
+
   /// If the user wants to add aditional goals to his routine, he can do it here
   ExtraGoal? extraGoal;
 

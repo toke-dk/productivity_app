@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:productivity_app/models/providers/routine_provider.dart';
 import 'package:productivity_app/pages/add_routine/add_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_button.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/my_value_changer.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/with_end_date_widget.dart';
 import 'package:productivity_app/widgets/my_date_picker.dart';
+import 'package:provider/provider.dart';
 import '../../../../shared/decorations.dart';
 
 enum Quantity {
@@ -21,21 +23,23 @@ enum Quantity {
 }
 
 class DefineRoutinePage extends StatefulWidget {
-  const DefineRoutinePage(
-      {super.key,
-      required this.pageTitle,
-      required this.onNextPagePressed,
-      required this.evaluationType});
+  const DefineRoutinePage({
+    super.key,
+    required this.pageTitle,
+    required this.onNextPagePressed,
+  });
 
   final Widget pageTitle;
   final Function() onNextPagePressed;
-  final EvaluationType evaluationType;
 
   @override
   State<DefineRoutinePage> createState() => _DefineRoutinePageState();
 }
 
 class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
+  EvaluationType get evaluationType =>
+      Provider.of<RoutineProvider>(context).evaluationType!;
+
   Quantity selectedFrequency = Quantity.atLeast;
   String? routineName = "";
   String? description;
@@ -88,19 +92,21 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                     hintText: "Med denne rutine skal jeg...",
                     labelText: "Forklaring (valgfri)",
                     alignLabelWithHint: true)),
-            widget.evaluationType == EvaluationType.numeric
+            evaluationType == EvaluationType.numeric
                 ? Column(
-                  children: [
-                    Divider(height: 40,),
-                    _NumericOptionsWidget(
-                        selectedFrequency: selectedFrequency,
-                        onFrequencyChange: (Quantity frequency) {
-                          setState(() {
-                            selectedFrequency = frequency;
-                          });
-                        }),
-                  ],
-                )
+                    children: [
+                      Divider(
+                        height: 40,
+                      ),
+                      _NumericOptionsWidget(
+                          selectedFrequency: selectedFrequency,
+                          onFrequencyChange: (Quantity frequency) {
+                            setState(() {
+                              selectedFrequency = frequency;
+                            });
+                          }),
+                    ],
+                  )
                 : SizedBox.shrink(),
             Divider(
               height: 40,
@@ -185,7 +191,9 @@ class _NumericOptionsWidget extends StatelessWidget {
               decoration: kMyInputDecoration.copyWith(
                   labelText: "Enhed (valgfri)", hintText: "eks. km.")),
         ),
-        SizedBox(height: 12,),
+        SizedBox(
+          height: 12,
+        ),
         Row(
           children: [
             Expanded(
@@ -202,7 +210,11 @@ class _NumericOptionsWidget extends StatelessWidget {
                           ))
                       .toList()),
             ),
-            Expanded(child: MyValueChanger(handleValueChange: (int newVal){},hintText: "Antal",)),
+            Expanded(
+                child: MyValueChanger(
+              handleValueChange: (int newVal) {},
+              hintText: "Antal",
+            )),
           ],
         ),
         SizedBox(
