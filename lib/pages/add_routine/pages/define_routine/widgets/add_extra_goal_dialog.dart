@@ -9,7 +9,8 @@ enum TimeUnit {
   year('for et år'),
   month('for en måned'),
   total("i alt"),
-  week("for en uge");
+  week("for en uge"),
+  day("for en dag");
 
   const TimeUnit(this.translatedName);
 
