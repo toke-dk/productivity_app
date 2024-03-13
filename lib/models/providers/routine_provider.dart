@@ -4,6 +4,7 @@ import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/
 
 import '../../pages/add_routine/add_routine.dart';
 import '../../pages/add_routine/pages/define_routine/define_routine.dart';
+import '../../pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 import '../category.dart';
 import '../routine.dart';
 import 'package:provider/provider.dart';
@@ -90,11 +91,11 @@ class RoutineProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  TimeUnit _completionScheduleTimeUnit = TimeUnit.day;
+  DayToYearTimes _completionScheduleTimeUnit = DayToYearTimes.day;
 
-  TimeUnit get completionScheduleTimeUnit => _completionScheduleTimeUnit;
+  DayToYearTimes get completionScheduleTimeUnit => _completionScheduleTimeUnit;
 
-  set setCSTimeUnit(TimeUnit timeUnit){
+  set setCSTimeUnit(DayToYearTimes timeUnit){
     _completionScheduleTimeUnit = timeUnit;
     notifyListeners();
   }

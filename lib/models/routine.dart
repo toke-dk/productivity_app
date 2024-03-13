@@ -3,6 +3,7 @@ import 'package:productivity_app/pages/add_routine/pages/define_routine/define_r
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_dialog.dart';
 
 import '../pages/add_routine/add_routine.dart';
+import '../pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 
 class Routine{
   Routine(
@@ -52,7 +53,7 @@ class Routine{
 
 class CompletionSchedule {
   int frequencyAmount;
-  TimeUnit timePeriod;
+  DayToYearTimes timePeriod;
 
   /// The [daysEachTimePeriod] can be null if the timePeriod is day
   /// Becuase then it says how many days per day you want to register

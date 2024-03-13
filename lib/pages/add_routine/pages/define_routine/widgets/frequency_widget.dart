@@ -8,13 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'my_value_changer.dart';
 
-enum _TimeUnit {
+enum DayToYearTimes {
   day("dag"),
   week("uge"),
   month('måned'),
   year('år');
 
-  const _TimeUnit(this.translatedName);
+  const DayToYearTimes(this.translatedName);
 
   final String translatedName;
 }
@@ -27,7 +27,7 @@ class ChooseFrequency extends StatefulWidget {
 }
 
 class _ChooseFrequencyState extends State<ChooseFrequency> {
-  _TimeUnit selectedTimeUnit = _TimeUnit.day;
+  DayToYearTimes selectedTimeUnit = DayToYearTimes.day;
 
   int get frequencyAmount =>
       Provider.of<RoutineProvider>(context).completionScheduleFrequency;
@@ -58,16 +58,16 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
             SizedBox(
               width: 30,
             ),
-            DropdownButton<_TimeUnit>(
+            DropdownButton<DayToYearTimes>(
                 underline: SizedBox.shrink(),
                 value: selectedTimeUnit,
-                onChanged: (_TimeUnit? frequency) {
+                onChanged: (DayToYearTimes? frequency) {
                   if (frequency != null)
                     setState(() {
                       selectedTimeUnit = frequency;
                     });
                 },
-                items: _TimeUnit.values
+                items: DayToYearTimes.values
                     .map((e) => DropdownMenuItem(
                         value: e, child: Text(e.translatedName)))
                     .toList()),
@@ -87,12 +87,12 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
 class _TimeUnitChildWrapper extends StatelessWidget {
   const _TimeUnitChildWrapper({super.key, required this.selectedTimeUnit});
 
-  final _TimeUnit selectedTimeUnit;
+  final DayToYearTimes selectedTimeUnit;
 
   Widget buildChildForUnit() {
-    if (selectedTimeUnit == _TimeUnit.week) {
+    if (selectedTimeUnit == DayToYearTimes.week) {
       return _WeekTimeUnitChild();
-    } else if (selectedTimeUnit == _TimeUnit.month) {
+    } else if (selectedTimeUnit == DayToYearTimes.month) {
       return _MonthTimeUnitChild();
     }
     return SizedBox();
@@ -103,10 +103,10 @@ class _TimeUnitChildWrapper extends StatelessWidget {
     return Column(
       children: [
         MySizeTransition(
-            isShowing: selectedTimeUnit == _TimeUnit.week,
+            isShowing: selectedTimeUnit == DayToYearTimes.week,
             child: _WeekTimeUnitChild()),
         MySizeTransition(
-            isShowing: selectedTimeUnit == _TimeUnit.month,
+            isShowing: selectedTimeUnit == DayToYearTimes.month,
             child: _MonthTimeUnitChild()),
       ],
     );
