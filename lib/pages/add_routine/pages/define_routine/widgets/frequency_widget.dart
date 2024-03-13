@@ -19,25 +19,27 @@ enum DayToYearTimes {
   final String translatedName;
 }
 
-class ChooseFrequency extends StatefulWidget {
+class ChooseFrequency extends StatelessWidget {
   const ChooseFrequency({super.key});
 
   @override
-  State<ChooseFrequency> createState() => _ChooseFrequencyState();
-}
-
-class _ChooseFrequencyState extends State<ChooseFrequency> {
-  DayToYearTimes selectedTimeUnit = DayToYearTimes.day;
-
-  int get frequencyAmount =>
-      Provider.of<RoutineProvider>(context).completionScheduleFrequency;
-
-  void _handleValueChange(int newValue) {
-    Provider.of<RoutineProvider>(context,listen: false).setCSFrequency = newValue;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    DayToYearTimes selectedTimeUnit =
+        Provider.of<RoutineProvider>(context).completionScheduleTimeUnit;
+
+    void _onTimeUnitChanged(DayToYearTimes newValue) {
+      Provider.of<RoutineProvider>(context, listen: false).setCSTimeUnit =
+          newValue;
+    }
+
+    int frequencyAmount =
+        Provider.of<RoutineProvider>(context).completionScheduleFrequency;
+
+    void _handleValueChange(int newValue) {
+      Provider.of<RoutineProvider>(context, listen: false).setCSFrequency =
+          newValue;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,10 +64,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
                 underline: SizedBox.shrink(),
                 value: selectedTimeUnit,
                 onChanged: (DayToYearTimes? frequency) {
-                  if (frequency != null)
-                    setState(() {
-                      selectedTimeUnit = frequency;
-                    });
+                  if (frequency != null) _onTimeUnitChanged(frequency);
                 },
                 items: DayToYearTimes.values
                     .map((e) => DropdownMenuItem(
