@@ -80,14 +80,22 @@ class RoutineProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// This is how often the user wants to complete his [amountForOneDay] goal
-  CompletionSchedule _completionSchedule =
-      CompletionSchedule(frequencyAmount: 1, timePeriod: TimeUnit.day);
+  /// This section is for [CompletionSchedule] class
+  int _completionScheduleFrequency = 1;
 
-  CompletionSchedule get completionSchedule => _completionSchedule;
+  int get completionScheduleFrequency => _completionScheduleFrequency;
 
-  set setCompletionSchedule(CompletionSchedule completionSchedule) {
-    _completionSchedule = completionSchedule;
+  set setCSFrequency(int newValue) {
+    _completionScheduleFrequency = newValue;
+    notifyListeners();
+  }
+
+  TimeUnit _completionScheduleTimeUnit = TimeUnit.day;
+
+  TimeUnit get completionScheduleTimeUnit => _completionScheduleTimeUnit;
+
+  set setCSTimeUnit(TimeUnit timeUnit){
+    _completionScheduleTimeUnit = timeUnit;
     notifyListeners();
   }
 
@@ -122,7 +130,9 @@ class RoutineProvider extends ChangeNotifier {
 
   /// If the routine even has an enddate
   bool _hasEndDate = false;
+
   bool get hasEndDate => _hasEndDate;
+
   set setHasEndDate(bool value) {
     _hasEndDate = value;
     notifyListeners();

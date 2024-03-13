@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:productivity_app/models/providers/routine_provider.dart';
+import 'package:productivity_app/models/routine.dart';
 import 'package:productivity_app/widgets/my_size_transition.dart';
+import 'package:provider/provider.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 import 'my_value_changer.dart';
 
@@ -26,12 +29,22 @@ class ChooseFrequency extends StatefulWidget {
 class _ChooseFrequencyState extends State<ChooseFrequency> {
   _TimeUnit selectedTimeUnit = _TimeUnit.day;
 
+  int get frequencyAmount =>
+      Provider.of<RoutineProvider>(context).completionScheduleFrequency;
+
+  void _handleValueChange(int newValue) {
+    Provider.of<RoutineProvider>(context,listen: false).setCSFrequency = newValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Indtastninger skal udføres hver", style: Theme.of(context).textTheme.bodyLarge,),
+        Text(
+          "Indtastninger skal udføres hver",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         SizedBox(
           height: 10,
         ),
@@ -39,14 +52,14 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
           mainAxisSize: MainAxisSize.min,
           children: [
             MyValueChanger(
-              handleValueChange: (int newVal) =>
-                  debugPrint(newVal.toString()), value: 1,
+              handleValueChange: _handleValueChange,
+              value: frequencyAmount,
             ),
             SizedBox(
               width: 30,
             ),
             DropdownButton<_TimeUnit>(
-              underline: SizedBox.shrink(),
+                underline: SizedBox.shrink(),
                 value: selectedTimeUnit,
                 onChanged: (_TimeUnit? frequency) {
                   if (frequency != null)
@@ -56,7 +69,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
                 },
                 items: _TimeUnit.values
                     .map((e) => DropdownMenuItem(
-                    value: e, child: Text(e.translatedName)))
+                        value: e, child: Text(e.translatedName)))
                     .toList()),
           ],
         ),
@@ -89,8 +102,12 @@ class _TimeUnitChildWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        MySizeTransition(isShowing: selectedTimeUnit == _TimeUnit.week, child: _WeekTimeUnitChild()),
-        MySizeTransition(isShowing: selectedTimeUnit == _TimeUnit.month, child: _MonthTimeUnitChild()),
+        MySizeTransition(
+            isShowing: selectedTimeUnit == _TimeUnit.week,
+            child: _WeekTimeUnitChild()),
+        MySizeTransition(
+            isShowing: selectedTimeUnit == _TimeUnit.month,
+            child: _MonthTimeUnitChild()),
       ],
     );
   }
@@ -114,7 +131,8 @@ class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
           children: [
             MyValueChanger(
               handleValueChange: (int newVal) {},
-              maxValue: 6, value: 1,
+              maxValue: 6,
+              value: 1,
             ),
             SizedBox(
               width: 20,
@@ -163,7 +181,8 @@ class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
           children: [
             MyValueChanger(
               handleValueChange: (int newVal) {},
-              maxValue: 30, value: 1,
+              maxValue: 30,
+              value: 1,
             ),
             SizedBox(
               width: 20,
