@@ -65,9 +65,14 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
     );
   }
 
+  void _onStartDateChange(DateTime newDate) {
+    Provider.of<RoutineProvider>(context, listen: false).setStartDate = newDate;
+  }
+
   DateTime _selectedEndDate = DateTime.now();
   bool _isEndDateOptionSelected = false;
-  DateTime _startDate = DateTime.now();
+
+  DateTime get _startDate => Provider.of<RoutineProvider>(context).startDate;
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +132,7 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               height: 5,
             ),
             MyDatePicker(
-                selectedDate: _startDate,
-                onDateSelected: (DateTime newDate) {
-                  setState(() {
-                    _startDate = newDate;
-                  });
-                }),
+                selectedDate: _startDate, onDateSelected: _onStartDateChange),
             SizedBox(
               height: 10,
             ),

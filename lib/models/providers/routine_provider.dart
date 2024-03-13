@@ -103,7 +103,7 @@ class RoutineProvider extends ChangeNotifier {
   /// This is the start and the possible end date for the routine
   DateTime _startDate = DateTime.now();
 
-  DateTime? get startDate => _startDate;
+  DateTime get startDate => _startDate;
 
   set setStartDate(DateTime startDate) {
     _startDate = startDate;
