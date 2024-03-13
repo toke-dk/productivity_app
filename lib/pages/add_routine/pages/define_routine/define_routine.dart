@@ -182,6 +182,11 @@ class _NumericOptionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    void _handleValueChange(int value){
+      Provider.of<RoutineProvider>(context,listen: false).setAmountForOneDay = value;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -212,7 +217,7 @@ class _NumericOptionsWidget extends StatelessWidget {
             ),
             Expanded(
                 child: MyValueChanger(
-              handleValueChange: (int newVal) {},
+              handleValueChange: _handleValueChange,
               hintText: "Antal",
             )),
           ],
