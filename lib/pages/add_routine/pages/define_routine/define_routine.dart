@@ -121,6 +121,10 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
                               selectedFrequency = frequency;
                             });
                           }),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      AddExtraGoalButton(),
                     ],
                   )
                 : SizedBox.shrink(),
@@ -128,10 +132,6 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               height: 40,
             ),
             ChooseFrequency(),
-            SizedBox(
-              height: 15,
-            ),
-            AddExtraGoalButton(),
             Divider(
               height: 30,
             ),
