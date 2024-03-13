@@ -40,7 +40,7 @@ class _ChooseFrequencyState extends State<ChooseFrequency> {
           children: [
             MyValueChanger(
               handleValueChange: (int newVal) =>
-                  debugPrint(newVal.toString()),
+                  debugPrint(newVal.toString()), value: 1,
             ),
             SizedBox(
               width: 30,
@@ -114,7 +114,7 @@ class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
           children: [
             MyValueChanger(
               handleValueChange: (int newVal) {},
-              maxValue: 6,
+              maxValue: 6, value: 1,
             ),
             SizedBox(
               width: 20,
@@ -163,7 +163,7 @@ class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
           children: [
             MyValueChanger(
               handleValueChange: (int newVal) {},
-              maxValue: 30,
+              maxValue: 30, value: 1,
             ),
             SizedBox(
               width: 20,

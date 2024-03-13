@@ -218,7 +218,7 @@ class _NumericOptionsWidget extends StatelessWidget {
             Expanded(
                 child: MyValueChanger(
               handleValueChange: _handleValueChange,
-              hintText: "Antal",
+              hintText: "Antal", value: Provider.of<RoutineProvider>(context).amountForOneDay,
             )),
           ],
         ),

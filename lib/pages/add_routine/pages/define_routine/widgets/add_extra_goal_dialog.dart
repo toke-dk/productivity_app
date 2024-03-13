@@ -57,7 +57,7 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
             setState(() {
               goalValue = newVal;
             });
-          },
+          }, value: goalValue,
         ),
         SizedBox(
           height: 20,

@@ -31,13 +31,14 @@ class MyValueChanger extends StatefulWidget {
     required this.handleValueChange,
     this.maxValue,
     this.minValue = 1,
-    this.hintText,
+    this.hintText, required this.value,
   });
 
   final Function(int newVal) handleValueChange;
   final int? maxValue;
   final int? minValue;
   final String? hintText;
+  final int value;
 
   @override
   State<MyValueChanger> createState() => _MyValueChangerState();
@@ -45,40 +46,30 @@ class MyValueChanger extends StatefulWidget {
 
 class _MyValueChangerState extends State<MyValueChanger> {
   void _handleGoalValueDecrement(String textValue) {
-    if (int.tryParse(textValue) == null || int.parse(textValue) <= 0) {
-      setState(() {
-        _controller.text = "0";
-      });
+    final int? intValue = int.tryParse(textValue);
+
+    if (intValue == null || intValue <= 0) {
       widget.handleValueChange(0);
     } else {
-      setState(() {
-        _controller.text = (int.parse(textValue) - 1).toString();
-      });
-      widget.handleValueChange((int.parse(textValue) - 1));
+      widget.handleValueChange((intValue - 1));
     }
   }
 
   void _handleGoalValueIncrement(String textValue) {
     final int? intValue = int.tryParse(textValue);
 
-    if (int.tryParse(textValue) == null ||
-        (widget.maxValue != null && intValue! >= widget.maxValue!))
+    if (intValue == null ||
+        (widget.maxValue != null && intValue >= widget.maxValue!))
       return;
-    else if (intValue! < 0) {
-      setState(() {
-        _controller.text = "1";
-      });
+    else if (intValue < 0) {
       widget.handleValueChange(1);
     } else {
-      setState(() {
-        _controller.text = (intValue + 1).toString();
-      });
-      widget.handleValueChange((intValue + 1));
+      widget.handleValueChange(intValue + 1);
     }
   }
 
-  late TextEditingController _controller =
-      TextEditingController(text: widget.minValue.toString());
+  TextEditingController get _controller =>
+      TextEditingController(text: widget.value.toString());
 
   // make this correct
   bool get isAddEnabled {
@@ -97,6 +88,7 @@ class _MyValueChangerState extends State<MyValueChanger> {
 
   @override
   Widget build(BuildContext context) {
+    print(_controller.text);
     return SizedBox(
       width: 140,
       child: Column(
@@ -133,7 +125,6 @@ class _MyValueChangerState extends State<MyValueChanger> {
                       onChanged: (String newString) {
                         if (int.tryParse(newString) == null) return;
                         widget.handleValueChange(int.parse(newString));
-                        setState(() {});
                       },
                       controller: _controller,
                       inputFormatters: [
