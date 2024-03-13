@@ -5,10 +5,10 @@ import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/
 import '../pages/add_routine/add_routine.dart';
 import '../pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 
-class Routine{
+class Routine {
   Routine(
       {required this.category,
-        required this.evaluationType,
+      required this.evaluationType,
       required this.name,
       this.description,
       required this.quantity,

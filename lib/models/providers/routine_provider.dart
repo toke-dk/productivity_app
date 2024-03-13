@@ -95,7 +95,7 @@ class RoutineProvider extends ChangeNotifier {
 
   DayToYearTimes get completionScheduleTimeUnit => _completionScheduleTimeUnit;
 
-  set setCSTimeUnit(DayToYearTimes timeUnit){
+  set setCSTimeUnit(DayToYearTimes timeUnit) {
     _completionScheduleTimeUnit = timeUnit;
     notifyListeners();
   }

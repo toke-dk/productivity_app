@@ -120,8 +120,6 @@ class _WeekTimeUnitChild extends StatefulWidget {
 }
 
 class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
-  bool _isCustomSelected = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -139,24 +137,6 @@ class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
             Text("dage hver uge")
           ],
         ),
-        // SizedBox(height: 20,),
-        // SwitchListTile(
-        //     title: Text("Tilpasset"),
-        //     value: _isCustomSelected,
-        //     onChanged: (bool newVal) {
-        //       setState(() {
-        //         _isCustomSelected = newVal;
-        //       });
-        //     }),
-        // MySizeTransition(
-        //     isShowing: _isCustomSelected,
-        //     child: Column(
-        //       children: [
-        //         WeekdaySelector(
-        //             onChanged: (int newVal) {},
-        //             values: List.generate(7, (index) => false))
-        //       ],
-        //     )),
       ],
     );
   }
@@ -170,8 +150,6 @@ class _MonthTimeUnitChild extends StatefulWidget {
 }
 
 class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
-  bool _isCustomSelected = false;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -189,22 +167,6 @@ class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
             Text("dage hver måned")
           ],
         ),
-        // SizedBox(height: 20,),
-        // SwitchListTile(
-        //     title: Text("Tilpasset"),
-        //     value: _isCustomSelected,
-        //     onChanged: (bool newVal) {
-        //       setState(() {
-        //         _isCustomSelected = newVal;
-        //       });
-        //     }),
-        // MySizeTransition(
-        //     isShowing: _isCustomSelected,
-        //     child: Column(
-        //       children: [
-        //         Text("Child here")
-        //       ],
-        //     )),
       ],
     );
   }

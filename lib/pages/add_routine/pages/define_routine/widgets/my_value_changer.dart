@@ -31,7 +31,8 @@ class MyValueChanger extends StatelessWidget {
     required this.handleValueChange,
     this.maxValue,
     this.minValue = 1,
-    this.hintText, required this.value,
+    this.hintText,
+    required this.value,
   });
 
   final Function(int newVal) handleValueChange;
@@ -53,8 +54,7 @@ class MyValueChanger extends StatelessWidget {
   void _handleGoalValueIncrement(String textValue) {
     final int? intValue = int.tryParse(textValue);
 
-    if (intValue == null ||
-        (maxValue != null && intValue >= maxValue!))
+    if (intValue == null || (maxValue != null && intValue >= maxValue!))
       return;
     else if (intValue < 0) {
       handleValueChange(1);
@@ -124,9 +124,7 @@ class MyValueChanger extends StatelessWidget {
                       controller: _controller,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
-                        RangeFormatter(
-                            minValue: minValue,
-                            maxValue: maxValue)
+                        RangeFormatter(minValue: minValue, maxValue: maxValue)
                       ],
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,

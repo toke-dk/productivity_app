@@ -69,16 +69,19 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
     Provider.of<RoutineProvider>(context, listen: false).setStartDate = newDate;
   }
 
-  void _onEndDateChange(DateTime newDate){
+  void _onEndDateChange(DateTime newDate) {
     Provider.of<RoutineProvider>(context, listen: false).setEndDate = newDate;
   }
 
-  void _onEnDateOptionChange(bool value){
+  void _onEnDateOptionChange(bool value) {
     Provider.of<RoutineProvider>(context, listen: false).setHasEndDate = value;
   }
 
-  DateTime get _selectedEndDate => Provider.of<RoutineProvider>(context).endDate;
-  bool get _isEndDateOptionSelected => Provider.of<RoutineProvider>(context).hasEndDate;
+  DateTime get _selectedEndDate =>
+      Provider.of<RoutineProvider>(context).endDate;
+
+  bool get _isEndDateOptionSelected =>
+      Provider.of<RoutineProvider>(context).hasEndDate;
 
   DateTime get _startDate => Provider.of<RoutineProvider>(context).startDate;
 
@@ -182,9 +185,9 @@ class _NumericOptionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    void _handleValueChange(int value){
-      Provider.of<RoutineProvider>(context,listen: false).setAmountForOneDay = value;
+    void _handleValueChange(int value) {
+      Provider.of<RoutineProvider>(context, listen: false).setAmountForOneDay =
+          value;
     }
 
     return Column(
@@ -218,7 +221,8 @@ class _NumericOptionsWidget extends StatelessWidget {
             Expanded(
                 child: MyValueChanger(
               handleValueChange: _handleValueChange,
-              hintText: "Antal", value: Provider.of<RoutineProvider>(context).amountForOneDay,
+              hintText: "Antal",
+              value: Provider.of<RoutineProvider>(context).amountForOneDay,
             )),
           ],
         ),
