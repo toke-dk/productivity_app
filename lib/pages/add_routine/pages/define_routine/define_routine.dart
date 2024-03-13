@@ -69,8 +69,16 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
     Provider.of<RoutineProvider>(context, listen: false).setStartDate = newDate;
   }
 
-  DateTime _selectedEndDate = DateTime.now();
-  bool _isEndDateOptionSelected = false;
+  void _onEndDateChange(DateTime newDate){
+    Provider.of<RoutineProvider>(context, listen: false).setEndDate = newDate;
+  }
+
+  void _onEnDateOptionChange(bool value){
+    Provider.of<RoutineProvider>(context, listen: false).setHasEndDate = value;
+  }
+
+  DateTime get _selectedEndDate => Provider.of<RoutineProvider>(context).endDate;
+  bool get _isEndDateOptionSelected => Provider.of<RoutineProvider>(context).hasEndDate;
 
   DateTime get _startDate => Provider.of<RoutineProvider>(context).startDate;
 
@@ -137,18 +145,10 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
               height: 10,
             ),
             WithEndDateWidget(
-              onDateChange: (DateTime newDate) {
-                setState(() {
-                  _selectedEndDate = newDate;
-                });
-              },
+              onDateChange: _onEndDateChange,
               selectedDate: _selectedEndDate,
               switchValue: _isEndDateOptionSelected,
-              onSwitchChange: (bool newVale) {
-                setState(() {
-                  _isEndDateOptionSelected = newVale;
-                });
-              },
+              onSwitchChange: _onEnDateOptionChange,
             ),
             Divider(
               height: 30,

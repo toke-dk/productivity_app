@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_dialog.dart';
 
 import '../../pages/add_routine/add_routine.dart';
@@ -110,12 +111,20 @@ class RoutineProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  DateTime? _endDate;
+  DateTime _endDate = DateTime.now().add(1.days);
 
-  DateTime? get endDate => _endDate;
+  DateTime get endDate => _endDate;
 
   set setEndDate(DateTime endDate) {
     _endDate = endDate;
+    notifyListeners();
+  }
+
+  /// If the routine even has an enddate
+  bool _hasEndDate = false;
+  bool get hasEndDate => _hasEndDate;
+  set setHasEndDate(bool value) {
+    _hasEndDate = value;
     notifyListeners();
   }
 }
