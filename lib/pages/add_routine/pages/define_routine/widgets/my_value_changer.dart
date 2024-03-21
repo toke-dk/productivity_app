@@ -25,7 +25,7 @@ class RangeFormatter extends TextInputFormatter {
   }
 }
 
-class MyValueChanger extends StatelessWidget {
+class MyValueChanger extends StatefulWidget {
   const MyValueChanger({
     super.key,
     required this.handleValueChange,
@@ -41,44 +41,61 @@ class MyValueChanger extends StatelessWidget {
   final String? hintText;
   final int value;
 
+  @override
+  State<MyValueChanger> createState() => _MyValueChangerState();
+}
+
+class _MyValueChangerState extends State<MyValueChanger> {
   void _handleGoalValueDecrement(String textValue) {
     final int? intValue = int.tryParse(textValue);
+    int? changedValue;
 
     if (intValue == null || intValue <= 0) {
-      handleValueChange(0);
+      changedValue = 0;
     } else {
-      handleValueChange((intValue - 1));
+      changedValue = intValue - 1;
     }
+    widget.handleValueChange(changedValue);
+    _controller.text = changedValue.toString();
   }
 
   void _handleGoalValueIncrement(String textValue) {
     final int? intValue = int.tryParse(textValue);
+    int? changedValue;
 
-    if (intValue == null || (maxValue != null && intValue >= maxValue!))
+    if (intValue == null ||
+        (widget.maxValue != null && intValue >= widget.maxValue!))
       return;
     else if (intValue < 0) {
-      handleValueChange(1);
+      changedValue = 1;
     } else {
-      handleValueChange(intValue + 1);
+      changedValue = intValue + 1;
     }
+    widget.handleValueChange(changedValue);
+    _controller.text = changedValue.toString();
   }
 
-  TextEditingController get _controller =>
-      TextEditingController(text: value.toString());
+  TextEditingController _controller = TextEditingController();
 
   // make this correct
   bool get isAddEnabled {
     final int? intValue = int.tryParse(_controller.text);
-    if (intValue == null || maxValue == null) return true;
-    if (intValue + 1 <= maxValue!) return true;
+    if (intValue == null || widget.maxValue == null) return true;
+    if (intValue + 1 <= widget.maxValue!) return true;
     return false;
   }
 
   bool get isSubtractEnabled {
     final int? intValue = int.tryParse(_controller.text);
-    if (intValue == null || minValue == null) return true;
-    if (intValue - 1 >= minValue!) return true;
+    if (intValue == null || widget.minValue == null) return true;
+    if (intValue - 1 >= widget.minValue!) return true;
     return false;
+  }
+
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.value.toString());
+    super.initState();
   }
 
   @override
@@ -88,10 +105,10 @@ class MyValueChanger extends StatelessWidget {
       width: 140,
       child: Column(
         children: [
-          hintText != null
+          widget.hintText != null
               ? Center(
                   child: Text(
-                  hintText!,
+                  widget.hintText!,
                   style: Theme.of(context).textTheme.labelMedium,
                 ))
               : SizedBox.shrink(),
@@ -119,12 +136,14 @@ class MyValueChanger extends StatelessWidget {
                           isDense: true),
                       onChanged: (String newString) {
                         if (int.tryParse(newString) == null) return;
-                        handleValueChange(int.parse(newString));
+                        widget.handleValueChange(int.parse(newString));
                       },
                       controller: _controller,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
-                        RangeFormatter(minValue: minValue, maxValue: maxValue)
+                        RangeFormatter(
+                            minValue: widget.minValue,
+                            maxValue: widget.maxValue)
                       ],
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
