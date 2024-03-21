@@ -114,7 +114,7 @@ class RoutineProvider extends ChangeNotifier {
 
   ExtraGoal? get extraGoal => _extraGoal;
 
-  set setExtraGoal(ExtraGoal extraGoal) {
+  set setExtraGoal(ExtraGoal? extraGoal) {
     _extraGoal = extraGoal;
     notifyListeners();
   }
