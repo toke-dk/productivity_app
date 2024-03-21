@@ -42,17 +42,25 @@ class AddExtraGoalButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Målets varighed er: ${_extraGoal.timePeriod.translatedName}"),
+                  Text(
+                      "Målets varighed er: ${_extraGoal.timePeriod.translatedName}"),
                   Text(
                       "Antal: ${_extraGoal.amountForTotalTimePeriod.toString()}"),
                   Text(
                       "Startdato: ${_extraGoal.startDate != null ? DateFormat("EEE. dd.MMM.yyyyy").format(_extraGoal.startDate!) : '(Ingen)'}"),
-                Text("Afsluttes når fuldført: ${_extraGoal.shouldEndWhenFinished == true ? '(Ja)' : '(Nej)'}"),
-                  SizedBox(height: 10,),
-                  Center(child: OutlinedButton(onPressed: (){
-                    Provider.of<RoutineProvider>(context,listen: false).setExtraGoal = null;
-                    Navigator.pop(context);
-                  }, child: Text("Slet mål")))
+                  Text(
+                      "Afsluttes når fuldført: ${_extraGoal.shouldEndWhenFinished == true ? '(Ja)' : '(Nej)'}"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                      child: OutlinedButton(
+                          onPressed: () {
+                            Provider.of<RoutineProvider>(context, listen: false)
+                                .setExtraGoal = null;
+                            Navigator.pop(context);
+                          },
+                          child: Text("Slet mål")))
                 ],
               ),
             );
