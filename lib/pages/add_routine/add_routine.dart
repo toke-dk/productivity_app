@@ -87,6 +87,7 @@ class _PageViewExampleState extends State<PageViewExample>
                       .completionScheduleDaysEachTimePeriod),
               startDate: provider.startDate);
           print(routine);
+          /// TODO: add the routine to the database here
           },
       ),
     ),
