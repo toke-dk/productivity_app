@@ -140,7 +140,7 @@ class _WeekTimeUnitChild extends StatelessWidget {
               handleValueChange: handleValueChange,
               maxValue: 6,
               value:
-                  Provider.of<RoutineProvider>(context).cSAmountPerTimePeriod,
+                  Provider.of<RoutineProvider>(context).completionScheduleDaysEachTimePeriod,
             ),
             SizedBox(
               width: 20,
@@ -168,7 +168,7 @@ class _MonthTimeUnitChild extends StatelessWidget {
               handleValueChange: handleValueChange,
               maxValue: 30,
               value:
-                  Provider.of<RoutineProvider>(context).cSAmountPerTimePeriod,
+                  Provider.of<RoutineProvider>(context).completionScheduleDaysEachTimePeriod,
             ),
             SizedBox(
               width: 20,
@@ -196,7 +196,7 @@ class _YearTimeUnitChild extends StatelessWidget {
               handleValueChange: handleValueChange,
               maxValue: 30,
               value:
-                  Provider.of<RoutineProvider>(context).cSAmountPerTimePeriod,
+                  Provider.of<RoutineProvider>(context).completionScheduleDaysEachTimePeriod,
             ),
             SizedBox(
               width: 20,

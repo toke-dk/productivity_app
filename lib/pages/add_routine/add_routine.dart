@@ -10,6 +10,8 @@ import 'package:productivity_app/pages/add_routine/pages/evaluate.dart';
 import 'package:productivity_app/widgets/display_activity_type.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/routine.dart';
+
 class AddRoutine extends StatefulWidget {
   const AddRoutine(
       {super.key,
@@ -65,7 +67,27 @@ class _PageViewExampleState extends State<PageViewExample>
       padding: const EdgeInsets.only(bottom: 70),
       child: DefineRoutinePage(
         pageTitle: _pageTitle("Definer rutine"),
-        onNextPagePressed: () {},
+        onNextPagePressed: () {
+          RoutineProvider provider = Provider.of<RoutineProvider>(context,listen: false);
+          Routine routine = Routine(
+              unitName: provider.unitName,
+              description: provider.description,
+              extraGoal: provider.extraGoal,
+              endDate: provider.endDate,
+              category: provider.category!,
+              evaluationType: provider.evaluationType!,
+              name: provider.name!,
+              quantity: provider.quantity,
+              amountForOneDay: provider.amountForOneDay,
+              completionSchedule: CompletionSchedule(
+                  frequencyAmount:
+                  provider.completionScheduleFrequency,
+                  timePeriod: provider.completionScheduleTimeUnit,
+                  daysEachTimePeriod: provider
+                      .completionScheduleDaysEachTimePeriod),
+              startDate: provider.startDate);
+          print(routine);
+          },
       ),
     ),
   ];

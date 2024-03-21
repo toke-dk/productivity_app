@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/define_routine.dart';
 import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/add_extra_goal_dialog.dart';
 
 import '../pages/add_routine/add_routine.dart';
 import '../pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
+import 'category.dart';
 
 class Routine {
   Routine(

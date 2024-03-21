@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:productivity_app/models/category.dart';
+import 'package:productivity_app/models/providers/routine_provider.dart';
+import 'package:provider/provider.dart';
 
 class ChooseCategoryPage extends StatelessWidget {
   const ChooseCategoryPage(
@@ -31,7 +33,10 @@ class ChooseCategoryPage extends StatelessWidget {
               Category _currentCategory = categories[index];
               return ShowCategoryWidget(
                 category: _currentCategory,
-                onPressed: updateCurrentPageIndex,
+                onPressed: () {
+                  Provider.of<RoutineProvider>(context, listen: false).setCategory = _currentCategory;
+                  updateCurrentPageIndex();
+                },
               );
             },
           ),

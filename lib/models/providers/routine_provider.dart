@@ -93,7 +93,7 @@ class RoutineProvider extends ChangeNotifier {
 
   int _cSAmountPerTimePeriod = 1;
 
-  int get cSAmountPerTimePeriod => _cSAmountPerTimePeriod;
+  int get completionScheduleDaysEachTimePeriod => _cSAmountPerTimePeriod;
 
   set setCSAmountPerTime(int newValue) {
     _cSAmountPerTimePeriod = newValue;
