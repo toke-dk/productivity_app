@@ -64,7 +64,15 @@ class ChooseFrequency extends StatelessWidget {
                 underline: SizedBox.shrink(),
                 value: selectedTimeUnit,
                 onChanged: (DayToYearTimes? frequency) {
-                  if (frequency != null) _onTimeUnitChanged(frequency);
+                  if (frequency != null) {
+                    _onTimeUnitChanged(frequency);
+
+                    // Making sure to reset it to avoid having for example
+                    // 8 days per week
+                    Provider.of<RoutineProvider>(context, listen: false)
+                        .setCSAmountPerTime = 1;
+                  }
+                  ;
                 },
                 items: DayToYearTimes.values
                     .map((e) => DropdownMenuItem(
