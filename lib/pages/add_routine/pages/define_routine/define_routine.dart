@@ -85,23 +85,45 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
 
   DateTime get _startDate => Provider.of<RoutineProvider>(context).startDate;
 
+  final _routineNameKey = GlobalKey<FormState>();
+
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             widget.pageTitle,
-            TextField(
-                textCapitalization: TextCapitalization.words,
-                decoration: kMyInputDecoration.copyWith(
-                    labelText: "Rutine*", hintText: "Navn på din rutine...")),
+            Form(
+              key: _routineNameKey,
+              child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value == "") {
+                      return "Giv rutinen et navn";
+                    }
+                    return null;
+                  },
+                  onChanged: (String newText) {
+                    Provider.of<RoutineProvider>(context, listen: false)
+                        .setName = newText;
+                  },
+                  textCapitalization: TextCapitalization.words,
+                  decoration: kMyInputDecoration.copyWith(
+                      labelText: "Rutine*", hintText: "Navn på din rutine...")),
+            ),
             SizedBox(
               height: 20,
             ),
             TextField(
+                onChanged: (String newText) {
+                  Provider.of<RoutineProvider>(context, listen: false)
+                      .setDescription = newText;
+                },
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 3,
                 decoration: kMyInputDecoration.copyWith(
@@ -162,7 +184,15 @@ class _DefineRoutinePageState<Object> extends State<DefineRoutinePage> {
             Align(
                 alignment: Alignment.center,
                 child: FilledButton(
-                    onPressed: () => widget.onNextPagePressed(),
+                    onPressed: () {
+                      if (!_routineNameKey.currentState!.validate()) {
+                        _scrollController.animateTo(0,
+                            duration: 300.milliseconds,
+                            curve: Curves.easeInOutQuad);
+                      } else {
+                        widget.onNextPagePressed();
+                      }
+                    },
                     child: Text("Næste"))),
             SizedBox(
               height: 40,
@@ -196,6 +226,10 @@ class _NumericOptionsWidget extends StatelessWidget {
         SizedBox(
           width: 150,
           child: TextField(
+              onChanged: (String newText) {
+                Provider.of<RoutineProvider>(context, listen: false)
+                    .setUnitName = newText;
+              },
               decoration: kMyInputDecoration.copyWith(
                   labelText: "Enhed (valgfri)", hintText: "eks. km.")),
         ),
