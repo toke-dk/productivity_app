@@ -91,6 +91,15 @@ class RoutineProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int _cSAmountPerTimePeriod = 1;
+
+  int get cSAmountPerTimePeriod => _cSAmountPerTimePeriod;
+
+  set setCSAmountPerTime(int newValue) {
+    _cSAmountPerTimePeriod = newValue;
+    notifyListeners();
+  }
+
   DayToYearTimes _completionScheduleTimeUnit = DayToYearTimes.day;
 
   DayToYearTimes get completionScheduleTimeUnit => _completionScheduleTimeUnit;

@@ -88,38 +88,35 @@ class _TimeUnitChildWrapper extends StatelessWidget {
 
   final DayToYearTimes selectedTimeUnit;
 
-  Widget buildChildForUnit() {
-    if (selectedTimeUnit == DayToYearTimes.week) {
-      return _WeekTimeUnitChild();
-    } else if (selectedTimeUnit == DayToYearTimes.month) {
-      return _MonthTimeUnitChild();
-    }
-    return SizedBox();
-  }
-
   @override
   Widget build(BuildContext context) {
+    _handleValueChange(int newVal) {
+      Provider.of<RoutineProvider>(context, listen: false).setCSAmountPerTime =
+          newVal;
+    }
+
     return Column(
       children: [
         MySizeTransition(
             isShowing: selectedTimeUnit == DayToYearTimes.week,
-            child: _WeekTimeUnitChild()),
+            child: _WeekTimeUnitChild(
+              handleValueChange: _handleValueChange,
+            )),
         MySizeTransition(
             isShowing: selectedTimeUnit == DayToYearTimes.month,
-            child: _MonthTimeUnitChild()),
+            child: _MonthTimeUnitChild(
+              handleValueChange: _handleValueChange,
+            )),
       ],
     );
   }
 }
 
-class _WeekTimeUnitChild extends StatefulWidget {
-  const _WeekTimeUnitChild({super.key});
+class _WeekTimeUnitChild extends StatelessWidget {
+  const _WeekTimeUnitChild({super.key, required this.handleValueChange});
 
-  @override
-  State<_WeekTimeUnitChild> createState() => _WeekTimeUnitChildState();
-}
+  final Function(int newVal) handleValueChange;
 
-class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -127,9 +124,10 @@ class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
         Row(
           children: [
             MyValueChanger(
-              handleValueChange: (int newVal) {},
+              handleValueChange: handleValueChange,
               maxValue: 6,
-              value: 1,
+              value:
+                  Provider.of<RoutineProvider>(context).cSAmountPerTimePeriod,
             ),
             SizedBox(
               width: 20,
@@ -142,14 +140,11 @@ class _WeekTimeUnitChildState extends State<_WeekTimeUnitChild> {
   }
 }
 
-class _MonthTimeUnitChild extends StatefulWidget {
-  const _MonthTimeUnitChild({super.key});
+class _MonthTimeUnitChild extends StatelessWidget {
+  const _MonthTimeUnitChild({super.key, required this.handleValueChange});
 
-  @override
-  State<_MonthTimeUnitChild> createState() => _MonthTimeUnitChildState();
-}
+  final Function(int newVal) handleValueChange;
 
-class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -157,9 +152,10 @@ class _MonthTimeUnitChildState extends State<_MonthTimeUnitChild> {
         Row(
           children: [
             MyValueChanger(
-              handleValueChange: (int newVal) {},
+              handleValueChange: handleValueChange,
               maxValue: 30,
-              value: 1,
+              value:
+                  Provider.of<RoutineProvider>(context).cSAmountPerTimePeriod,
             ),
             SizedBox(
               width: 20,
