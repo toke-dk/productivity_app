@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:productivity_app/models/providers/routine_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'add_extra_goal_dialog.dart';
 import 'extra_goal_button.dart';
@@ -6,18 +8,25 @@ import 'extra_goal_button.dart';
 class AddExtraGoalButton extends StatelessWidget {
   const AddExtraGoalButton({super.key});
 
-  void openAddExtraGoalDialog(BuildContext context, TimeUnit timeUnit) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AddExtraGoalDialog(
-            timeUnit: timeUnit,
-          );
-        });
-  }
+
 
   @override
   Widget build(BuildContext context) {
+
+    void openAddExtraGoalDialog(TimeUnit timeUnit) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AddExtraGoalDialog(
+              timeUnit: timeUnit,
+            );
+          }).then((value) {
+        if (value == null) return;
+        Navigator.pop(context);
+        Provider.of<RoutineProvider>(context, listen: false).setExtraGoal = value;
+      });
+    }
+
     return _NewGoalButton(
       leading: Icon(Icons.emoji_flags_sharp),
       title: "Tilføj et Ekstra-Mål",
@@ -48,7 +57,7 @@ class AddExtraGoalButton extends StatelessWidget {
                     ExtraGoalButton(
                       title: "Uge mål",
                       onTap: () {
-                        openAddExtraGoalDialog(context, TimeUnit.week);
+                        openAddExtraGoalDialog(TimeUnit.week);
                       },
                     ),
                     SizedBox(
@@ -57,7 +66,7 @@ class AddExtraGoalButton extends StatelessWidget {
                     ExtraGoalButton(
                       title: "Måned mål",
                       onTap: () {
-                        openAddExtraGoalDialog(context, TimeUnit.month);
+                        openAddExtraGoalDialog(TimeUnit.month);
                       },
                     ),
                     SizedBox(
@@ -66,7 +75,7 @@ class AddExtraGoalButton extends StatelessWidget {
                     ExtraGoalButton(
                       title: "År mål",
                       onTap: () {
-                        openAddExtraGoalDialog(context, TimeUnit.year);
+                        openAddExtraGoalDialog(TimeUnit.year);
                       },
                     ),
                     SizedBox(
@@ -75,7 +84,7 @@ class AddExtraGoalButton extends StatelessWidget {
                     ExtraGoalButton(
                       title: "Total mål",
                       onTap: () {
-                        openAddExtraGoalDialog(context, TimeUnit.total);
+                        openAddExtraGoalDialog(TimeUnit.total);
                       },
                     ),
                   ],

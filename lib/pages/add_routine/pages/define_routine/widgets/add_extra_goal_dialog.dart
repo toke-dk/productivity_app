@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:productivity_app/models/routine.dart';
 
 import '../../../../../widgets/my_date_picker.dart';
 import '../../../../../widgets/my_size_transition.dart';
@@ -37,7 +38,10 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
 
   bool _exactEndDateActivated = false;
 
-  int goalValue = 0;
+  int goalValue = 1;
+
+  bool hasExactStartDate = false;
+  DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +61,27 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
             setState(() {
               goalValue = newVal;
             });
-          }, value: goalValue,
+          },
+          minValue: 1,
+          value: goalValue,
         ),
         SizedBox(
           height: 20,
         ),
-        _StartDateField(),
+        _StartDateField(
+          isVisible: hasExactStartDate,
+          onVisibilityChange: (bool newVal) {
+            setState(() {
+              hasExactStartDate = newVal;
+            });
+          },
+          selectedDate: _selectedDate,
+          onDateChange: (DateTime newDate) {
+            setState(() {
+              _selectedDate = newDate;
+            });
+          },
+        ),
         SizedBox(
           height: 20,
         ),
@@ -91,7 +110,13 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
             Expanded(
               child: FilledButton(
                   onPressed: () {
-                    print("finished");
+                    Navigator.pop(
+                        context,
+                        ExtraGoal(
+                            timePeriod: widget.timeUnit,
+                            amountForTotalTimePeriod: goalValue,
+                            startDate: hasExactStartDate ? _selectedDate : null,
+                            shouldEndWhenFinished: _exactEndDateActivated));
                   },
                   child: Text("Opret mål")),
             ),
@@ -103,7 +128,17 @@ class _AddExtraGoalDialogState extends State<AddExtraGoalDialog> {
 }
 
 class _StartDateField extends StatefulWidget {
-  const _StartDateField({super.key});
+  const _StartDateField(
+      {super.key,
+      required this.isVisible,
+      required this.onVisibilityChange,
+      required this.selectedDate,
+      required this.onDateChange});
+
+  final bool isVisible;
+  final Function(bool newVal) onVisibilityChange;
+  final DateTime selectedDate;
+  final Function(DateTime newDate) onDateChange;
 
   @override
   State<_StartDateField> createState() => _StartDateFieldState();
@@ -111,40 +146,21 @@ class _StartDateField extends StatefulWidget {
 
 class _StartDateFieldState extends State<_StartDateField>
     with SingleTickerProviderStateMixin {
-  bool isVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  final DateFormat _themeFormat = DateFormat("EEE. dd. MMM. yyyy");
-  DateTime _selectedDate = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SwitchListTile(
-          value: isVisible,
-          onChanged: (newVal) {
-            setState(() {
-              isVisible = !isVisible;
-            });
-          },
+          value: widget.isVisible,
+          onChanged: widget.onVisibilityChange,
           title: Text("Start dato"),
         ),
         MySizeTransition(
-            isShowing: isVisible,
+            isShowing: widget.isVisible,
             child: MyDatePicker(
-                selectedDate: _selectedDate,
-                onDateSelected: (DateTime newDate) {
-                  setState(() {
-                    _selectedDate = newDate;
-                  });
-                })),
+                selectedDate: widget.selectedDate,
+                onDateSelected: widget.onDateChange)),
       ],
     );
   }
 }
-
