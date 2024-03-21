@@ -115,6 +115,11 @@ class _TimeUnitChildWrapper extends StatelessWidget {
             child: _MonthTimeUnitChild(
               handleValueChange: _handleValueChange,
             )),
+        MySizeTransition(
+            isShowing: selectedTimeUnit == DayToYearTimes.year,
+            child: _YearTimeUnitChild(
+              handleValueChange: _handleValueChange,
+            )),
       ],
     );
   }
@@ -169,6 +174,34 @@ class _MonthTimeUnitChild extends StatelessWidget {
               width: 20,
             ),
             Text("dage hver måned")
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _YearTimeUnitChild extends StatelessWidget {
+  const _YearTimeUnitChild({super.key, required this.handleValueChange});
+
+  final Function(int newVal) handleValueChange;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            MyValueChanger(
+              handleValueChange: handleValueChange,
+              maxValue: 30,
+              value:
+                  Provider.of<RoutineProvider>(context).cSAmountPerTimePeriod,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text("dage hvert år")
           ],
         ),
       ],
