@@ -58,7 +58,8 @@ class _PageViewExampleState extends State<PageViewExample>
     EvaluatePage(
       pageTitle: _pageTitle("Evaluering"),
       onEvaluationTypeSelected: (EvaluationType enteredType) {
-        Provider.of<RoutineProvider>(context, listen: false).setEvaluationType = enteredType;
+        Provider.of<RoutineProvider>(context, listen: false).setEvaluationType =
+            enteredType;
         _updateCurrentPageIndex(2);
       },
     ),
@@ -68,27 +69,37 @@ class _PageViewExampleState extends State<PageViewExample>
       child: DefineRoutinePage(
         pageTitle: _pageTitle("Definer rutine"),
         onNextPagePressed: () {
-          RoutineProvider provider = Provider.of<RoutineProvider>(context,listen: false);
-          Routine routine = Routine(
-              unitName: provider.unitName,
-              description: provider.description,
-              extraGoal: provider.extraGoal,
-              endDate: provider.endDate,
-              category: provider.category!,
-              evaluationType: provider.evaluationType!,
-              name: provider.name!,
-              quantity: provider.quantity,
-              amountForOneDay: provider.amountForOneDay,
-              completionSchedule: CompletionSchedule(
-                  frequencyAmount:
-                  provider.completionScheduleFrequency,
-                  timePeriod: provider.completionScheduleTimeUnit,
-                  daysEachTimePeriod: provider
-                      .completionScheduleDaysEachTimePeriod),
-              startDate: provider.startDate);
+          RoutineProvider provider =
+              Provider.of<RoutineProvider>(context, listen: false);
+          Routine? routine;
+          if (provider.evaluationType == EvaluationType.numeric) {
+            routine = NumericTypeRoutine(
+                unitName: provider.unitName,
+                description: provider.description,
+                extraGoal: provider.extraGoal,
+                endDate: provider.endDate,
+                category: provider.category!,
+                name: provider.name!,
+                quantity: provider.quantity,
+                amountForOneDay: provider.amountForOneDay,
+                completionSchedule: CompletionSchedule(
+                    frequencyAmount: provider.completionScheduleFrequency,
+                    timePeriod: provider.completionScheduleTimeUnit,
+                    daysEachTimePeriod:
+                        provider.completionScheduleDaysEachTimePeriod),
+                startDate: provider.startDate);
+          } else if (provider.evaluationType == EvaluationType.checkMark) {
+            routine = CheckmarkTypeRoutine(
+                category: provider.category!,
+                name: provider.name!,
+                startDate: provider.startDate,
+                description: provider.description,
+                endDate: provider.endDate);
+          }
           print(routine);
+
           /// TODO: add the routine to the database here
-          },
+        },
       ),
     ),
   ];

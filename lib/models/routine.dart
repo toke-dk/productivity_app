@@ -5,31 +5,36 @@ import '../pages/add_routine/add_routine.dart';
 import '../pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 import 'category.dart';
 
-class Routine {
+abstract class Routine {
   Routine(
       {required this.category,
-      required this.evaluationType,
       required this.name,
       this.description,
-      required this.quantity,
-      required this.amountForOneDay,
-      this.unitName,
-      required this.completionSchedule,
-      this.extraGoal,
       required this.startDate,
       this.endDate});
 
   /// The category is what category the routine is selected for
   Category category;
 
-  /// If the user either wants to complete more completions per day or just
-  /// one per day
-  EvaluationType evaluationType;
-
   /// The name and description is what the user chooses the routine to be called
   String name;
   String? description;
 
+  /// This is the start and the possible end date for the routine
+  DateTime startDate;
+  DateTime? endDate;
+}
+
+class CheckmarkTypeRoutine extends Routine {
+  CheckmarkTypeRoutine(
+      {required super.category,
+      required super.name,
+      required super.startDate,
+      super.description,
+      super.endDate});
+}
+
+class NumericTypeRoutine extends Routine {
   /// The quantity is either Mindst, Total eller Ubegrænset, which is what the
   /// user wants the goal to be
   Quantity quantity;
@@ -46,9 +51,18 @@ class Routine {
   /// If the user wants to add aditional goals to his routine, he can do it here
   ExtraGoal? extraGoal;
 
-  /// This is the start and the possible end date for the routine
-  DateTime startDate;
-  DateTime? endDate;
+  NumericTypeRoutine({
+    required this.quantity,
+    required this.amountForOneDay,
+    this.unitName,
+    required this.completionSchedule,
+    this.extraGoal,
+    required super.category,
+    required super.name,
+    required super.startDate,
+    super.description,
+    super.endDate,
+  });
 }
 
 class CompletionSchedule {
