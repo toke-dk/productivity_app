@@ -4,6 +4,7 @@ import 'package:productivity_app/pages/add_routine/pages/define_routine/widgets/
 import '../pages/add_routine/add_routine.dart';
 import '../pages/add_routine/pages/define_routine/widgets/frequency_widget.dart';
 import 'category.dart';
+import 'goal.dart';
 
 abstract class Routine {
   Routine(
@@ -26,8 +27,12 @@ abstract class Routine {
 }
 
 class CheckmarkTypeRoutine extends Routine {
+  /// The dates where the user has completed the task
+  List<DateTime> completedDates;
+
   CheckmarkTypeRoutine(
-      {required super.category,
+      {this.completedDates = const [],
+      required super.category,
       required super.name,
       required super.startDate,
       super.description,
@@ -51,12 +56,16 @@ class NumericTypeRoutine extends Routine {
   /// If the user wants to add aditional goals to his routine, he can do it here
   ExtraGoal? extraGoal;
 
+  /// The activities where the user has added data to the routine
+  List<DoneAmountActivity> doneActivities;
+
   NumericTypeRoutine({
     required this.quantity,
     required this.amountForOneDay,
     this.unitName,
     required this.completionSchedule,
     this.extraGoal,
+    this.doneActivities = const [],
     required super.category,
     required super.name,
     required super.startDate,
