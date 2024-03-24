@@ -7,6 +7,7 @@ import 'package:productivity_app/pages/my_splash_screen.dart';
 import 'package:productivity_app/shared/all_donations.dart';
 
 import '../models/donation.dart';
+import '../shared/widgets/support_banner.dart';
 
 class SupportersPage extends StatelessWidget {
   SupportersPage({super.key});
@@ -55,7 +56,8 @@ class SupportersPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: supportBannerWidget(context, _donationsSortedByDate[index]),
+                    child:
+                        SupportBanner(donation: _donationsSortedByDate[index]),
                   );
                 }),
           ],
