@@ -6,8 +6,12 @@ import 'package:gap/gap.dart';
 import 'package:productivity_app/pages/my_splash_screen.dart';
 import 'package:productivity_app/shared/all_donations.dart';
 
+import '../models/donation.dart';
+
 class SupportersPage extends StatelessWidget {
-  const SupportersPage({super.key});
+  SupportersPage({super.key});
+
+  final List<Donation> _donationsSortedByDate = kAllDonations.dateSortDesc;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +49,13 @@ class SupportersPage extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
             )),
             ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-                itemCount: kAllDonations.length,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _donationsSortedByDate.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: supportBannerWidget(context, kAllDonations[index]),
+                    child: supportBannerWidget(context, _donationsSortedByDate[index]),
                   );
                 }),
           ],

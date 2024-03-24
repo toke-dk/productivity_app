@@ -24,12 +24,14 @@ class _MySplashScreenState extends State<MySplashScreen>
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-    Future.delayed(2.seconds, () {
+    void delayedExit() => Future.delayed(2650.milliseconds, () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) {
         return widget.afterSplashFinish;
       }));
     });
+
+    delayedExit();
 
     super.initState();
   }
@@ -44,14 +46,16 @@ class _MySplashScreenState extends State<MySplashScreen>
   final Duration animationDuration = 950.milliseconds;
   final Duration animationDelay = 300.milliseconds;
 
+  final List<Donation> _topFiveDonations = kAllDonations.valueSortDesc;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Gap(MediaQuery.of(context).size.height * 0.1),
+          Gap(MediaQuery.of(context).size.height * 0.05),
           Center(
-              child: Image.asset("assets/prod_app_logo.png")
+              child: Image.asset("assets/prod_app_logo.png", width: 100,)
                   .animate(delay: animationDelay)
                   .fadeIn(duration: animationDuration)),
           Gap(20),
@@ -72,11 +76,16 @@ class _MySplashScreenState extends State<MySplashScreen>
               .fadeIn(duration: animationDuration),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: supportBannerWidget(context, kAllDonations[2])
-                .animate(
-                  delay: animationDelay * 2.5,
-                )
-                .fadeIn(duration: animationDuration),
+            child: ListView.builder(
+              shrinkWrap: true,
+                itemCount: _topFiveDonations.length,
+                itemBuilder: (context, index) {
+                  return supportBannerWidget(context, _topFiveDonations[index])
+                      .animate(
+                        delay: animationDelay * 2.5,
+                      )
+                      .fadeIn(duration: animationDuration);
+                }),
           ),
         ],
       ),

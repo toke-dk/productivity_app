@@ -24,8 +24,16 @@ class Donation {
     } else if (valueInKr <= silverPriceMinimum) {
       return SilverMedal();
     } else
-    return GoldMedal();
+      return GoldMedal();
   }
+}
+
+extension DonationsExtension on List<Donation> {
+  List<Donation> get valueSortDesc =>
+      this..sort((a, b) => b.valueInKr.compareTo(a.valueInKr));
+
+  List<Donation> get dateSortDesc =>
+      this..sort((a, b) => b.dateAdded.compareTo(a.dateAdded));
 }
 
 class Medal extends StatelessWidget {
