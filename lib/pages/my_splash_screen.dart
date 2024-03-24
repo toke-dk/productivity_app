@@ -24,12 +24,12 @@ class _MySplashScreenState extends State<MySplashScreen>
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-    void delayedExit() => Future.delayed(2650.milliseconds, () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) {
-        return widget.afterSplashFinish;
-      }));
-    });
+    void delayedExit() => Future.delayed(2000.milliseconds, () {
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (context) {
+            return widget.afterSplashFinish;
+          }));
+        });
 
     delayedExit();
 
@@ -43,8 +43,8 @@ class _MySplashScreenState extends State<MySplashScreen>
     super.dispose();
   }
 
-  final Duration animationDuration = 950.milliseconds;
-  final Duration animationDelay = 300.milliseconds;
+  final Duration animationDuration = 500.milliseconds;
+  final Duration animationDelay = 200.milliseconds;
 
   final List<Donation> _topFiveDonations = kAllDonations.valueSortDesc;
 
@@ -55,9 +55,10 @@ class _MySplashScreenState extends State<MySplashScreen>
         children: [
           Gap(MediaQuery.of(context).size.height * 0.05),
           Center(
-              child: Image.asset("assets/prod_app_logo.png", width: 100,)
-                  .animate(delay: animationDelay)
-                  .fadeIn(duration: animationDuration)),
+              child: Image.asset(
+            "assets/prod_app_logo.png",
+            width: 100,
+          ).animate(delay: animationDelay).fadeIn(duration: animationDuration)),
           Gap(20),
           Center(
             child: Text(
@@ -77,7 +78,7 @@ class _MySplashScreenState extends State<MySplashScreen>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: ListView.builder(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 itemCount: _topFiveDonations.length,
                 itemBuilder: (context, index) {
                   return supportBannerWidget(context, _topFiveDonations[index])
@@ -117,10 +118,29 @@ Widget supportBannerWidget(context, Donation donation) {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      donation.name.toUpperCase(),
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold, letterSpacing: 0.1),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            donation.name.toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.1),
+                          ),
+                        ),
+                        Gap(7),
+                        Icon(
+                          Icons.verified,
+                          color: Colors.blue,
+                          size: 15,
+                        ),
+                        Gap(12),
+                      ],
                     ),
                     donation.message == null
                         ? SizedBox.shrink()
