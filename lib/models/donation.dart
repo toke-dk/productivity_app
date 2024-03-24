@@ -4,20 +4,25 @@ class Donation {
   String name;
   String? message;
   double valueInKr;
+  DateTime dateAdded;
 
-  Donation({required this.name, this.message, required this.valueInKr});
+  Donation(
+      {required this.name,
+      this.message,
+      required this.valueInKr,
+      required this.dateAdded});
 
   Medal get earnedMedal {
     final double bronzePriceMinimum = 10;
     final double silverPriceMinimum = 30;
 
-    if (bronzePriceMinimum <= valueInKr) {
+    if (valueInKr <= bronzePriceMinimum) {
       return BronzeMedal();
-    } else if (bronzePriceMinimum < valueInKr &&
-        valueInKr <= silverPriceMinimum) {
+    } else if (valueInKr <= silverPriceMinimum) {
       return SilverMedal();
     } else
-      return GoldMedal();
+      print("gold");
+    return GoldMedal();
   }
 }
 
@@ -31,7 +36,7 @@ class Medal extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 25,
-      backgroundColor: bgColor[300],
+      backgroundColor: bgColor[100],
       child: Image.asset(
         imageSrc,
         width: 30,

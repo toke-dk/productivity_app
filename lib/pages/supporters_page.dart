@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:productivity_app/pages/my_splash_screen.dart';
+import 'package:productivity_app/shared/all_donations.dart';
 
 class SupportersPage extends StatelessWidget {
   const SupportersPage({super.key});
@@ -46,11 +47,11 @@ class SupportersPage extends StatelessWidget {
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-                itemCount: 1,
+                itemCount: kAllDonations.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: supportBannerWidget(context),
+                    child: supportBannerWidget(context, kAllDonations[index]),
                   );
                 }),
           ],

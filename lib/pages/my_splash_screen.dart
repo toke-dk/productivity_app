@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:productivity_app/models/donation.dart';
+import 'package:productivity_app/shared/all_donations.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key, required this.afterSplashFinish});
@@ -60,24 +62,29 @@ class _MySplashScreenState extends State<MySplashScreen>
                   .textTheme
                   .displayMedium!
                   .copyWith(fontWeight: FontWeight.bold),
-            ).animate(delay: animationDelay).fadeIn(duration: animationDuration),
+            )
+                .animate(delay: animationDelay)
+                .fadeIn(duration: animationDuration),
           ),
           Gap(20),
-          Text("Tak til:").animate(delay: animationDelay*2.5).fadeIn(duration: animationDuration),
+          Text("Tak til:")
+              .animate(delay: animationDelay * 2.5)
+              .fadeIn(duration: animationDuration),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: supportBannerWidget(context).animate(delay: animationDelay*2.5,).fadeIn(duration: animationDuration),
+            child: supportBannerWidget(context, kAllDonations[2])
+                .animate(
+                  delay: animationDelay * 2.5,
+                )
+                .fadeIn(duration: animationDuration),
           ),
         ],
       ),
     );
   }
-
-
-
 }
 
-Widget supportBannerWidget(context) {
+Widget supportBannerWidget(context, Donation donation) {
   return Stack(
     children: [
       Padding(
@@ -90,7 +97,7 @@ Widget supportBannerWidget(context) {
                 blurRadius: 3)
           ], borderRadius: BorderRadius.circular(5), color: Colors.white),
           padding:
-          const EdgeInsets.only(top: 6, left: 50, bottom: 10, right: 10),
+              const EdgeInsets.only(top: 6, left: 50, bottom: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -102,18 +109,20 @@ Widget supportBannerWidget(context) {
                       height: 10,
                     ),
                     Text(
-                      "dit navn!".toUpperCase(),
+                      donation.name.toUpperCase(),
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold, letterSpacing: 0.1),
                     ),
-                    Container(
-                      padding: EdgeInsets.only(right: 7),
-                      child: Text(
-                        "Din besked.",
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    )
+                    donation.message == null
+                        ? SizedBox.shrink()
+                        : Container(
+                            padding: EdgeInsets.only(right: 7),
+                            child: Text(
+                              donation.message!,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          )
                   ],
                 ),
               ),
@@ -121,15 +130,15 @@ Widget supportBannerWidget(context) {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     height: 25,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         color: Theme.of(context).colorScheme.primary),
                     child: FittedBox(
                       child: Text(
-                        "kr. 6,9",
+                        '${donation.valueInKr.toString().replaceAll(".", ",")} kr.',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
@@ -139,7 +148,7 @@ Widget supportBannerWidget(context) {
                     height: 10,
                   ),
                   Text(
-                    "dato: I DAG!",
+                    DateFormat("dd/MM/yyyy").format(donation.dateAdded),
                     style: Theme.of(context).textTheme.labelSmall,
                   )
                 ],
@@ -148,16 +157,7 @@ Widget supportBannerWidget(context) {
           ),
         ),
       ),
-      Positioned(
-        left: 0,
-        top: 0,
-        bottom: 0,
-        child: CircleAvatar(
-          radius: 25,
-          backgroundColor: Colors.yellow[300],
-          child: Image.asset("assets/medals/gold_medal.png",width: 30,),
-        ),
-      ),
+      Positioned(left: 0, top: 0, bottom: 0, child: donation.earnedMedal),
     ],
   );
 }
