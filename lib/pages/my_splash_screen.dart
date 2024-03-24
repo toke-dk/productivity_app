@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:productivity_app/models/donation.dart';
 
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key, required this.afterSplashFinish});
@@ -101,14 +102,14 @@ Widget supportBannerWidget(context) {
                       height: 10,
                     ),
                     Text(
-                      "DIT NAVN!",
+                      "dit navn!".toUpperCase(),
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold, letterSpacing: 0.1),
                     ),
                     Container(
                       padding: EdgeInsets.only(right: 7),
                       child: Text(
-                        "DIN YNDLINGSLYD!",
+                        "Din besked.",
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
@@ -138,7 +139,7 @@ Widget supportBannerWidget(context) {
                     height: 10,
                   ),
                   Text(
-                    "dato: I DAG",
+                    "dato: I DAG!",
                     style: Theme.of(context).textTheme.labelSmall,
                   )
                 ],
