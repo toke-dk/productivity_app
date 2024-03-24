@@ -24,7 +24,6 @@ class Donation {
     } else if (valueInKr <= silverPriceMinimum) {
       return SilverMedal();
     } else
-      print("gold");
     return GoldMedal();
   }
 }
@@ -48,7 +47,7 @@ class Medal extends StatelessWidget {
   Widget build(BuildContext context) {
     final Random _random = Random();
     final int _delay =
-        _random.nextInt(3500) + 2000; // Random number [2000 : 4499]
+        _random.nextInt(3500) + 1500; // Random number [2000 : 4499]
 
     return CircleAvatar(
         radius: _radius + _border,
