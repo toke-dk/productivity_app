@@ -147,12 +147,14 @@ Widget supportBannerWidget(context) {
           ),
         ),
       ),
-      const Positioned(
+      Positioned(
         left: 0,
         top: 0,
         bottom: 0,
         child: CircleAvatar(
           radius: 25,
+          backgroundColor: Colors.yellow[300],
+          child: Image.asset("assets/medals/gold_medal.png",width: 30,),
         ),
       ),
     ],

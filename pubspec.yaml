@@ -88,6 +88,10 @@ flutter:
   assets:
    - assets/prod_app_logo.png
    - assets/pinova_logo.png
+   - assets/medals/bronze_medal.png
+   - assets/medals/silver_medal.png
+   - assets/medals/gold_medal.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
