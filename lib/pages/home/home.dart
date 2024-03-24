@@ -5,6 +5,7 @@ import 'package:productivity_app/pages/about_app_page.dart';
 import 'package:productivity_app/pages/actions_log_page.dart';
 import 'package:productivity_app/pages/home/widgets/show_goals.dart';
 import 'package:productivity_app/pages/settings/settings_page.dart';
+import 'package:productivity_app/pages/supporters_page.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:productivity_app/shared/allActionTypes.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -82,16 +83,23 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Divider(),
               ListTile(
-                title: Text("Feedback"),
-                onTap: launchFeedBackForm,
-                leading: Icon(Icons.open_in_new),
-              ),
-              ListTile(
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AboutUsPage())),
                 leading: Icon(Icons.account_balance_sharp),
                 title: Text("Om Appen"),
-              )
+              ),
+              ListTile(
+                leading: Icon(Icons.monetization_on_sharp),
+                title: Text("Støtte"),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SupportersPage()));
+                },
+              ),
+              ListTile(
+                title: Text("Feedback"),
+                onTap: launchFeedBackForm,
+                leading: Icon(Icons.open_in_new),
+              ),
             ],
           ),
         ),

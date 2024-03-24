@@ -63,7 +63,10 @@ class _MySplashScreenState extends State<MySplashScreen>
           ),
           Gap(20),
           Text("Tak til:").animate(delay: animationDelay*2.5).fadeIn(duration: animationDuration),
-          supportBannerWidget(context).animate(delay: animationDelay*2.5,).fadeIn(duration: animationDuration),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: supportBannerWidget(context).animate(delay: animationDelay*2.5,).fadeIn(duration: animationDuration),
+          ),
         ],
       ),
     );
@@ -74,87 +77,84 @@ class _MySplashScreenState extends State<MySplashScreen>
 }
 
 Widget supportBannerWidget(context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-    child: Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 12, bottom: 12, left: 20),
-          child: Container(
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.07),
-                  spreadRadius: 1,
-                  blurRadius: 3)
-            ], borderRadius: BorderRadius.circular(5), color: Colors.white),
-            padding:
-            const EdgeInsets.only(top: 6, left: 50, bottom: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "DIT NAVN!",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold, letterSpacing: 0.1),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(right: 7),
-                        child: Text(
-                          "DIN YNDLINGSLYD!",
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+  return Stack(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 12, bottom: 12, left: 20),
+        child: Container(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.07),
+                spreadRadius: 1,
+                blurRadius: 3)
+          ], borderRadius: BorderRadius.circular(5), color: Colors.white),
+          padding:
+          const EdgeInsets.only(top: 6, left: 50, bottom: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
-                      height: 25,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Theme.of(context).colorScheme.primary),
-                      child: FittedBox(
-                        child: Text(
-                          "kr. 6,9",
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
-                      ),
-                    ),
                     const SizedBox(
                       height: 10,
                     ),
                     Text(
-                      "dato: I DAG",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      "DIT NAVN!",
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.bold, letterSpacing: 0.1),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 7),
+                      child: Text(
+                        "DIN YNDLINGSLYD!",
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     )
                   ],
-                )
-              ],
-            ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 2),
+                    height: 25,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Theme.of(context).colorScheme.primary),
+                    child: FittedBox(
+                      child: Text(
+                        "kr. 6,9",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "dato: I DAG",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  )
+                ],
+              )
+            ],
           ),
         ),
-        const Positioned(
-          left: 0,
-          top: 0,
-          bottom: 0,
-          child: CircleAvatar(
-            radius: 25,
-          ),
+      ),
+      const Positioned(
+        left: 0,
+        top: 0,
+        bottom: 0,
+        child: CircleAvatar(
+          radius: 25,
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }
