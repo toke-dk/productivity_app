@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:productivity_app/models/user.dart';
 import 'package:productivity_app/pages/home/home.dart';
 import 'package:productivity_app/pages/introduction_screens/main_intro_screens.dart';
+import 'package:productivity_app/pages/my_splash_screen.dart';
 import 'package:productivity_app/services/database_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,60 +75,63 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
       ),
-      home: FutureBuilder<bool>(
-          future: _isFirstVisit,
-          builder: (context, AsyncSnapshot<bool> snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return Scaffold(body: Center(child: const Text("Loading...")));
-              case ConnectionState.active:
-              case ConnectionState.done:
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  final bool isFirstVisit = snapshot.data!;
-                  return isFirstVisit
-                      ? MyIntroScreens(
-                          onIntroComplete: (nick, first, last) async {
-                            _saveUserData(UserData(
-                                nickName: nick,
-                                firstName: first,
-                                lastName: last));
-                            _setNotFirstVisit();
-                            Navigator.pop(context);
-                          },
-                        )
-                      : FutureBuilder<UserData?>(
-                          future: UserDataStorage.getUserData,
-                          builder:
-                              (context, AsyncSnapshot<UserData?> snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                              case ConnectionState.waiting:
-                                return Scaffold(
-                                    body: Center(
-                                        child: const Text("Loading...")));
-                              case ConnectionState.active:
-                              case ConnectionState.done:
-                                if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else
-                                  return MyHomePage(
-                                    title:
-                                        "${makeWelcomeMessage(DateTime.now())}",
-                                    userData: snapshot.data!,
-                                    editUserData: (UserData newData) {
-                                      setState(() {
-                                        _saveUserData(newData);
-                                      });
-                                    },
-                                  );
-                            }
-                          });
-                }
-            }
-          }),
+      home: MySplashScreen(afterSplashFinish: mainContent,),
     );
   }
+
+  Widget get mainContent => FutureBuilder<bool>(
+      future: _isFirstVisit,
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return Scaffold(body: Center(child: const Text("Loading...")));
+          case ConnectionState.active:
+          case ConnectionState.done:
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              final bool isFirstVisit = snapshot.data!;
+              return isFirstVisit
+                  ? MyIntroScreens(
+                onIntroComplete: (nick, first, last) async {
+                  _saveUserData(UserData(
+                      nickName: nick,
+                      firstName: first,
+                      lastName: last));
+                  _setNotFirstVisit();
+                  Navigator.pop(context);
+                },
+              )
+                  : FutureBuilder<UserData?>(
+                  future: UserDataStorage.getUserData,
+                  builder:
+                      (context, AsyncSnapshot<UserData?> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Scaffold(
+                            body: Center(
+                                child: const Text("Loading...")));
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else
+                          return MyHomePage(
+                            title:
+                            "${makeWelcomeMessage(DateTime.now())}",
+                            userData: snapshot.data!,
+                            editUserData: (UserData newData) {
+                              setState(() {
+                                _saveUserData(newData);
+                              });
+                            },
+                          );
+                    }
+                  });
+            }
+        }
+      });
+  
 }
