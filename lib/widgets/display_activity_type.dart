@@ -21,7 +21,8 @@ class DisplayActionType extends StatelessWidget {
     List<Widget> childrenToDisplay = [
       /// [AspectRatio] shows the size of the widget compared to its parent
       CircleAvatar(
-        radius: 15,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        radius: 20,
         child: FittedBox(
             child: Padding(
           padding: const EdgeInsets.all(8.0),

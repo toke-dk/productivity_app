@@ -56,9 +56,10 @@ class _AddGoalPageState extends State<AddGoalPage> {
     return false;
   }
 
-  DateTime _firstDateOption = DateTime(DateTime.now().year - 10,DateTime.now().month, DateTime.now().day);
-  DateTime _lastDateOption = DateTime(DateTime.now().year + 10,DateTime.now().month, DateTime.now().day);
-
+  DateTime _firstDateOption = DateTime(
+      DateTime.now().year - 10, DateTime.now().month, DateTime.now().day);
+  DateTime _lastDateOption = DateTime(
+      DateTime.now().year + 10, DateTime.now().month, DateTime.now().day);
 
   List<Step> _steps() => [
         Step(
@@ -396,9 +397,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
 
 class _FormatBox extends StatelessWidget {
   const _FormatBox(
-      {this.selected = false,
-      required this.format,
-      required this.onTap});
+      {this.selected = false, required this.format, required this.onTap});
 
   final GoalTypeFormats format;
   final bool selected;
@@ -413,21 +412,20 @@ class _FormatBox extends StatelessWidget {
         width: 110,
         height: 150,
         decoration: BoxDecoration(
-            border: selected ? Border.all(color: Colors.blue) : null,
+            border: selected
+                ? Border.all(color: Theme.of(context).colorScheme.primary)
+                : null,
             borderRadius: BorderRadius.circular(15),
             color: Colors.grey[100]),
         child: Stack(
           children: [
             Center(
                 child: format == GoalTypeFormats.typing
-                    ? Icon(
-                        Icons.onetwothree,
-                        size: 30,
-                      )
-                    : Icon(
-                        Icons.check_circle,
+                    ? Icon(Icons.onetwothree,
+                        size: 30, color: Theme.of(context).colorScheme.primary)
+                    : Icon(Icons.check_circle,
                         size: 50,
-                      )),
+                        color: Theme.of(context).colorScheme.primary)),
             Positioned(
                 left: 0,
                 right: 0,
@@ -437,6 +435,8 @@ class _FormatBox extends StatelessWidget {
                         ? "Indtastning"
                         : "Afkrydsning",
                     textAlign: TextAlign.center,
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
                   ),
                 ))
           ],
