@@ -72,8 +72,11 @@ class _MySplashScreenState extends State<MySplashScreen>
                 .animate(delay: animationDelay)
                 .fadeIn(duration: animationDuration),
           ),
-          Gap(20),
-          Text("Tak til:")
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Divider(height: 35,),
+          ),
+          Text("Tak til alle bidrag:", style: Theme.of(context).textTheme.labelLarge,)
               .animate(delay: animationDelay * 2.5)
               .fadeIn(duration: animationDuration),
           Padding(
