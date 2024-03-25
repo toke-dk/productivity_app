@@ -8,4 +8,9 @@ final List<Donation> kAllDonations = [
       valueInKr: 0.1,
       dateAdded: DateTime(2024, 3, 24),
       message: "To the moon ^"),
+  Donation(
+      name: "Tobias",
+      message: "Tubbemaster",
+      valueInKr: 1,
+      dateAdded: DateTime(2024, 3, 25)),
 ];
