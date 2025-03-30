@@ -88,13 +88,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 leading: Icon(Icons.account_balance_sharp),
                 title: Text("Om Appen"),
               ),
-              ListTile(
-                leading: Icon(Icons.monetization_on_sharp),
-                title: Text("Støtte"),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SupportersPage()));
-                },
-              ),
+              // ListTile(
+              //   leading: Icon(Icons.monetization_on_sharp),
+              //   title: Text("Støtte"),
+              //   onTap: () {
+              //     Navigator.push(context, MaterialPageRoute(builder: (context) => SupportersPage()));
+              //   },
+              // ),
               ListTile(
                 title: Text("Feedback"),
                 onTap: launchFeedBackForm,
