@@ -1,13 +1,13 @@
 import 'package:animated_digit/animated_digit.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:productivity_app/pages/home/widgets/show_amount_goal.dart';
+import 'package:productivity_app/pages/report_page.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'package:weekday_selector/weekday_selector.dart';
+import 'package:weekday_selector/weekday_selector.dart' show WeekdaySelector;
 
 import '../../../models/goal.dart';
 import '../../../widgets/display_activity_type.dart';
@@ -147,7 +147,7 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
-      builder: Builder(builder: (context) {
+      builder: (context) {
         myContext = context;
         return Showcase(
           key: _key,
@@ -405,8 +405,7 @@ class _ExpansionListForGoalsState extends State<ExpansionListForGoals> {
             ],
           ),
         );
-      }),
-    );
+      });
   }
 }
 

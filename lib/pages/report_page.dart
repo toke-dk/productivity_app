@@ -130,7 +130,6 @@ class ReportPageState extends State<ReportPage> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey,
           tooltipHorizontalAlignment: FLHorizontalAlignment.right,
           tooltipMargin: -10,
           getTooltipItem: (group, groupIndex, rod, rodIndex) {
@@ -266,7 +265,7 @@ class ReportPageState extends State<ReportPage> {
         break;
     }
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       space: 16,
       child: text,
     );
