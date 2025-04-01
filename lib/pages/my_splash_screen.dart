@@ -57,7 +57,7 @@ class _MySplashScreenState extends State<MySplashScreen>
           Gap(MediaQuery.of(context).size.height * 0.05),
           Center(
               child: Image.asset(
-            "assets/prod_app_logo.png",
+            "assets/icon/icon.png",
             width: 100,
           ).animate(delay: animationDelay).fadeIn(duration: animationDuration)),
           Gap(20),

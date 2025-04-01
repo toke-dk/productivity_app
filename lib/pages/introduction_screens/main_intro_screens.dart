@@ -5,7 +5,7 @@ import 'package:productivity_app/pages/introduction_screens/page_two.dart';
 class MyIntroScreens extends StatelessWidget {
   const MyIntroScreens({super.key, required this.onIntroComplete});
 
-  final Function(String nickName, String? firstName, String? lastName) onIntroComplete;
+  final Function(BuildContext context, String nickName, String? firstName, String? lastName) onIntroComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class MyIntroScreens extends StatelessWidget {
       nextPagePressed: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => PageTwoIntroScreen(
-                  onCompletePress: (nick,first,last) => onIntroComplete(nick,first,last),
+                  onCompletePress: (nick,first,last) => onIntroComplete(context, nick,first,last),
                 )));
       },
     );

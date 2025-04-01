@@ -37,33 +37,45 @@ class _MyAppState extends State<MyApp> {
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  late Future<bool> _isFirstVisit;
+  bool? _isFirstVisit;
 
   Future<void> _setFirstVisit() async {
     final SharedPreferences prefs = await _prefs;
+    await prefs.setBool("isFirstVisit", true);
     setState(() {
-      _isFirstVisit =
-          prefs.setBool("isFirstVisit", true).then((bool success) => true);
+      _isFirstVisit = true;
     });
+    print(_isFirstVisit);
   }
 
   Future<void> _setNotFirstVisit() async {
     final SharedPreferences prefs = await _prefs;
+    await prefs.setBool("isFirstVisit", false);
     setState(() {
-      _isFirstVisit =
-          prefs.setBool("isFirstVisit", false).then((bool success) => false);
+      _isFirstVisit = false;
     });
+    print(_isFirstVisit);
   }
 
   Future<void> _saveUserData(UserData userData) async {
     UserDataStorage.saveUserData(userData);
   }
 
+  Future<void> _initFirstVisit() async {
+    final SharedPreferences prefs = await _prefs;
+    bool prefsIsFirstVisit = await prefs.getBool("isFirstVisit") ?? true;
+    setState(() {
+      _isFirstVisit = prefsIsFirstVisit;
+    });
+    print(_isFirstVisit);
+  }
+
   @override
   void initState() {
     // kDebugMode ? _setFirstVisit() : null;
-    _isFirstVisit = _prefs.then(
-        (SharedPreferences prefs) => prefs.getBool("isFirstVisit") ?? true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initFirstVisit();
+    });
     super.initState();
   }
 
@@ -75,63 +87,48 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
       ),
-      home: MySplashScreen(afterSplashFinish: mainContent,),
+      home: mainContent,
     );
   }
 
-  Widget get mainContent => FutureBuilder<bool>(
-      future: _isFirstVisit,
-      builder: (context, AsyncSnapshot<bool> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            return Scaffold(body: Center(child: const Text("Loading...")));
-          case ConnectionState.active:
-          case ConnectionState.done:
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              final bool isFirstVisit = snapshot.data!;
-              return isFirstVisit
-                  ? MyIntroScreens(
-                onIntroComplete: (nick, first, last) async {
-                  _saveUserData(UserData(
-                      nickName: nick,
-                      firstName: first,
-                      lastName: last));
-                  _setNotFirstVisit();
-                  Navigator.pop(context);
-                },
-              )
-                  : FutureBuilder<UserData?>(
-                  future: UserDataStorage.getUserData,
-                  builder:
-                      (context, AsyncSnapshot<UserData?> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Scaffold(
-                            body: Center(
-                                child: const Text("Loading...")));
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else
-                          return MyHomePage(
-                            title:
-                            "${makeWelcomeMessage(DateTime.now())}",
-                            userData: snapshot.data!,
-                            editUserData: (UserData newData) {
-                              setState(() {
-                                _saveUserData(newData);
-                              });
-                            },
-                          );
-                    }
-                  });
-            }
-        }
-      });
-  
+  Widget get mainContent {
+    if (_isFirstVisit == null) {
+      return Scaffold(body: Center(child: const Text("Loading...")));
+    }
+    if (_isFirstVisit == true) {
+      print("visit true:");
+      return MyIntroScreens(
+        onIntroComplete: (_context, nick, first, last) async {
+          _saveUserData(
+              UserData(nickName: nick, firstName: first, lastName: last));
+          _setNotFirstVisit();
+          Navigator.of(_context).popUntil((route) => route.isFirst);
+        },
+      );
+    }
+    return FutureBuilder<UserData?>(
+        future: UserDataStorage.getUserData,
+        builder: (context, AsyncSnapshot<UserData?> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Scaffold(
+                  body: Center(child: const Text("Indlæser data...")));
+            case ConnectionState.active:
+            case ConnectionState.done:
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else
+                return MyHomePage(
+                  title: "${makeWelcomeMessage(DateTime.now())}",
+                  userData: snapshot.data!,
+                  editUserData: (UserData newData) {
+                    setState(() {
+                      _saveUserData(newData);
+                    });
+                  },
+                );
+          }
+        });
+  }
 }

@@ -21,7 +21,7 @@ class PageOneIntroScreen extends StatelessWidget {
               flex: 4,
             ),
             Center(
-                child: Image.asset("assets/prod_app_logo.png")
+                child: Image.asset("assets/icon/icon.png")
                     .animate()
                     .fadeIn(duration: animationDuration)
                     .moveY(
