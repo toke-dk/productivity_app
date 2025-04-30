@@ -70,4 +70,11 @@ final List<ActionType> kAllActionTypes = [
         color: Colors.white,
       ),
       asActivity: false),
+  ActionType(
+      name: "Armbøjninger",
+      image: Icon(
+        Icons.sports_handball,
+        color: Colors.white,
+      ),
+      asActivity: false),
 ];

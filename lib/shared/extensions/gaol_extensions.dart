@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:productivity_app/models/goal.dart';
 import 'package:productivity_app/shared/extensions/date_time_extensions.dart';
 
@@ -10,18 +11,14 @@ extension CheckMarkGoalsExtension on List<CheckmarkGoal> {
       this
           .where((element) =>
       nowOnlyYMD.isAfter(element.startDate) &&
-          nowOnlyYMD.isBefore(element.endDate) ||
-          nowOnlyYMD.isAtSameMomentAs(element.endDate) ||
-          nowOnlyYMD.isAtSameMomentAs(element.startDate))
+          nowOnlyYMD.isBefore(element.endDate.endOfDay))
           .toList();
 
   List<CheckmarkGoal> activeGoalsFromDate(DateTime date) =>
       this
           .where((element) =>
-      date.isAfter(element.startDate) &&
-          date.isBefore(element.endDate) ||
-          date.isAtSameMomentAs(element.endDate) ||
-          date.isAtSameMomentAs(element.startDate))
+      date.isAfter(element.startDate.onlyYearMonthDay) &&
+          date.isBefore(element.endDate.endOfDay))
           .toList();
 
   List<CheckmarkGoal> get previousGoalsFromToday =>
@@ -43,18 +40,14 @@ extension AmountGoalsExtension on List<AmountGoal> {
       this
           .where((element) =>
       nowOnlyYMD.isAfter(element.startDate) &&
-          nowOnlyYMD.isBefore(element.endDate) ||
-          nowOnlyYMD.isAtSameMomentAs(element.endDate) ||
-          nowOnlyYMD.isAtSameMomentAs(element.startDate))
+          nowOnlyYMD.isBefore(element.endDate.endOfDay))
           .toList();
 
   List<AmountGoal> activeGoalsFromDate(DateTime date) =>
       this
           .where((element) =>
       date.isAfter(element.startDate) &&
-          date.isBefore(element.endDate) ||
-          date.isAtSameMomentAs(element.endDate) ||
-          date.isAtSameMomentAs(element.startDate))
+          date.isBefore(element.endDate.endOfDay))
           .toList();
 
   List<AmountGoal> get previousGoalsFromToday =>

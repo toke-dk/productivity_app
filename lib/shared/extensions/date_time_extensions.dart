@@ -1,3 +1,5 @@
+import 'package:flutter_animate/flutter_animate.dart';
+
 extension DateExtension on DateTime {
   bool isSameDate(DateTime other) {
     return year == other.year && month == other.month && day == other.day;
@@ -13,6 +15,8 @@ extension DateExtension on DateTime {
   }
 
   DateTime get onlyYearMonthDay => DateTime(this.year, this.month, this.day);
+
+  DateTime get endOfDay => onlyYearMonthDay.add(1.days);
 }
 
 extension ListDateExtension on List<DateTime> {
